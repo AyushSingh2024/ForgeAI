@@ -1,0 +1,11 @@
+class_id,name,weekday,start_time,duration_min,capacity,instructor
+C-101,Spin,Monday,18:00,45,20,Ana
+C-102,Yoga,Monday,19:00,60,15,Ben
+C-103,HIIT,Tuesday,07:00,30,12,Ana
+C-104,Pilates,Wednesday,18:30,50,14,Chen
+C-105,Spin,Thursday,18:00,45,20,Ben
+C-106,Boxing,Thursday,19:00,60,10,Dara
+C-107,Yoga,Saturday,09:00,75,18,Chen
+C-108,HIIT,Saturday,10:30,30,12,Dara
+C-109,Stretch,Sunday,10:00,40,16,Ana
+C-110,Spin,Sunday,11:00,45,20,Ben

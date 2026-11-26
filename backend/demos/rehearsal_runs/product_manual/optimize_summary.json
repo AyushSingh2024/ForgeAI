@@ -1,0 +1,24 @@
+{
+  "stop_reason": "reached max iterations (2)",
+  "history": [
+    {
+      "iteration": 0,
+      "pass_rate": 0.647,
+      "agent_version": 1
+    },
+    {
+      "iteration": 1,
+      "pass_rate": 0.706,
+      "agent_version": 2,
+      "kept_change": true
+    },
+    {
+      "iteration": 2,
+      "pass_rate": 0.706,
+      "agent_version": 2,
+      "kept_change": false
+    }
+  ],
+  "best_version": 2,
+  "best_train_pass_rate": 0.706
+}

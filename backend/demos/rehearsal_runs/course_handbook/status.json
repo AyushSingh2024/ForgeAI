@@ -1,0 +1,63 @@
+{
+  "status": "completed",
+  "current_stage": null,
+  "error": null,
+  "updated_at": 1795735646.681296,
+  "stages": {
+    "ingest": {
+      "status": "done",
+      "started_at": 1795735290.645978,
+      "message": "1 documents, 0 tables, 4 chunks",
+      "finished_at": 1795735303.2719011
+    },
+    "intake": {
+      "status": "done",
+      "started_at": 1795735303.342228,
+      "message": "0 question(s) asked, 0 assumed; 5 must-answer, 5 must-refuse",
+      "finished_at": 1795735310.568367
+    },
+    "guard": {
+      "status": "done",
+      "started_at": 1795735310.678379,
+      "message": "5 asks checked, coverage 80%, 1 moved to must-refuse",
+      "finished_at": 1795735339.0564933
+    },
+    "generate_agent": {
+      "status": "done",
+      "started_at": 1795735339.0991488,
+      "message": "tools: current_date; chunk_size 350, top_k 5; 4 chunks indexed",
+      "finished_at": 1795735344.114783
+    },
+    "generate_evals": {
+      "status": "done",
+      "started_at": 1795735344.2755415,
+      "message": "20 cases accepted, 8 rejected",
+      "finished_at": 1795735406.061715
+    },
+    "evaluate_0": {
+      "status": "done",
+      "started_at": 1795735406.2192092,
+      "message": "baseline train pass rate 81% on 16 cases",
+      "finished_at": 1795735476.0422497
+    },
+    "optimize": {
+      "status": "done",
+      "started_at": 1795735476.1032088,
+      "message": "best version v1, train pass rate 81% (reached max iterations (2))",
+      "finished_at": 1795735631.0779765
+    },
+    "final_holdout": {
+      "status": "done",
+      "started_at": 1795735631.1197402,
+      "message": "holdout pass rate 100% on 4 unseen cases",
+      "finished_at": 1795735644.0573335
+    },
+    "report": {
+      "status": "done",
+      "started_at": 1795735644.0968611,
+      "message": "REPORT.md written",
+      "finished_at": 1795735646.5837498
+    }
+  },
+  "notes": []
+}

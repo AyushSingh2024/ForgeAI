@@ -1,0 +1,97 @@
+# ForgeAI report: {{ d.req.agent_name }}
+
+Run `{{ run_id }}` · status **{{ d.status.get("status", "unknown") }}** · agent model actually used `{{ d.actual_models.agent | join(", ") or "-" }}` · judge actually used `{{ d.actual_models.judge | join(", ") or "-" }}` (configured judge: `{{ d.llm.get("judge_provider") }}:{{ d.llm.get("judge_model") }}`{% if d.actual_models.judge and not (d.actual_models.judge[0].startswith("ollama")) %}; **not a local model in this run**{% endif %})
+
+## 1. Summary
+{{ n.summary }}
+
+| metric | baseline (train) | best (train) | holdout (unseen) |
+|---|---|---|---|
+| pass rate | {{ d.sc0.summary.pass_rate | pct if d.sc0 else "-" }} | {{ d.best.summary.pass_rate | pct if d.best else "-" }} | {{ d.holdout.summary.pass_rate | pct if d.holdout else "-" }} |
+| key-fact coverage | {{ d.sc0.summary.key_fact_coverage | pct if d.sc0 else "-" }} | {{ d.best.summary.key_fact_coverage | pct if d.best else "-" }} | {{ d.holdout.summary.key_fact_coverage | pct if d.holdout else "-" }} |
+| hallucination rate | {{ d.sc0.summary.hallucination_rate | pct if d.sc0 else "-" }} | {{ d.best.summary.hallucination_rate | pct if d.best else "-" }} | {{ d.holdout.summary.hallucination_rate | pct if d.holdout else "-" }} |
+| refusal recall | {{ d.sc0.summary.refusal_recall | pct if d.sc0 else "-" }} | {{ d.best.summary.refusal_recall | pct if d.best else "-" }} | {{ d.holdout.summary.refusal_recall | pct if d.holdout else "-" }} |
+| cases | {{ d.sc0.summary.n_cases if d.sc0 else "-" }} | {{ d.best.summary.n_cases if d.best else "-" }} | {{ d.holdout.summary.n_cases if d.holdout else "-" }} |
+
+Optimizer: {{ d.opt.get("stop_reason", "not run") }}.
+
+## 2. Requirements
+- Audience: {{ d.req.audience.who }} ({{ d.req.audience.expertise }}); tone: {{ d.req.tone.style }}
+- Must answer: {{ d.req.must_answer | map(attribute="topic") | join("; ") }}
+- Must refuse: {{ d.req.must_refuse | map(attribute="topic") | join("; ") }}
+- Interview: {{ d.req.interview | length }} question(s); {{ d.req.interview | selectattr("source", "equalto", "assumed") | list | length }} answer(s) **assumed** without a person.
+{% for a in d.req.assumptions %}
+  - assumed: {{ a }}
+{% endfor %}
+
+See `requirements.md` for the full document.
+
+## 3. Groundability check
+Coverage: {{ d.guard.coverage | pct }} of {{ d.guard.verdicts | length }} asks are supported by the documents or a tool.
+{% for w in d.guard.warnings %}
+- {{ w }}
+{% else %}
+- No warnings: every ask was supported.
+{% endfor %}
+
+## 4. Agent definition
+{% if d.agent %}
+- Version **v{{ d.agent.version }}** (`agent/agent.yaml`; all versions in `agent/versions/`)
+- Tools: {% for t in d.agent.tools %}`{{ t.name }}` ({{ t.reason }}){% if not loop.last %}, {% endif %}{% else %}none{% endfor %}
+
+- Retrieval: {{ d.agent.retrieval.mode }}, chunk {{ d.agent.retrieval.chunk_size }}/{{ d.agent.retrieval.chunk_overlap }}, top_k {{ d.agent.retrieval.top_k }}, bm25 weight {{ d.agent.retrieval.bm25_weight }}, rerank {{ d.agent.retrieval.rerank }}, min_score {{ d.agent.retrieval.min_score }}
+{% for r in d.agent.retrieval.reasons %}
+  - {{ r }}
+{% endfor %}
+{% endif %}
+
+## 5. Eval set
+{{ d.stats.get("accepted", 0) }} validated cases ({{ d.stats.get("by_split", {}) }}), {{ d.stats.get("rejected", 0) }} generated cases rejected (rejection rate {{ d.stats.get("rejection_rate", 0) | pct }}).
+
+| category | cases |
+|---|---|
+{% for k, v in d.stats.get("by_category", {}).items() %}
+| {{ k }} | {{ v }} |
+{% endfor %}
+
+Rejection reasons: {{ d.stats.get("rejection_reasons", {}) or "none" }}
+
+## 6. Results by iteration
+{{ chart }}
+
+{{ categories }}
+
+## 7. Change log
+{{ changes }}
+
+## 8. Judge reliability
+{% set rel = d.best.judge_reliability if d.best else none %}
+{% if rel %}
+- Calibration: {{ rel.calibration_passed }}/{{ rel.calibration_total }} checks passed -> {{ "trusted" if rel.calibration_pass else ("NOT trusted: verdicts used the deterministic checks only" if rel.calibration_pass is sameas false else "not measured") }}
+- Position-swap agreement (same winner both orders): {{ rel.flip_agreement | pct if rel.flip_agreement is not none else "-" }}
+- Judge vs deterministic disagreement: {{ rel.judge_det_disagreement | pct if rel.judge_det_disagreement is not none else "-" }}
+{% for c in rel.calibration_details %}
+  - {{ c.item }} ({{ c.case }}): expected {{ c.expect }}, got {{ c.got }} -> {{ "pass" if c.passed else "FAIL" }}
+{% endfor %}
+{% endif %}
+
+## 9. Known failures
+{% if d.failures %}
+| split | case | category | question | failure class | reason |
+|---|---|---|---|---|---|
+{% for f in d.failures %}
+| {{ f.split }} | {{ f.id }} | {{ f.category }} | {{ f.question | cell }} | {{ f.failure_class }} | {{ f.reason | cell }} |
+{% endfor %}
+{% else %}
+None: every case passed.
+{% endif %}
+
+## 10. Limitations and next steps
+{{ n.limitations }}
+{% for note in d.notes %}
+- {{ note }}
+{% endfor %}
+
+## 11. Cost and runtime
+- LLM calls: {{ d.cost.llm_calls }} ({{ d.cost.cached }} from cache, {{ d.cost.failed }} failed); tokens: {{ d.cost.tokens }}; wall clock: {{ d.cost.elapsed_s }} s
+- Calls by role: {{ d.cost.by_role }}

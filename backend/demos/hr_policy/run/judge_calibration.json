@@ -1,0 +1,60 @@
+{
+  "calibration_pass": true,
+  "calibration_passed": 7,
+  "calibration_total": 7,
+  "calibration_details": [
+    {
+      "case": "answ_01",
+      "item": "perfect",
+      "expect": "faithfulness>=4",
+      "got": 5,
+      "passed": true
+    },
+    {
+      "case": "answ_01",
+      "item": "fluent_hallucination",
+      "expect": "faithfulness<=2",
+      "got": 1,
+      "passed": true
+    },
+    {
+      "case": "answ_01",
+      "item": "verbosity",
+      "expect": "padded answer must not win",
+      "got": "A",
+      "flip_consistent": true,
+      "passed": true
+    },
+    {
+      "case": "answ_01",
+      "item": "wrong_refusal",
+      "expect": "relevance<=2",
+      "got": 1,
+      "passed": true
+    },
+    {
+      "case": "answ_02",
+      "item": "perfect",
+      "expect": "faithfulness>=4",
+      "got": 5,
+      "passed": true
+    },
+    {
+      "case": "answ_02",
+      "item": "verbosity",
+      "expect": "padded answer must not win",
+      "got": "A",
+      "flip_consistent": true,
+      "passed": true
+    },
+    {
+      "case": "answ_02",
+      "item": "wrong_refusal",
+      "expect": "relevance<=2",
+      "got": 1,
+      "passed": true
+    }
+  ],
+  "flip_agreement": 1.0,
+  "judge_det_disagreement": null
+}

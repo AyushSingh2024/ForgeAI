@@ -1,0 +1,8 @@
+{
+  "embedder": "BAAI/bge-small-en-v1.5",
+  "chunk_size": 350,
+  "overlap": 50,
+  "n_chunks": 30,
+  "corpus_sha": "36e7f85f2798d379",
+  "docs_sha": "ea301a32e20ac091"
+}

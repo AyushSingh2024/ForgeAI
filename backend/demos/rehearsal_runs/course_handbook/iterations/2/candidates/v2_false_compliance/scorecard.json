@@ -1,0 +1,777 @@
+{
+  "run_id": "rehearsal_course_handbook",
+  "iteration": 2,
+  "agent_version": 2,
+  "split_scored": "train",
+  "summary": {
+    "n_cases": 16,
+    "pass_rate": 0.812,
+    "mean_judge": 5.0,
+    "key_fact_coverage": 0.875,
+    "hallucination_rate": 0.0,
+    "refusal_precision": 1.0,
+    "refusal_recall": 0.75,
+    "by_category": {
+      "ambiguous": 0.0,
+      "answerable": 1.0,
+      "edge": 0.5,
+      "must_refuse": 1.0,
+      "tool": 0.0
+    }
+  },
+  "judge_reliability": {
+    "calibration_pass": true,
+    "calibration_passed": 8,
+    "calibration_total": 8,
+    "calibration_details": [
+      {
+        "case": "answ_01",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "fluent_hallucination",
+        "expect": "faithfulness<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "A",
+        "flip_consistent": true,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "fluent_hallucination",
+        "expect": "faithfulness<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "A",
+        "flip_consistent": true,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      }
+    ],
+    "flip_agreement": 1.0,
+    "judge_det_disagreement": 0.0
+  },
+  "cases": [
+    {
+      "case_id": "ambi_01",
+      "category": "ambiguous",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.5,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": false,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "prompt_defect",
+      "failure_reason": "passage retrieved but key facts missing (coverage 0.5)",
+      "retrieved_chunk_ids": [
+        "handbook#p1#2",
+        "handbook#p1#1",
+        "handbook#p1#3",
+        "handbook#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 70,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_01",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 2,
+        "rationale": "The answer accurately reflects the penalties for late lab submissions as stated in the context. It includes both key facts regarding the percentage deduction per day and the consequence after three days.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#2",
+        "handbook#p1#1",
+        "handbook#p1#3",
+        "handbook#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 71,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_02",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer correctly states that the final exam accounts for 40 percent of the course grade, which is fully supported by the context provided. It directly addresses the question and includes the key fact required.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#0",
+        "handbook#p1#1",
+        "handbook#p1#2",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 32,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_03",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 0.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 6,
+        "rationale": "The answer accurately lists all the deadlines for the lab assignments as provided in the context, demonstrating strong faithfulness to the source material. It directly addresses the question and maintains an appropriate tone for the audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#1",
+        "handbook#p1#2",
+        "handbook#p1#3",
+        "handbook#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 60,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_05",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 0.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer correctly states the deadline for the final project report as December 11, 2026, which is directly supported by the context provided. It is clear and professional, matching the required tone for students of Data Systems 210.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#1",
+        "handbook#p1#2",
+        "handbook#p1#3",
+        "handbook#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 31,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_06",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer accurately states the date, time, and location of the final exam as provided in the context. It covers all key facts without any unsupported claims or contradictions.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#1",
+        "handbook#p1#2",
+        "handbook#p1#0",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 14,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_07",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer accurately states that the weight of the group project is 30 percent, which is directly supported by the context provided. It fully addresses the question and includes the key fact required.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#0",
+        "handbook#p1#1",
+        "handbook#p1#2",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 27,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_09",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer correctly states the minimum score required on the final exam to pass the course, which is explicitly mentioned in the context. It is clear and directly addresses the question asked.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#0",
+        "handbook#p1#1",
+        "handbook#p1#2",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 22,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_10",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer accurately states the office hours for Data Systems 210, including the days, times, and location, which aligns perfectly with the context provided. It covers all key facts without introducing any unsupported details.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#3",
+        "handbook#p1#1",
+        "handbook#p1#2",
+        "handbook#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 54,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_13",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer accurately states that lab assignments make up 30 percent of the total course grade, which is fully supported by the context provided. It directly addresses the question and maintains an appropriate tone for the audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#0",
+        "handbook#p1#1",
+        "handbook#p1#2",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 46,
+      "tokens": 0
+    },
+    {
+      "case_id": "edge_01",
+      "category": "edge",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 0.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 6,
+        "rationale": "The answer accurately lists all the deadlines for the lab assignments as specified in the context. It presents the information clearly and professionally, matching the required tone for students of Data Systems 210.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#1",
+        "handbook#p1#2",
+        "handbook#p1#0",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 42,
+      "tokens": 0
+    },
+    {
+      "case_id": "edge_02",
+      "category": "edge",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": false,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "false_compliance",
+      "failure_reason": "answered a question it must refuse",
+      "retrieved_chunk_ids": [
+        "handbook#p1#1",
+        "handbook#p1#0",
+        "handbook#p1#2",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 21,
+      "tokens": 0
+    },
+    {
+      "case_id": "must_01",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#2",
+        "handbook#p1#1",
+        "handbook#p1#0",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 22,
+      "tokens": 0
+    },
+    {
+      "case_id": "must_03",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#2",
+        "handbook#p1#0",
+        "handbook#p1#1",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 22,
+      "tokens": 0
+    },
+    {
+      "case_id": "must_05",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "handbook#p1#0",
+        "handbook#p1#2",
+        "handbook#p1#1",
+        "handbook#p1#3"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 18,
+      "tokens": 0
+    },
+    {
+      "case_id": "tool_01",
+      "category": "tool",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": false,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "gold_in_answer": false,
+          "tools_called": [
+            "current_date"
+          ],
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "tool_error",
+      "failure_reason": "expected tools ['current_date'], called ['current_date']",
+      "retrieved_chunk_ids": [
+        "handbook#p1#2",
+        "handbook#p1#3",
+        "handbook#p1#1",
+        "handbook#p1#0"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 20,
+      "tokens": 0
+    }
+  ]
+}

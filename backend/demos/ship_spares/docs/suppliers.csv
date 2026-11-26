@@ -1,0 +1,9 @@
+supplier_id,name,country,main_port,contact_email
+S01,Ostrava Marine Parts,Czechia,Hamburg,sales@ostrava-marine.example.com
+S02,Bluewake Supply,Netherlands,Rotterdam,orders@bluewake.example.com
+S03,Kestrel Engineering,Singapore,Singapore,parts@kestrel-eng.example.com
+S04,Harrowgate Marine,United Kingdom,Southampton,desk@harrowgate.example.com
+S05,Nordkapp Technical,Norway,Bergen,post@nordkapp-tech.example.com
+S06,Mistral Navale,Italy,Genoa,ricambi@mistral-navale.example.com
+S07,Pacific Rim Spares,South Korea,Busan,spares@pacrim.example.com
+S08,Gulf Anchor Trading,United Arab Emirates,Jebel Ali,trade@gulfanchor.example.com

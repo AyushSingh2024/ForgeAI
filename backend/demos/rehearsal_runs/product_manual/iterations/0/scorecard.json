@@ -1,0 +1,849 @@
+{
+  "run_id": "rehearsal_product_manual",
+  "iteration": 0,
+  "agent_version": 1,
+  "split_scored": "train",
+  "summary": {
+    "n_cases": 17,
+    "pass_rate": 0.647,
+    "mean_judge": 5.0,
+    "key_fact_coverage": 0.917,
+    "hallucination_rate": 0.294,
+    "refusal_precision": 1.0,
+    "refusal_recall": 1.0,
+    "by_category": {
+      "ambiguous": 0.0,
+      "answerable": 0.667,
+      "edge": 0.5,
+      "must_refuse": 1.0
+    }
+  },
+  "judge_reliability": {
+    "calibration_pass": true,
+    "calibration_passed": 7,
+    "calibration_total": 7,
+    "calibration_details": [
+      {
+        "case": "answ_01",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "A",
+        "flip_consistent": true,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "fluent_hallucination",
+        "expect": "faithfulness<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "A",
+        "flip_consistent": true,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      }
+    ],
+    "flip_agreement": 1.0,
+    "judge_det_disagreement": 0.0
+  },
+  "cases": [
+    {
+      "case_id": "ambi_01",
+      "category": "ambiguous",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.5,
+        "numbers_grounded": false,
+        "refusal_correct": true,
+        "clarify_correct": false,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "ungrounded_numbers": [
+            200.0
+          ],
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "hallucination",
+      "failure_reason": "numbers not in the context or tools: [200.0]",
+      "retrieved_chunk_ids": [
+        "manual#p1#4",
+        "manual#p1#3",
+        "manual#p1#1",
+        "manual#p1#0",
+        "manual#p1#2"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 5487,
+      "tokens": 1423
+    },
+    {
+      "case_id": "ambi_02",
+      "category": "ambiguous",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.5,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": false,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "prompt_defect",
+      "failure_reason": "passage retrieved but key facts missing (coverage 0.5)",
+      "retrieved_chunk_ids": [
+        "manual#p1#0",
+        "manual#p1#3",
+        "manual#p1#1",
+        "manual#p1#2",
+        "manual#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2419,
+      "tokens": 1226
+    },
+    {
+      "case_id": "answ_01",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer correctly states that the drip tray and grounds container should be emptied every day, which is fully supported by the context. It directly addresses the question and includes the key fact required. The tone is clear and professional, suitable for general users.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#1",
+        "manual#p1#2",
+        "manual#p1#3",
+        "manual#p1#4",
+        "manual#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2003,
+      "tokens": 1201
+    },
+    {
+      "case_id": "answ_02",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": false,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "ungrounded_numbers": [
+            1.0
+          ],
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "hallucination",
+      "failure_reason": "numbers not in the context or tools: [1.0]",
+      "retrieved_chunk_ids": [
+        "manual#p1#0",
+        "manual#p1#1",
+        "manual#p1#2",
+        "manual#p1#3",
+        "manual#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 3530,
+      "tokens": 1314
+    },
+    {
+      "case_id": "answ_03",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": false,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "invalid_citations": [
+            {
+              "ref": {
+                "chunk_id": "C1",
+                "quote": "descale every month with hard water (above 14 °dH)."
+              },
+              "chunk_id": "manual#p1#2",
+              "reason": "quote not in passage"
+            }
+          ],
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "hallucination",
+      "failure_reason": "cited a quote that is not in the passage",
+      "retrieved_chunk_ids": [
+        "manual#p1#2",
+        "manual#p1#3",
+        "manual#p1#1",
+        "manual#p1#0",
+        "manual#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2821,
+      "tokens": 1217
+    },
+    {
+      "case_id": "answ_05",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer accurately reflects the steps to take if the brew unit is blocked, as stated in the context. It includes all the key facts required for a correct response.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#3",
+        "manual#p1#4",
+        "manual#p1#0",
+        "manual#p1#1",
+        "manual#p1#2"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 3288,
+      "tokens": 1229
+    },
+    {
+      "case_id": "answ_07",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer correctly states that the machine should be placed at least 10 cm from the wall, which is directly supported by the context provided. It is clear and concise, directly addressing the question without any unnecessary information.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#0",
+        "manual#p1#1",
+        "manual#p1#4",
+        "manual#p1#2",
+        "manual#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2267,
+      "tokens": 1206
+    },
+    {
+      "case_id": "answ_08",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": false,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "ungrounded_numbers": [
+            200.0
+          ],
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "hallucination",
+      "failure_reason": "numbers not in the context or tools: [200.0]",
+      "retrieved_chunk_ids": [
+        "manual#p1#2",
+        "manual#p1#3",
+        "manual#p1#1",
+        "manual#p1#0",
+        "manual#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2586,
+      "tokens": 1233
+    },
+    {
+      "case_id": "answ_09",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer accurately states that the machine has a 2-year warranty, which is directly supported by the context provided. It fully addresses the question and includes the key fact required. The tone is clear and professional, suitable for general users.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#4",
+        "manual#p1#0",
+        "manual#p1#1",
+        "manual#p1#3",
+        "manual#p1#2"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 1817,
+      "tokens": 1194
+    },
+    {
+      "case_id": "answ_10",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer correctly states that the machine should be switched off and that the user should contact an authorised service centre, which aligns perfectly with the context provided. It directly addresses the question and includes all key facts without any unsupported details or contradictions.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#4",
+        "manual#p1#3",
+        "manual#p1#0",
+        "manual#p1#1",
+        "manual#p1#2"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2339,
+      "tokens": 1214
+    },
+    {
+      "case_id": "answ_12",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer accurately states that the maximum amount of water the tank can hold is 1.8 litres, which is directly supported by the context provided. It fully addresses the question and includes the key fact required.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#0",
+        "manual#p1#3",
+        "manual#p1#1",
+        "manual#p1#2",
+        "manual#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2394,
+      "tokens": 1213
+    },
+    {
+      "case_id": "edge_01",
+      "category": "edge",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": false,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "invalid_citations": [
+            {
+              "ref": {
+                "chunk_id": "C1",
+                "quote": "descale every month with hard water (above 14 °dH)."
+              },
+              "chunk_id": "manual#p1#2",
+              "reason": "quote not in passage"
+            }
+          ],
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "hallucination",
+      "failure_reason": "cited a quote that is not in the passage",
+      "retrieved_chunk_ids": [
+        "manual#p1#2",
+        "manual#p1#3",
+        "manual#p1#1",
+        "manual#p1#0",
+        "manual#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2379,
+      "tokens": 1219
+    },
+    {
+      "case_id": "edge_02",
+      "category": "edge",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#4",
+        "manual#p1#0",
+        "manual#p1#3",
+        "manual#p1#1",
+        "manual#p1#2"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 1713,
+      "tokens": 1187
+    },
+    {
+      "case_id": "must_01",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#3",
+        "manual#p1#1",
+        "manual#p1#0",
+        "manual#p1#2",
+        "manual#p1#4"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 1827,
+      "tokens": 1188
+    },
+    {
+      "case_id": "must_03",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#0",
+        "manual#p1#4",
+        "manual#p1#2",
+        "manual#p1#3",
+        "manual#p1#1"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 2047,
+      "tokens": 1198
+    },
+    {
+      "case_id": "must_04",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#3",
+        "manual#p1#4",
+        "manual#p1#0",
+        "manual#p1#1",
+        "manual#p1#2"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 1717,
+      "tokens": 1185
+    },
+    {
+      "case_id": "must_05",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "manual#p1#3",
+        "manual#p1#4",
+        "manual#p1#0",
+        "manual#p1#2",
+        "manual#p1#1"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 1784,
+      "tokens": 1184
+    }
+  ]
+}

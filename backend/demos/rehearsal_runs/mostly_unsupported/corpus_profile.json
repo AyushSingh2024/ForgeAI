@@ -1,0 +1,30 @@
+{
+  "documents": [
+    {
+      "doc_id": "visitor_info",
+      "title": "visitor_info",
+      "pages": 1,
+      "summary": "The document provides visitor information for a fictional city museum, including opening hours, bag policies, photography rules, and guided tour schedules.",
+      "top_keywords": [
+        "museum",
+        "open",
+        "tuesday",
+        "sunday",
+        "closed",
+        "mondays",
+        "large",
+        "bags"
+      ],
+      "headings": [
+        "Visitor information (fictional city museum)"
+      ]
+    }
+  ],
+  "tables": [],
+  "language": "en",
+  "total_tokens": 66,
+  "n_chunks": 1,
+  "numeric_density": 0.1739,
+  "median_section_tokens": 66,
+  "warnings": []
+}

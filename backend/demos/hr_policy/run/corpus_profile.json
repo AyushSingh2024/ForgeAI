@@ -1,0 +1,161 @@
+{
+  "documents": [
+    {
+      "doc_id": "benefits_overview",
+      "title": "benefits_overview",
+      "pages": 1,
+      "summary": "The document titled 'Benefits Overview 2026' outlines the employee benefits provided by Brightfield Labs, covering topics such as health insurance contributions, learning budgets, wellness allowances, pension contributions, and commuting reimbursements.",
+      "top_keywords": [
+        "year",
+        "learning",
+        "percent",
+        "employee",
+        "health",
+        "budget",
+        "over",
+        "employees"
+      ],
+      "headings": [
+        "1. Health",
+        "2. Learning",
+        "2.1 Each employee has a learning budget of 1,200 EUR per calendar year.",
+        "2.2 Unused learning budget does not carry over to the next year.",
+        "2.3 Courses over 600 EUR need manager approval.",
+        "3. Wellbeing",
+        "4. Pension",
+        "5. Commuting",
+        "5.1 Public transport passes are reimbursed up to 100 EUR per month.",
+        "5.2 Employees who cycle to work can lease a bike through the bike scheme."
+      ]
+    },
+    {
+      "doc_id": "code_of_conduct",
+      "title": "code_of_conduct",
+      "pages": 1,
+      "summary": "The document is the Code of Conduct for Brightfield Labs (version 5.0), outlining policies on respect at work, gifts and hospitality, conflicts of interest, confidentiality, and consequences for breaches of the code.",
+      "top_keywords": [
+        "gifts",
+        "interest",
+        "any",
+        "code",
+        "confidentiality",
+        "within",
+        "working",
+        "conduct"
+      ],
+      "headings": [
+        "1. Respect at work",
+        "1.1 Harassment, discrimination and bullying are not tolerated in any form.",
+        "2. Gifts and hospitality",
+        "2.1 Employees may accept gifts with a value of up to 50 EUR from business partners.",
+        "2.3 Cash gifts are never allowed.",
+        "3. Conflicts of interest",
+        "4. Confidentiality",
+        "4.2 The duty of confidentiality continues for 2 years after employment ends.",
+        "5. Breaches"
+      ]
+    },
+    {
+      "doc_id": "leave_policy",
+      "title": "leave_policy",
+      "pages": 1,
+      "summary": "This document is the Leave Policy for Brightfield Labs (version 3.1), outlining the entitlements and procedures for annual leave, sick leave, parental leave, and other types of leave such as bereavement and volunteering. It specifies details such as leave accrual, notification requirements, and conditions for taking leave.",
+      "top_keywords": [
+        "leave",
+        "days",
+        "parental",
+        "annual",
+        "weeks",
+        "full",
+        "receive",
+        "pay"
+      ],
+      "headings": [
+        "1. Annual leave",
+        "1.2 Part-time employees receive annual leave pro rata to their contracted hours.",
+        "1.3 Annual leave accrues monthly at 2.08 days per month of service.",
+        "2. Sick leave",
+        "2.1 Employees must notify their manager before 10:00 on the first day of absence.",
+        "2.2 Absences of up to 3 consecutive days can be self-certified.",
+        "2.3 From the 4th consecutive day, a medical certificate is required.",
+        "3. Parental leave",
+        "3.1 Birthing parents receive 20 weeks of parental leave at full pay.",
+        "3.2 Non-birthing and adoptive parents receive 12 weeks of parental leave at full pay.",
+        "3.4 Employees must give at least 8 weeks notice of the planned start date.",
+        "4. Other leave",
+        "4.2 Moving house: 1 day of paid leave once per calendar year.",
+        "4.4 Unpaid leave of up to 3 months may be requested after 2 years of service.",
+        "5. Travel during leave"
+      ]
+    },
+    {
+      "doc_id": "remote_work",
+      "title": "remote_work",
+      "pages": 1,
+      "summary": "The document is a Remote Work Policy outlining eligibility criteria, working hours, equipment provisions, and security measures for employees working remotely at Brightfield Labs. It specifies conditions for remote work, including core hours, equipment allowances, and data security protocols.",
+      "top_keywords": [
+        "remote",
+        "work",
+        "hours",
+        "week",
+        "core",
+        "working",
+        "employees",
+        "fully"
+      ],
+      "headings": [
+        "1. Eligibility",
+        "1.1 Employees who have completed probation may work remotely up to 3 days per week.",
+        "2. Working hours",
+        "2.2 Employees must record remote days in the HR portal by Friday of each week.",
+        "3. Equipment",
+        "3.1 The company provides a laptop, a monitor and a headset.",
+        "4. Security",
+        "4.1 Company data may only be accessed over the company VPN.",
+        "4.3 Lost or stolen equipment must be reported to IT within 24 hours."
+      ]
+    },
+    {
+      "doc_id": "travel_expenses",
+      "title": "travel_expenses",
+      "pages": 1,
+      "summary": "The document is a Travel and Expenses Policy outlining the approval process for business travel, transportation guidelines, accommodation limits, per diem allowances, expense claim procedures, and provisions for home office equipment for remote workers.",
+      "top_keywords": [
+        "eur",
+        "tier",
+        "cities",
+        "reimbursed",
+        "claims",
+        "per",
+        "diem",
+        "travel"
+      ],
+      "headings": [
+        "1. Approval",
+        "1.1 All business travel must be approved in advance by the employee's manager.",
+        "1.2 Trips outside Europe also need approval from the department director.",
+        "1.3 Expenses above 500 EUR per item require a second approver.",
+        "2. Transport",
+        "2.1 Train is the default for journeys under 5 hours.",
+        "2.3 Private car use is reimbursed at 0.30 EUR per kilometre.",
+        "2.4 Taxis are reimbursed when public transport is unavailable or after 22:00.",
+        "3. Accommodation",
+        "3.2 Bookings must be made through the company travel portal.",
+        "4. Per diem",
+        "4.3 Alcohol is not reimbursed.",
+        "5. Claims",
+        "5.1 Expense claims must be submitted within 30 days of the end of the trip.",
+        "5.2 Original receipts or clear photos are required for every item above 10 EUR.",
+        "5.3 Claims submitted after 90 days are not reimbursed.",
+        "6. Home office equipment"
+      ]
+    }
+  ],
+  "tables": [],
+  "language": "en",
+  "total_tokens": 3399,
+  "n_chunks": 30,
+  "numeric_density": 0.1507,
+  "median_section_tokens": 141,
+  "warnings": []
+}

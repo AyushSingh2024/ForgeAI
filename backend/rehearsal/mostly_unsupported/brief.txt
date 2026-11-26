@@ -1,0 +1,1 @@
+Build an assistant for visitors of a fictional city museum that tells them today's ticket prices, live crowd levels, parking availability, the restaurant menu, and the history of the paintings in the east wing.

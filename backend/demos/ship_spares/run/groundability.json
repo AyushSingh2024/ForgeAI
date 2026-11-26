@@ -1,0 +1,839 @@
+{
+  "verdicts": [
+    {
+      "ask_id": "a1",
+      "ask_text": "Finding spare parts: What is the part number for the fuel pump?",
+      "source": "must_answer",
+      "verdict": "unsupported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the part number for the fuel pump listed in the service manual?",
+          "retrieved": [
+            {
+              "chunk_id": "maintenance_notes#p1#0",
+              "score": 0.01609
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01598
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01574
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01511
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01509
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any specific conditions or models associated with the fuel pump part number?",
+          "retrieved": [
+            {
+              "chunk_id": "maintenance_notes#p1#0",
+              "score": 0.01609
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01608
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01574
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#2",
+              "score": 0.01506
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a2",
+      "ask_text": "Equipment association: Which equipment does part number 12345 belong to?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "csv_lookup",
+      "probes": [
+        {
+          "question": "What is the description of the equipment associated with part number 12345?",
+          "retrieved": [
+            {
+              "chunk_id": "maintenance_notes#p1#0",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "table:spares_inventory",
+              "score": 0.01565
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01549
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01528
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01521
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any specific compatibility requirements for equipment linked to part number 12345?",
+          "retrieved": [
+            {
+              "chunk_id": "maintenance_notes#p1#0",
+              "score": 0.0159
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01556
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01541
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01517
+            },
+            {
+              "chunk_id": "table:spares_inventory",
+              "score": 0.01513
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a3",
+      "ask_text": "Inventory quantities: How many spare parts are on board for the ballast pump?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "csv_lookup",
+      "probes": [
+        {
+          "question": "What is the total number of spare parts available for the ballast pump?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01619
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#0",
+              "score": 0.01553
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01541
+            },
+            {
+              "chunk_id": "table:spares_inventory",
+              "score": 0.01539
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01529
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any minimum stock levels specified for the spare parts of the ballast pump?",
+          "retrieved": [
+            {
+              "chunk_id": "maintenance_notes#p1#0",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01587
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#2",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#3",
+              "score": 0.01503
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a4",
+      "ask_text": "Supplier lead times: What is the lead time for parts from Bluewake Supply?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the standard lead time for parts ordered from Bluewake Supply?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_a#p1#2",
+              "score": 0.01629
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01579
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#1",
+              "score": 0.01572
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01549
+            }
+          ],
+          "supporting_quote": "| fuel injection parts   | 10 days       | 7 days        |\n| valves and spindles    | 21 days       | 14 days       |\n| seals and gaskets      | 5 days        | 4 days        |\n| bearings               | 15 days       | 12 days       |",
+          "supporting_chunk_id": "supplier_terms_a#p1#2",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Are there any conditions that could affect the lead time for parts from Bluewake Supply?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_a#p1#2",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#1",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01558
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01544
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a5",
+      "ask_text": "Order cost estimation: Can you estimate the total cost for ordering 5 units of part number 67890?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "calculator",
+      "probes": [
+        {
+          "question": "What is the unit price for part number 67890?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "table:spares_inventory",
+              "score": 0.01608
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#5",
+              "score": 0.01548
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01544
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#2",
+              "score": 0.01526
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any additional fees or discounts applicable for ordering multiple units of part number 67890?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01623
+            },
+            {
+              "chunk_id": "table:spares_inventory",
+              "score": 0.01541
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#2",
+              "score": 0.01532
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#0",
+              "score": 0.01529
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01526
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a6",
+      "ask_text": "Delivery times: How many days will it take for the delivery to arrive at the main port?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "calculator",
+      "probes": [
+        {
+          "question": "What is the standard delivery time for shipments to the main port?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01603
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01579
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#5",
+              "score": 0.01563
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#2",
+              "score": 0.01534
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any conditions that could affect the delivery time to the main port?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01623
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01598
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#5",
+              "score": 0.01555
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01548
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#2",
+              "score": 0.01524
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a7",
+      "ask_text": "Weather forecast: What is the weather forecast for the delivery port next week?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "http_weather",
+      "probes": [
+        {
+          "question": "What are the expected temperature ranges for the delivery port next week?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_a#p1#5",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01572
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01568
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01548
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any weather warnings or alerts issued for the delivery port during the upcoming week?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#5",
+              "score": 0.01593
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01558
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01553
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#2",
+              "score": 0.01511
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "b1",
+      "ask_text": "Flag parts below minimum stock",
+      "source": "brief",
+      "verdict": "needs_tool",
+      "needed_tool": "csv_lookup",
+      "probes": [
+        {
+          "question": "What is the minimum stock level required for flag parts?",
+          "retrieved": [
+            {
+              "chunk_id": "maintenance_notes#p1#2",
+              "score": 0.01619
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#0",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01579
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#3",
+              "score": 0.01568
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01544
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there specific procedures to follow when flag parts fall below the minimum stock threshold?",
+          "retrieved": [
+            {
+              "chunk_id": "maintenance_notes#p1#0",
+              "score": 0.01629
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#2",
+              "score": 0.01603
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01593
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#3",
+              "score": 0.01577
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.0152
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "b2",
+      "ask_text": "Compare supplier lead times",
+      "source": "brief",
+      "verdict": "needs_tool",
+      "needed_tool": "calculator",
+      "probes": [
+        {
+          "question": "What are the standard lead times for different suppliers listed in the policy documents?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_a#p1#2",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01603
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01558
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01553
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01548
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any conditions that affect the lead times for suppliers as outlined in the manuals?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_a#p1#2",
+              "score": 0.01629
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01577
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01572
+            },
+            {
+              "chunk_id": "table:suppliers",
+              "score": 0.01538
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "b3",
+      "ask_text": "Compare minimum orders",
+      "source": "brief",
+      "verdict": "unsupported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the minimum order quantity required for bulk purchases?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#3",
+              "score": 0.01587
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#2",
+              "score": 0.01568
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#5",
+              "score": 0.01553
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01507
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any conditions that affect the minimum order limits for different products?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_a#p1#3",
+              "score": 0.01572
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#2",
+              "score": 0.01556
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#3",
+              "score": 0.01555
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01554
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#1",
+              "score": 0.01549
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "b4",
+      "ask_text": "Compare warranty terms",
+      "source": "brief",
+      "verdict": "unsupported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What are the key differences in warranty coverage between the two products?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01603
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#5",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01548
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#1",
+              "score": 0.00952
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Is there a limit on the duration of the warranty for each item listed?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01603
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01577
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#5",
+              "score": 0.01568
+            },
+            {
+              "chunk_id": "table:spares_inventory",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "b5",
+      "ask_text": "Check if an offer is still valid",
+      "source": "brief",
+      "verdict": "needs_tool",
+      "needed_tool": "current_date",
+      "probes": [
+        {
+          "question": "What is the duration for which an offer remains valid?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01623
+            },
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#4",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#3",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "supplier_terms_a#p1#5",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any specific conditions that could invalidate an offer before its expiration date?",
+          "retrieved": [
+            {
+              "chunk_id": "supplier_terms_b#p1#0",
+              "score": 0.01598
+            },
+            {
+              "chunk_id": "supplier_terms_c#p1#0",
+              "score": 0.01593
+            },
+            {
+              "chunk_id": "table:suppliers",
+              "score": 0.0148
+            },
+            {
+              "chunk_id": "table:spares_inventory",
+              "score": 0.01436
+            },
+            {
+              "chunk_id": "maintenance_notes#p1#3",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    }
+  ],
+  "moved_to_refuse": [
+    "a1",
+    "b3",
+    "b4"
+  ],
+  "warnings": [
+    "Not supported by the documents: 'Finding spare parts: What is the part number for the fuel pump?'. The agent will refuse it.",
+    "'Equipment association: Which equipment does part number 12345 belong to?' needs the csv_lookup tool rather than the documents.",
+    "'Inventory quantities: How many spare parts are on board for the ballast pump?' needs the csv_lookup tool rather than the documents.",
+    "'Order cost estimation: Can you estimate the total cost for ordering 5 units of part number 67890?' needs the calculator tool rather than the documents.",
+    "'Delivery times: How many days will it take for the delivery to arrive at the main port?' needs the calculator tool rather than the documents.",
+    "'Weather forecast: What is the weather forecast for the delivery port next week?' needs the http_weather tool rather than the documents.",
+    "'Flag parts below minimum stock' needs the csv_lookup tool rather than the documents.",
+    "'Compare supplier lead times' needs the calculator tool rather than the documents.",
+    "Not supported by the documents: 'Compare minimum orders'. The agent will refuse it.",
+    "Not supported by the documents: 'Compare warranty terms'. The agent will refuse it.",
+    "'Check if an offer is still valid' needs the current_date tool rather than the documents."
+  ],
+  "coverage": 0.75
+}

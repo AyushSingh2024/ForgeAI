@@ -1,0 +1,30 @@
+# A hand-written agent definition for the tiny corpus. It proves the runtime is generic (Req 8):
+# nothing here was produced by the factory. Tests copy it next to a copy of tiny_corpus as docs/.
+schema_version: 1
+name: Gym Helper
+version: 1
+description: Answers member questions about the fictional Harbour Point Gym.
+model: {provider: ollama, name: qwen2.5:7b-instruct, temperature: 0.0, seed: 7, max_tokens: 600}
+system_prompt:
+  slots:
+    role: You are the member help desk assistant of Harbour Point Gym.
+    audience: Gym members and people thinking of joining.
+    tone: Friendly and short.
+    scope: Memberships, prices, guests, freezing, cancellation, refunds, opening hours and the class timetable.
+    refusal_policy: Do not give medical or training advice.
+    grounding: Only use the passages and tool results.
+    citation_rule: Quote the exact sentence you used.
+    tool_rules: Use csv_lookup for the class timetable and calculator for any price maths.
+    format: Plain sentences.
+  few_shots: []
+corpus:
+  docs_dir: docs
+  index_dir: index
+  tables: [{name: classes, path: docs/classes.csv}]
+retrieval: {chunk_size: 300, chunk_overlap: 40, embedder: hash, mode: hybrid, bm25_weight: 0.4, top_k: 4,
+            rerank: false, min_score: 0.05, query_rewrite: false}
+tools:
+  - {name: csv_lookup, reason: the timetable is a table, config: {tables: [{name: classes, path: docs/classes.csv}]}}
+  - {name: calculator, reason: price maths}
+output_contract: {json_schema_ref: answer_v1, require_citations: true, max_words: 120}
+refusal_message: Sorry, I can only help with questions about Harbour Point Gym memberships and services.

@@ -1,0 +1,1 @@
+Build an assistant for students of the fictional course "Data Systems 210" that answers questions about deadlines, grading, late submissions and office hours, and can say how many days are left until a deadline. It must not reveal exam answers or discuss other students' grades.

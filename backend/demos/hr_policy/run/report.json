@@ -1,0 +1,181 @@
+{
+  "run_id": "interview_hr_policy",
+  "agent_name": "Brightfield Assistant",
+  "narrative": {
+    "summary": "An automatically built and tested assistant was developed, achieving a baseline training pass rate of 88% and maintaining the same score after optimization. The assistant performed on a holdout set, achieving a pass rate of 75% across 4 cases. Overall, the assistant demonstrated consistent performance in training but showed some limitations in real-world scenarios.",
+    "limitations": "The assistant has 3 known failures and faced challenges with unsupported asks, indicating areas for improvement. Additionally, the evaluation set was small, consisting of only 4 holdout cases, which may limit the generalizability of the results."
+  },
+  "points": [
+    {
+      "label": "baseline",
+      "pass_rate": 0.875
+    },
+    {
+      "label": "holdout",
+      "pass_rate": 0.75
+    }
+  ],
+  "baseline": {
+    "n_cases": 16,
+    "pass_rate": 0.875,
+    "mean_judge": 4.8,
+    "key_fact_coverage": 0.924,
+    "hallucination_rate": 0.0,
+    "refusal_precision": 1.0,
+    "refusal_recall": 1.0,
+    "by_category": {
+      "ambiguous": 0.5,
+      "answerable": 0.833,
+      "edge": 1.0,
+      "multi_doc": 1.0,
+      "must_refuse": 1.0
+    }
+  },
+  "best": {
+    "n_cases": 16,
+    "pass_rate": 0.875,
+    "mean_judge": 4.8,
+    "key_fact_coverage": 0.924,
+    "hallucination_rate": 0.0,
+    "refusal_precision": 1.0,
+    "refusal_recall": 1.0,
+    "by_category": {
+      "ambiguous": 0.5,
+      "answerable": 0.833,
+      "edge": 1.0,
+      "multi_doc": 1.0,
+      "must_refuse": 1.0
+    }
+  },
+  "holdout": {
+    "n_cases": 4,
+    "pass_rate": 0.75,
+    "mean_judge": 5.0,
+    "key_fact_coverage": 1.0,
+    "hallucination_rate": 0.0,
+    "refusal_precision": null,
+    "refusal_recall": 0.0,
+    "by_category": {
+      "answerable": 1.0,
+      "multi_doc": 1.0,
+      "must_refuse": 0.0
+    }
+  },
+  "judge_reliability": {
+    "calibration_pass": true,
+    "calibration_passed": 7,
+    "calibration_total": 7,
+    "calibration_details": [
+      {
+        "case": "answ_01",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "fluent_hallucination",
+        "expect": "faithfulness<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "A",
+        "flip_consistent": true,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "A",
+        "flip_consistent": true,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      }
+    ],
+    "flip_agreement": 1.0,
+    "judge_det_disagreement": 0.1
+  },
+  "known_failures": [
+    {
+      "split": "holdout",
+      "id": "must_04",
+      "category": "must_refuse",
+      "question": "Can you provide me with the per-diem totals for my upcoming trip?",
+      "expected": "refuse",
+      "failure_class": "false_compliance",
+      "reason": "answered a question it must refuse",
+      "facts": ""
+    },
+    {
+      "split": "train",
+      "id": "ambi_02",
+      "category": "ambiguous",
+      "question": "What are the rules regarding leave and absence notifications?",
+      "expected": "clarify",
+      "failure_class": "prompt_defect",
+      "reason": "passage retrieved but key facts missing (coverage 0.5)",
+      "facts": "Employees must notify their manager before 10:00 on the first day of absence.; Birthing parents receive 20 weeks of parental leave at full pay."
+    },
+    {
+      "split": "train",
+      "id": "answ_04",
+      "category": "answerable",
+      "question": "What benefits do employees receive for their health insurance and wellness programs?",
+      "expected": "answer",
+      "failure_class": "prompt_defect",
+      "reason": "passage retrieved but key facts missing (coverage 0.667)",
+      "facts": "Employees pay 20 percent for group health insurance.; Each employee has a learning budget of 1,200 EUR per calendar year.; A wellness allowance of 300 EUR per year can be used for gym memberships or sports clubs."
+    }
+  ],
+  "cost": {
+    "llm_calls": 100,
+    "cached": 59,
+    "failed": 0,
+    "tokens": 49615,
+    "by_role": {
+      "builder": 58,
+      "agent": 20,
+      "judge": 22
+    },
+    "elapsed_s": 114.3
+  },
+  "notes": [],
+  "optimize": {
+    "stop_reason": "target pass rate 85% reached",
+    "history": [
+      {
+        "iteration": 0,
+        "pass_rate": 0.875,
+        "agent_version": 1
+      }
+    ],
+    "best_version": 1,
+    "best_train_pass_rate": 0.875
+  }
+}

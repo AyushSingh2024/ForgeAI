@@ -1,0 +1,54 @@
+{
+  "intake": {
+    "max_questions": 5
+  },
+  "retrieval": {
+    "default_chunk_size": 600,
+    "default_overlap": 90,
+    "default_top_k": 6,
+    "bm25_weight": 0.4,
+    "min_score": 0.25
+  },
+  "evals": {
+    "target_cases": 20,
+    "min_cases": 20,
+    "holdout_fraction": 0.25,
+    "dedupe_similarity": 0.9,
+    "max_rounds": 2
+  },
+  "judge": {
+    "pass_key_fact_coverage": 0.8,
+    "pass_judge_mean": 3.5,
+    "temperature": 0.0,
+    "seed": 7
+  },
+  "optimizer": {
+    "max_iterations": 2,
+    "target_pass_rate": 0.85,
+    "revert_on_regress": true
+  },
+  "budget": {
+    "max_llm_calls": 220,
+    "max_seconds": 1800,
+    "max_tokens": 300000
+  },
+  "runtime": {
+    "max_tool_hops": 3,
+    "max_answer_words": 250
+  },
+  "llm": {
+    "agent_provider": "openai",
+    "agent_model": "gpt-4o-mini",
+    "judge_provider": "openai",
+    "judge_model": "gpt-4o-mini",
+    "ollama_base_url": "http://localhost:11434",
+    "groq_api_key": "",
+    "hf_api_token": "",
+    "openai_api_key": "***",
+    "embedder": "BAAI/bge-small-en-v1.5",
+    "cache_path": "C:\\Users\\ayush\\OneDrive\\Desktop\\OceanAI\\backend\\.cache\\llm.sqlite",
+    "use_cache": true,
+    "requests_per_minute": 0,
+    "timeout_s": 180.0
+  }
+}

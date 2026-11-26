@@ -1,0 +1,35 @@
+{
+  "documents": [
+    {
+      "doc_id": "manual",
+      "title": "manual",
+      "pages": 1,
+      "summary": "The document is the owner's manual for the fictional Aurelia AX-200 machine, covering topics such as setup, daily cleaning, descaling procedures, error codes, and warranty information.",
+      "top_keywords": [
+        "water",
+        "use",
+        "not",
+        "every",
+        "after",
+        "empty",
+        "seconds",
+        "descaling"
+      ],
+      "headings": [
+        "Aurelia AX-200 Owner's Manual (fictional product)",
+        "1. Setup",
+        "2. Daily cleaning",
+        "3. Descaling",
+        "4. Error codes",
+        "5. Warranty"
+      ]
+    }
+  ],
+  "tables": [],
+  "language": "en",
+  "total_tokens": 661,
+  "n_chunks": 5,
+  "numeric_density": 0.0629,
+  "median_section_tokens": 138,
+  "warnings": []
+}

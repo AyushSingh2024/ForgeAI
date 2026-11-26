@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "C:\Users\ayush\OneDrive\Desktop\OceanAI\backend\forge\pipeline.py", line 116, in run
+    fns[stage](ctx)
+  File "C:\Users\ayush\OneDrive\Desktop\OceanAI\backend\forge\report\builder.py", line 134, in build_report
+    env.filters["cell"] = lambda s: str(s or "").replace("|", "/").replace("\n", " ")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ayush\OneDrive\Desktop\OceanAI\backend\.venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "C:\Users\ayush\OneDrive\Desktop\OceanAI\backend\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\ayush\OneDrive\Desktop\OceanAI\backend\forge\report\templates\report.md.j2", line 3, in top-level template code
+    Run `{{ run_id }}` · status **{{ d.status.get("status", "unknown") }}** · agent model actually used `{{ d.actual_models.agent | join(", ") or "-" }}` · judge actually used `{{ d.actual_models.judge | join(", ") or "-" }}` (configured judge: `{{ d.llm.get("judge_provider") }}:{{ d.llm.get("judge_model") }}`{% if d.actual_models.judge and not (d.actual_models.judge[0].startswith("ollama")) %}; **not a local model in this run**{% endif %})
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ayush\OneDrive\Desktop\OceanAI\backend\.venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'actual_models'

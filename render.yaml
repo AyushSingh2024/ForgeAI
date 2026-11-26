@@ -1,0 +1,35 @@
+# Render Blueprint for the ForgeAI backend (Render reads this file from the repo root).
+# Render free has no GPU and ~512 MB RAM, so the backend uses a hosted open-weight model (Groq) instead of Ollama.
+# The service sleeps after ~15 min idle and its disk is ephemeral: demo runs are re-copied from the repo at startup.
+services:
+  - type: web
+    name: forgeai-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: LLM_PROVIDER
+        value: groq
+      - key: JUDGE_PROVIDER
+        value: groq
+      - key: AGENT_MODEL
+        value: llama-3.1-8b-instant        # check Groq's current model list when deploying
+      - key: JUDGE_MODEL
+        value: gemma2-9b-it                # must be a different family from AGENT_MODEL
+      - key: GROQ_API_KEY
+        sync: false                        # paste it in the Render dashboard; never commit it
+      - key: LLM_RPM
+        value: "25"                        # stay under the free-tier requests-per-minute limit
+      - key: RUNS_DIR
+        value: /tmp/runs
+      - key: CORS_ORIGINS
+        value: https://your-app.vercel.app,http://localhost:3000
+      - key: BUDGET_MAX_LLM_CALLS
+        value: "300"
+      - key: API_KEY
+        sync: false                        # optional shared secret; set the same value as NEXT_PUBLIC_API_KEY on Vercel

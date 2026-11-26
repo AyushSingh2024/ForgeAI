@@ -1,0 +1,13 @@
+# Scripted interview answers for the ship-spares demo (keyed by field_path).
+- field_path: audience.expertise
+  answer: expert
+- field_path: tone.style
+  answer: clear and professional
+- field_path: output_preferences.format
+  answer: table
+- field_path: must_refuse
+  answer: approving purchases, safety-critical repair steps, prices or terms not in the documents
+- field_path: scope.in_scope
+  answer: keep the current plan
+- field_path: must_answer
+  answer: also which supplier delivers to a given port

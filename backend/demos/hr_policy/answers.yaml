@@ -1,0 +1,14 @@
+# Scripted interview answers for the HR demo (keyed by field_path, so they match whatever wording the
+# interviewer uses). Fields the interviewer does not ask about are ignored.
+- field_path: audience.expertise
+  answer: novice
+- field_path: tone.style
+  answer: friendly and casual
+- field_path: output_preferences.format
+  answer: prose
+- field_path: must_refuse
+  answer: salary of specific colleagues, legal disputes with the company, immigration or visa advice
+- field_path: scope.in_scope
+  answer: keep the current plan
+- field_path: must_answer
+  answer: also carry-over of unused leave and the learning budget

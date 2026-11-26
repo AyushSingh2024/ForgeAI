@@ -1,0 +1,34 @@
+{
+  "documents": [
+    {
+      "doc_id": "handbook",
+      "title": "handbook",
+      "pages": 1,
+      "summary": "This document is the course handbook for Data Systems 210, detailing assessment methods, deadlines for assignments and exams, policies on late submissions, and office hours for student support.",
+      "top_keywords": [
+        "lab",
+        "percent",
+        "final",
+        "project",
+        "exam",
+        "course",
+        "late",
+        "days"
+      ],
+      "headings": [
+        "Data Systems 210: Course Handbook (fictional course, autumn term)",
+        "Assessment",
+        "Deadlines",
+        "Late submissions",
+        "Office hours"
+      ]
+    }
+  ],
+  "tables": [],
+  "language": "en",
+  "total_tokens": 433,
+  "n_chunks": 4,
+  "numeric_density": 0.3893,
+  "median_section_tokens": 121,
+  "warnings": []
+}

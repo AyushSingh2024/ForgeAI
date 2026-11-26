@@ -1,0 +1,12 @@
+{
+  "stop_reason": "target pass rate 85% reached",
+  "history": [
+    {
+      "iteration": 0,
+      "pass_rate": 0.875,
+      "agent_version": 1
+    }
+  ],
+  "best_version": 1,
+  "best_train_pass_rate": 0.875
+}

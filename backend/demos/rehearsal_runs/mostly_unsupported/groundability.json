@@ -1,0 +1,196 @@
+{
+  "verdicts": [
+    {
+      "ask_id": "a1",
+      "ask_text": "ticket prices: What are today's ticket prices?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "current_date",
+      "probes": [
+        {
+          "question": "What is the current price range for tickets today?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any discounts or special conditions affecting today's ticket prices?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a2",
+      "ask_text": "live crowd levels: How crowded is the museum today?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "current_date",
+      "probes": [
+        {
+          "question": "What is the maximum capacity of the museum at any given time?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there specific times during the day when the museum tends to be less crowded?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a3",
+      "ask_text": "parking availability: Is there parking available at the museum?",
+      "source": "must_answer",
+      "verdict": "unsupported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the total number of parking spaces available at the museum?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any restrictions on parking duration at the museum?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a4",
+      "ask_text": "restaurant menu: What is on the restaurant menu today?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "current_date",
+      "probes": [
+        {
+          "question": "What types of dishes are included on the restaurant menu today?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any special items or limited-time offers on the menu for today?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a5",
+      "ask_text": "history of paintings in the east wing: Can you tell me about the history of the paintings in the east wing?",
+      "source": "must_answer",
+      "verdict": "unsupported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What are the key periods represented in the paintings of the east wing?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "How many paintings are currently displayed in the east wing?",
+          "retrieved": [
+            {
+              "chunk_id": "visitor_info#p1#0",
+              "score": 0.00984
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    }
+  ],
+  "moved_to_refuse": [
+    "a3",
+    "a5"
+  ],
+  "warnings": [
+    "'ticket prices: What are today's ticket prices?' needs the current_date tool rather than the documents.",
+    "'live crowd levels: How crowded is the museum today?' needs the current_date tool rather than the documents.",
+    "Not supported by the documents: 'parking availability: Is there parking available at the museum?'. The agent will refuse it.",
+    "'restaurant menu: What is on the restaurant menu today?' needs the current_date tool rather than the documents.",
+    "Not supported by the documents: 'history of paintings in the east wing: Can you tell me about the history of the paintings in the east wing?'. The agent will refuse it."
+  ],
+  "coverage": 0.6
+}

@@ -1,0 +1,29 @@
+{
+  "accepted": 20,
+  "rejected": 8,
+  "rejection_rate": 0.286,
+  "by_category": {
+    "ambiguous": 1,
+    "answerable": 12,
+    "edge": 2,
+    "must_refuse": 4,
+    "tool": 1
+  },
+  "by_split": {
+    "train": 16,
+    "holdout": 4
+  },
+  "rejection_reasons": {
+    "refuse_case_is_answerable": 4,
+    "duplicate": 4
+  },
+  "planned": {
+    "answerable": 4,
+    "multi_doc": 0,
+    "tool": 1,
+    "must_refuse": 5,
+    "ambiguous": 2,
+    "edge": 2
+  },
+  "min_cases_met": true
+}

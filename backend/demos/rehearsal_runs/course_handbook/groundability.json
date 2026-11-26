@@ -1,0 +1,313 @@
+{
+  "verdicts": [
+    {
+      "ask_id": "a1",
+      "ask_text": "deadlines: What is the deadline for the first assignment?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "current_date",
+      "probes": [
+        {
+          "question": "What is the submission date for the initial assignment?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any specific conditions or limits regarding the deadline for the first assignment?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a2",
+      "ask_text": "grading policies: How are grades calculated in this course?",
+      "source": "must_answer",
+      "verdict": "unsupported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What percentage of the final grade is determined by exams versus assignments in this course?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any specific grading criteria or rubrics provided for projects in this course?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a3",
+      "ask_text": "late submission policies: What happens if I submit my assignment late?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What penalties are applied for submitting an assignment after the deadline?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": "Late labs lose 10 percent of the mark per day, up to 3 days; after 3 days they receive zero.",
+          "supporting_chunk_id": "handbook#p1#2",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Is there a grace period for late submissions, and if so, how long is it?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a4",
+      "ask_text": "office hours: When are the office hours for this course?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What are the scheduled office hours for this course?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": "Office hours are Tuesdays 14:00-16:00 and Thursdays 10:00-11:00 in room 3.14, or online by appointment.",
+          "supporting_chunk_id": "handbook#p1#3",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Are there specific days of the week when office hours are held for this course?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": "Office hours are Tuesdays 14:00-16:00 and Thursdays 10:00-11:00 in room 3.14, or online by appointment.",
+          "supporting_chunk_id": "handbook#p1#3",
+          "quote_verified": true,
+          "llm_said_supported": true
+        }
+      ],
+      "explanation": "2/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a5",
+      "ask_text": "countdown to deadlines: How many days are left until the next deadline?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "current_date",
+      "probes": [
+        {
+          "question": "What is the total number of days remaining until the upcoming deadline?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any specific conditions or limits regarding the countdown to the next deadline?",
+          "retrieved": [
+            {
+              "chunk_id": "handbook#p1#1",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "handbook#p1#2",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "handbook#p1#3",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "handbook#p1#0",
+              "score": 0.00937
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    }
+  ],
+  "moved_to_refuse": [
+    "a2"
+  ],
+  "warnings": [
+    "'deadlines: What is the deadline for the first assignment?' needs the current_date tool rather than the documents.",
+    "Not supported by the documents: 'grading policies: How are grades calculated in this course?'. The agent will refuse it.",
+    "'countdown to deadlines: How many days are left until the next deadline?' needs the current_date tool rather than the documents."
+  ],
+  "coverage": 0.8
+}

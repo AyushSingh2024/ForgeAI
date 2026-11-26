@@ -1,0 +1,29 @@
+[
+  {
+    "id": "q1",
+    "field_path": "scope.in_scope",
+    "text": "I plan to cover: leave policies, travel and expenses, remote work guidelines, employee benefits, code of conduct. Anything to add or leave out? (Enter keeps this)",
+    "why": "sets what the agent will answer",
+    "kind": "free_text",
+    "options": [],
+    "default": ""
+  },
+  {
+    "id": "q2",
+    "field_path": "must_refuse",
+    "text": "Besides: legal advice; specific salary discussions; exceptions to policy; Questions the documents do not cover, is there anything it must refuse to discuss?",
+    "why": "the agent will decline these topics",
+    "kind": "free_text",
+    "options": [],
+    "default": ""
+  },
+  {
+    "id": "q3",
+    "field_path": "must_answer",
+    "text": "The most important things it must answer seem to be: leave policies; travel and expenses; remote work guidelines; employee benefits; code of conduct. Anything critical missing?",
+    "why": "these become test questions",
+    "kind": "free_text",
+    "options": [],
+    "default": ""
+  }
+]

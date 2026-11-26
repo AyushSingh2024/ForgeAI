@@ -1,0 +1,624 @@
+{
+  "verdicts": [
+    {
+      "ask_id": "a1",
+      "ask_text": "leave policies: How do I calculate my annual leave balance?",
+      "source": "must_answer",
+      "verdict": "needs_tool",
+      "needed_tool": "calculator",
+      "probes": [
+        {
+          "question": "What factors should I consider when calculating my annual leave balance?",
+          "retrieved": [
+            {
+              "chunk_id": "leave_policy#p1#1",
+              "score": 0.01623
+            },
+            {
+              "chunk_id": "leave_policy#p1#5",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "benefits_overview#p1#4",
+              "score": 0.01581
+            },
+            {
+              "chunk_id": "benefits_overview#p1#5",
+              "score": 0.01541
+            },
+            {
+              "chunk_id": "leave_policy#p1#2",
+              "score": 0.0153
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Is there a specific formula or guideline for determining how much annual leave I have accrued?",
+          "retrieved": [
+            {
+              "chunk_id": "leave_policy#p1#1",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "leave_policy#p1#5",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "leave_policy#p1#2",
+              "score": 0.01572
+            },
+            {
+              "chunk_id": "benefits_overview#p1#4",
+              "score": 0.01541
+            },
+            {
+              "chunk_id": "leave_policy#p1#4",
+              "score": 0.01507
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a2",
+      "ask_text": "travel and expenses: What is the per diem allowance for business travel?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the standard per diem rate for business travel expenses?",
+          "retrieved": [
+            {
+              "chunk_id": "travel_expenses#p1#4",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "travel_expenses#p1#5",
+              "score": 0.01599
+            },
+            {
+              "chunk_id": "travel_expenses#p1#1",
+              "score": 0.01593
+            },
+            {
+              "chunk_id": "travel_expenses#p1#2",
+              "score": 0.01587
+            },
+            {
+              "chunk_id": "travel_expenses#p1#0",
+              "score": 0.01529
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any specific conditions or limits associated with the per diem allowance for travel?",
+          "retrieved": [
+            {
+              "chunk_id": "travel_expenses#p1#4",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "travel_expenses#p1#5",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "travel_expenses#p1#3",
+              "score": 0.01577
+            },
+            {
+              "chunk_id": "travel_expenses#p1#6",
+              "score": 0.01544
+            },
+            {
+              "chunk_id": "travel_expenses#p1#1",
+              "score": 0.01484
+            }
+          ],
+          "supporting_quote": "4.1 The daily allowance for meals is 60 EUR in Tier A cities, 45 EUR in Tier B cities and 35 EUR elsewhere. 4.2 If a meal is provided (for example by a conference), the per diem is reduced by 30 percent for that day. 4.3 Alcohol is not reimbursed.",
+          "supporting_chunk_id": "travel_expenses#p1#4",
+          "quote_verified": true,
+          "llm_said_supported": true
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a3",
+      "ask_text": "remote work guidelines: How many days can I work remotely each week?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the maximum number of remote work days allowed per week according to the guidelines?",
+          "retrieved": [
+            {
+              "chunk_id": "remote_work#p1#2",
+              "score": 0.01629
+            },
+            {
+              "chunk_id": "remote_work#p1#1",
+              "score": 0.01623
+            },
+            {
+              "chunk_id": "remote_work#p1#3",
+              "score": 0.01587
+            },
+            {
+              "chunk_id": "remote_work#p1#4",
+              "score": 0.01562
+            },
+            {
+              "chunk_id": "remote_work#p1#0",
+              "score": 0.01538
+            }
+          ],
+          "supporting_quote": "Employees who have completed probation may work remotely up to 3 days per week.",
+          "supporting_chunk_id": "remote_work#p1#1",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Are there any conditions that affect how many days I can work remotely each week?",
+          "retrieved": [
+            {
+              "chunk_id": "remote_work#p1#2",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "remote_work#p1#1",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "remote_work#p1#3",
+              "score": 0.01587
+            },
+            {
+              "chunk_id": "remote_work#p1#4",
+              "score": 0.01548
+            },
+            {
+              "chunk_id": "remote_work#p1#0",
+              "score": 0.01509
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a4",
+      "ask_text": "employee benefits: What is included in the learning budget?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What types of learning activities are covered under the learning budget?",
+          "retrieved": [
+            {
+              "chunk_id": "benefits_overview#p1#2",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "benefits_overview#p1#3",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "benefits_overview#p1#4",
+              "score": 0.01587
+            },
+            {
+              "chunk_id": "travel_expenses#p1#2",
+              "score": 0.01534
+            },
+            {
+              "chunk_id": "travel_expenses#p1#3",
+              "score": 0.01437
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Is there a maximum amount allocated per employee for the learning budget?",
+          "retrieved": [
+            {
+              "chunk_id": "benefits_overview#p1#2",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "benefits_overview#p1#3",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "benefits_overview#p1#4",
+              "score": 0.01587
+            },
+            {
+              "chunk_id": "benefits_overview#p1#5",
+              "score": 0.01562
+            },
+            {
+              "chunk_id": "travel_expenses#p1#1",
+              "score": 0.01538
+            }
+          ],
+          "supporting_quote": "Each employee has a learning budget of 1,200 EUR per calendar year.",
+          "supporting_chunk_id": "benefits_overview#p1#2",
+          "quote_verified": true,
+          "llm_said_supported": true
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a5",
+      "ask_text": "code of conduct: What are the rules regarding gifts from business partners?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the maximum value allowed for gifts from business partners according to the code of conduct?",
+          "retrieved": [
+            {
+              "chunk_id": "code_of_conduct#p1#2",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "code_of_conduct#p1#3",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "code_of_conduct#p1#0",
+              "score": 0.01572
+            },
+            {
+              "chunk_id": "code_of_conduct#p1#4",
+              "score": 0.01568
+            },
+            {
+              "chunk_id": "code_of_conduct#p1#5",
+              "score": 0.01548
+            }
+          ],
+          "supporting_quote": "Employees may accept gifts with a value of up to 50 EUR from business partners.",
+          "supporting_chunk_id": "code_of_conduct#p1#2",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Are there any specific conditions under which gifts from business partners are prohibited?",
+          "retrieved": [
+            {
+              "chunk_id": "code_of_conduct#p1#2",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "code_of_conduct#p1#3",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "code_of_conduct#p1#4",
+              "score": 0.01577
+            },
+            {
+              "chunk_id": "travel_expenses#p1#3",
+              "score": 0.01538
+            },
+            {
+              "chunk_id": "travel_expenses#p1#1",
+              "score": 0.01535
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a6",
+      "ask_text": "carry-over of unused leave: carry-over of unused leave",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the maximum number of unused leave days that can be carried over to the next year?",
+          "retrieved": [
+            {
+              "chunk_id": "leave_policy#p1#2",
+              "score": 0.01629
+            },
+            {
+              "chunk_id": "leave_policy#p1#1",
+              "score": 0.01608
+            },
+            {
+              "chunk_id": "leave_policy#p1#5",
+              "score": 0.01574
+            },
+            {
+              "chunk_id": "benefits_overview#p1#4",
+              "score": 0.01572
+            },
+            {
+              "chunk_id": "leave_policy#p1#4",
+              "score": 0.0152
+            }
+          ],
+          "supporting_quote": "Up to 5 unused days may be carried over into the next year.",
+          "supporting_chunk_id": "leave_policy#p1#1",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Are there any conditions that must be met for unused leave to be eligible for carry-over?",
+          "retrieved": [
+            {
+              "chunk_id": "leave_policy#p1#5",
+              "score": 0.0159
+            },
+            {
+              "chunk_id": "leave_policy#p1#2",
+              "score": 0.01558
+            },
+            {
+              "chunk_id": "benefits_overview#p1#4",
+              "score": 0.01534
+            },
+            {
+              "chunk_id": "leave_policy#p1#0",
+              "score": 0.01516
+            },
+            {
+              "chunk_id": "travel_expenses#p1#1",
+              "score": 0.0145
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a7",
+      "ask_text": "learning budget: learning budget",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the maximum amount allocated for the learning budget per employee?",
+          "retrieved": [
+            {
+              "chunk_id": "benefits_overview#p1#2",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "benefits_overview#p1#3",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "benefits_overview#p1#4",
+              "score": 0.01587
+            },
+            {
+              "chunk_id": "benefits_overview#p1#5",
+              "score": 0.01562
+            },
+            {
+              "chunk_id": "travel_expenses#p1#2",
+              "score": 0.01529
+            }
+          ],
+          "supporting_quote": "Each employee has a learning budget of 1,200 EUR per calendar year.",
+          "supporting_chunk_id": "benefits_overview#p1#2",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Are there any specific conditions or requirements for utilizing the learning budget?",
+          "retrieved": [
+            {
+              "chunk_id": "benefits_overview#p1#2",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "benefits_overview#p1#3",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "benefits_overview#p1#4",
+              "score": 0.01587
+            },
+            {
+              "chunk_id": "code_of_conduct#p1#3",
+              "score": 0.01458
+            },
+            {
+              "chunk_id": "code_of_conduct#p1#2",
+              "score": 0.01347
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "b1",
+      "ask_text": "leave balances",
+      "source": "brief",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the maximum number of leave days an employee can accumulate in a year?",
+          "retrieved": [
+            {
+              "chunk_id": "leave_policy#p1#1",
+              "score": 0.01619
+            },
+            {
+              "chunk_id": "leave_policy#p1#5",
+              "score": 0.01608
+            },
+            {
+              "chunk_id": "leave_policy#p1#2",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "benefits_overview#p1#4",
+              "score": 0.01562
+            },
+            {
+              "chunk_id": "leave_policy#p1#4",
+              "score": 0.01554
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there any conditions under which leave balances can expire or be forfeited?",
+          "retrieved": [
+            {
+              "chunk_id": "leave_policy#p1#2",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "leave_policy#p1#1",
+              "score": 0.01593
+            },
+            {
+              "chunk_id": "leave_policy#p1#5",
+              "score": 0.01568
+            },
+            {
+              "chunk_id": "leave_policy#p1#0",
+              "score": 0.01555
+            },
+            {
+              "chunk_id": "code_of_conduct#p1#3",
+              "score": 0.01511
+            }
+          ],
+          "supporting_quote": "Carried-over days expire on 31 March.",
+          "supporting_chunk_id": "leave_policy#p1#1",
+          "quote_verified": true,
+          "llm_said_supported": true
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "b2",
+      "ask_text": "per-diem totals",
+      "source": "brief",
+      "verdict": "unsupported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the maximum allowable per-diem rate for travel expenses?",
+          "retrieved": [
+            {
+              "chunk_id": "travel_expenses#p1#4",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "travel_expenses#p1#5",
+              "score": 0.01603
+            },
+            {
+              "chunk_id": "travel_expenses#p1#2",
+              "score": 0.01544
+            },
+            {
+              "chunk_id": "travel_expenses#p1#6",
+              "score": 0.01541
+            },
+            {
+              "chunk_id": "travel_expenses#p1#0",
+              "score": 0.01538
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        },
+        {
+          "question": "Are there specific conditions under which per-diem totals can be adjusted?",
+          "retrieved": [
+            {
+              "chunk_id": "travel_expenses#p1#4",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "travel_expenses#p1#5",
+              "score": 0.01593
+            },
+            {
+              "chunk_id": "travel_expenses#p1#3",
+              "score": 0.01583
+            },
+            {
+              "chunk_id": "travel_expenses#p1#6",
+              "score": 0.01568
+            },
+            {
+              "chunk_id": "benefits_overview#p1#3",
+              "score": 0.0152
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "0/2 probes had a verified supporting quote"
+    }
+  ],
+  "moved_to_refuse": [
+    "b2"
+  ],
+  "warnings": [
+    "'leave policies: How do I calculate my annual leave balance?' needs the calculator tool rather than the documents.",
+    "Not supported by the documents: 'per-diem totals'. The agent will refuse it."
+  ],
+  "coverage": 0.889
+}

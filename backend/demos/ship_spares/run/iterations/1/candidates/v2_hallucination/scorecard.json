@@ -1,0 +1,907 @@
+{
+  "run_id": "20261126-222721-2768cb-ship_spares",
+  "iteration": 1,
+  "agent_version": 2,
+  "split_scored": "train",
+  "summary": {
+    "n_cases": 18,
+    "pass_rate": 0.833,
+    "mean_judge": 4.84,
+    "key_fact_coverage": 0.905,
+    "hallucination_rate": 0.056,
+    "refusal_precision": 1.0,
+    "refusal_recall": 1.0,
+    "by_category": {
+      "ambiguous": 0.5,
+      "answerable": 0.857,
+      "edge": 1.0,
+      "multi_doc": 0.5,
+      "must_refuse": 1.0,
+      "tool": 1.0
+    }
+  },
+  "judge_reliability": {
+    "calibration_pass": true,
+    "calibration_passed": 6,
+    "calibration_total": 7,
+    "calibration_details": [
+      {
+        "case": "answ_01",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "fluent_hallucination",
+        "expect": "faithfulness<=2",
+        "got": 4,
+        "passed": false
+      },
+      {
+        "case": "answ_01",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "A",
+        "flip_consistent": true,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "A",
+        "flip_consistent": true,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      }
+    ],
+    "flip_agreement": 1.0,
+    "judge_det_disagreement": 0.083
+  },
+  "cases": [
+    {
+      "case_id": "ambi_01",
+      "category": "ambiguous",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.5,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": false,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "prompt_defect",
+      "failure_reason": "passage retrieved but key facts missing (coverage 0.5)",
+      "retrieved_chunk_ids": [
+        "supplier_terms_a#p1#2",
+        "supplier_terms_a#p1#3",
+        "supplier_terms_c#p1#0",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#4",
+        "supplier_terms_a#p1#1"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 90,
+      "tokens": 0
+    },
+    {
+      "case_id": "ambi_03",
+      "category": "ambiguous",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": true,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 4,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": 1,
+        "facts_covered": 2,
+        "rationale": "The answer accurately reflects the terms regarding spare parts supplied by Ostrava Marine Parts and Bluewake Supply, including the joint framework agreement and the lead times for various part families. It also correctly states that lead times are counted in calendar days from order confirmation to delivery at the named port. However, while it provides detailed lead times, it does not explicitly mention that these terms apply to all spare parts, which is a key fact.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "supplier_terms_a#p1#1",
+        "supplier_terms_a#p1#2",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_c#p1#0",
+        "maintenance_notes#p1#0",
+        "table:suppliers"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 109,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_01",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer correctly identifies both companies involved in the supply of spare parts under the joint framework agreement, fully aligning with the context provided. It is clear and professional, suitable for the intended audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "supplier_terms_a#p1#1",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#2",
+        "maintenance_notes#p1#0",
+        "supplier_terms_a#p1#0",
+        "supplier_terms_a#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 113,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_02",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer accurately states that a reorder must be raised the same day if a critical part is at or below its minimum stock level, which is fully supported by the context provided. It directly addresses the question and includes the key fact required.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "maintenance_notes#p1#0",
+        "maintenance_notes#p1#2",
+        "maintenance_notes#p1#1",
+        "maintenance_notes#p1#3",
+        "supplier_terms_b#p1#0",
+        "table:spares_inventory"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 134,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_03",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 2,
+        "rationale": "The answer accurately states the lead times for both boiler parts and compressor valves as provided in the context. It directly addresses the question and maintains a professional tone suitable for the audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "supplier_terms_c#p1#0",
+        "supplier_terms_a#p1#2",
+        "supplier_terms_a#p1#3",
+        "maintenance_notes#p1#1",
+        "supplier_terms_b#p1#0",
+        "maintenance_notes#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 112,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_05",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 2,
+        "rationale": "The answer accurately states the minimum order value and how seals and gaskets are sold, fully aligning with the context provided. It directly addresses the question and maintains a professional tone suitable for the audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "supplier_terms_a#p1#4",
+        "supplier_terms_a#p1#3",
+        "supplier_terms_a#p1#2",
+        "maintenance_notes#p1#1",
+        "maintenance_notes#p1#0",
+        "supplier_terms_c#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 105,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_07",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.667,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 0.667
+        }
+      },
+      "judge": {
+        "faithfulness": 4,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 2,
+        "rationale": "The answer correctly identifies the lead time for fuel injection parts as 10 days for Ostrava Marine Parts and 7 days for Bluewake Supply, which is supported by the context. It also accurately states the minimum order value of 250 USD, but it fails to mention that seals and gaskets are sold in packs of 5, which is a key fact. The tone is appropriate for the audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": "prompt_defect",
+      "failure_reason": "passage retrieved but key facts missing (coverage 0.667)",
+      "retrieved_chunk_ids": [
+        "supplier_terms_a#p1#3",
+        "supplier_terms_a#p1#2",
+        "supplier_terms_a#p1#4",
+        "supplier_terms_c#p1#0",
+        "maintenance_notes#p1#0",
+        "supplier_terms_b#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 128,
+      "tokens": 0
+    },
+    {
+      "case_id": "answ_08",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer accurately lists all the critical parts that must maintain stock levels as specified in the context. It directly addresses the question and includes all key facts without any unsupported claims or contradictions.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "maintenance_notes#p1#0",
+        "maintenance_notes#p1#1",
+        "maintenance_notes#p1#2",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#1",
+        "maintenance_notes#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2445,
+      "tokens": 2622
+    },
+    {
+      "case_id": "answ_09",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 2,
+        "rationale": "The answer accurately reflects the warranty duration and the process for submitting warranty claims as stated in the context. It includes all necessary details without any unsupported claims or contradictions.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "supplier_terms_a#p1#4",
+        "supplier_terms_a#p1#5",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_c#p1#0",
+        "supplier_terms_a#p1#2",
+        "supplier_terms_a#p1#1"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2774,
+      "tokens": 2910
+    },
+    {
+      "case_id": "edge_01",
+      "category": "edge",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 2,
+        "rationale": "The answer accurately reflects the lead times for both boiler parts and compressor valves as stated in the context. It directly addresses the question and maintains a professional tone suitable for the audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "supplier_terms_c#p1#0",
+        "supplier_terms_a#p1#2",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#3",
+        "maintenance_notes#p1#0",
+        "maintenance_notes#p1#1"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 148,
+      "tokens": 0
+    },
+    {
+      "case_id": "edge_02",
+      "category": "edge",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "supplier_terms_a#p1#1",
+        "maintenance_notes#p1#1",
+        "supplier_terms_b#p1#0",
+        "maintenance_notes#p1#0",
+        "supplier_terms_a#p1#2",
+        "maintenance_notes#p1#2"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 130,
+      "tokens": 0
+    },
+    {
+      "case_id": "mult_01",
+      "category": "multi_doc",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false,
+          "coverage_code": 0.5
+        }
+      },
+      "judge": {
+        "faithfulness": 4,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 2,
+        "rationale": "The answer accurately states the warranty periods for Kestrel Engineering and S01, correctly identifying the differences. However, it does not mention the specific warranty condition of 6,000 running hours for S01, which is a key fact. The tone is appropriate for the audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#1",
+        "supplier_terms_a#p1#2",
+        "supplier_terms_a#p1#5",
+        "supplier_terms_c#p1#0",
+        "supplier_terms_a#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 224,
+      "tokens": 0
+    },
+    {
+      "case_id": "mult_03",
+      "category": "multi_doc",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": false,
+        "key_fact_coverage": 0.5,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "invalid_citations": [
+            {
+              "ref": {
+                "chunk_id": "C1",
+                "quote": "S01 lead time for fuel injection parts is 10 days."
+              },
+              "chunk_id": "supplier_terms_a#p1#2",
+              "reason": "quote not in passage"
+            }
+          ],
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "hallucination",
+      "failure_reason": "cited a quote that is not in the passage",
+      "retrieved_chunk_ids": [
+        "supplier_terms_a#p1#2",
+        "supplier_terms_c#p1#0",
+        "supplier_terms_a#p1#3",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#1",
+        "maintenance_notes#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 238,
+      "tokens": 0
+    },
+    {
+      "case_id": "must_01",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "maintenance_notes#p1#3",
+        "supplier_terms_a#p1#4",
+        "supplier_terms_c#p1#0",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#1",
+        "supplier_terms_a#p1#2"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 122,
+      "tokens": 0
+    },
+    {
+      "case_id": "must_02",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "maintenance_notes#p1#0",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#1",
+        "maintenance_notes#p1#3",
+        "maintenance_notes#p1#2",
+        "maintenance_notes#p1#1"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 128,
+      "tokens": 0
+    },
+    {
+      "case_id": "must_03",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "supplier_terms_a#p1#4",
+        "supplier_terms_c#p1#0",
+        "supplier_terms_a#p1#5",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#1",
+        "supplier_terms_a#p1#2"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 107,
+      "tokens": 0
+    },
+    {
+      "case_id": "tool_01",
+      "category": "tool",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "gold_in_answer": true,
+          "tools_called": [
+            "csv_lookup"
+          ],
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer correctly states that there are 68 rows in the spares_inventory table where the location is 'Workshop locker', which aligns perfectly with the key fact provided. It directly addresses the question and maintains a professional tone suitable for the audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "table:spares_inventory",
+        "table:suppliers",
+        "maintenance_notes#p1#0",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_c#p1#0",
+        "supplier_terms_a#p1#3"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 147,
+      "tokens": 0
+    },
+    {
+      "case_id": "tool_03",
+      "category": "tool",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "gold_in_answer": true,
+          "tools_called": [
+            "csv_lookup"
+          ],
+          "refused": false,
+          "coverage_code": 1.0
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer correctly states that there is 1 row in the suppliers table where supplier_id is S02, which aligns with the key fact provided. It directly addresses the question and maintains a professional tone suitable for the audience.",
+        "judge_model": "openai:gpt-4o-mini",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "table:suppliers",
+        "table:spares_inventory",
+        "supplier_terms_b#p1#0",
+        "supplier_terms_a#p1#0",
+        "supplier_terms_a#p1#1",
+        "supplier_terms_a#p1#2"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 148,
+      "tokens": 0
+    }
+  ]
+}

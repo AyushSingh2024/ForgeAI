@@ -1,0 +1,9 @@
+# .github/workflows/ci.yml : run the checks on every push / PR (GitHub Actions, free for public repos).
+#
+# WHAT TO WRITE (Phase 11):
+# on: [push, pull_request]
+# jobs:
+#   backend:   ubuntu-latest, python 3.11, working-directory backend:
+#              pip install -e ".[dev]" -> ruff check . -> pytest -m "not slow"   (no LLM needed)
+#   frontend:  node 20, working-directory frontend: npm ci -> npm run lint -> npm run typecheck -> npm run build
+# Render and Vercel both auto-deploy from the main branch on their own; CI only guards the quality.

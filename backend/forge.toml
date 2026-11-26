@@ -1,0 +1,39 @@
+# forge.toml : tunable defaults for the factory. Environment variables override these (see forge/config.py).
+# Keep every "magic number" here, not in code.
+
+[intake]
+max_questions = 5
+
+[retrieval]
+default_chunk_size = 600
+default_overlap = 90
+default_top_k = 6
+bm25_weight = 0.4
+min_score = 0.25
+
+[evals]
+target_cases = 24
+min_cases = 20
+holdout_fraction = 0.25
+dedupe_similarity = 0.9
+max_rounds = 3
+
+[judge]
+pass_key_fact_coverage = 0.8
+pass_judge_mean = 3.5
+temperature = 0.0
+seed = 7
+
+[optimizer]
+max_iterations = 3
+target_pass_rate = 0.85
+revert_on_regress = true
+
+[budget]
+max_llm_calls = 400
+max_seconds = 1800
+max_tokens = 1500000
+
+[runtime]
+max_tool_hops = 3
+max_answer_words = 250

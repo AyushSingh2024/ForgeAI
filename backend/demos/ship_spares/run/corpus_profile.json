@@ -1,0 +1,331 @@
+{
+  "documents": [
+    {
+      "doc_id": "maintenance_notes",
+      "title": "maintenance_notes",
+      "pages": 1,
+      "summary": "The document outlines maintenance and reorder procedures for a fictional fleet, detailing critical spare parts that must be monitored, reorder rules for non-critical parts, approval processes for purchases, and safety protocols for working on high-pressure systems and boilers.",
+      "top_keywords": [
+        "reorder",
+        "stock",
+        "critical",
+        "below",
+        "must",
+        "min",
+        "min_stock",
+        "purchases"
+      ],
+      "headings": [
+        "Maintenance and reorder notes (fictional fleet)",
+        "Critical spares",
+        "Reorder rule",
+        "Approval",
+        "Safety"
+      ]
+    },
+    {
+      "doc_id": "supplier_terms_a",
+      "title": "supplier_terms_A",
+      "pages": 1,
+      "summary": "This document outlines the framework terms for spare parts supplied by Ostrava Marine Parts (S01) and Bluewake Supply (S02), including details on lead times, minimum order quantities, warranty conditions, and delivery ports.",
+      "top_keywords": [
+        "days",
+        "order",
+        "lead",
+        "s02",
+        "s01",
+        "delivery",
+        "gaskets",
+        "warranty"
+      ],
+      "headings": [
+        "1. Scope",
+        "2. Lead times",
+        "3. Minimum order quantity",
+        "4. Warranty",
+        "5. Delivery ports"
+      ]
+    },
+    {
+      "doc_id": "supplier_terms_b",
+      "title": "supplier_terms_B",
+      "pages": 1,
+      "summary": "The document outlines supplier conditions for Kestrel Engineering and Pacific Rim Spares, detailing their product offerings, delivery times, order discounts, and warranty terms. It specifies Kestrel's supply of purifier and pump parts with associated delivery timelines and return policies, and Pacific Rim's supply of auxiliary engine and air compressor parts with their own lead times and warranty.",
+      "top_keywords": [
+        "kestrel",
+        "days",
+        "singapore",
+        "supplier",
+        "engineering",
+        "parts",
+        "asia",
+        "supplies"
+      ],
+      "headings": []
+    },
+    {
+      "doc_id": "supplier_terms_c",
+      "title": "supplier_terms_C",
+      "pages": 1,
+      "summary": "The document outlines price lists and delivery terms for Harrowgate Marine and Nordkapp Technical in Europe, including valid prices until June 2026, lead times for various parts, and warranty conditions. It also mentions special offers and order dispatch details.",
+      "top_keywords": [
+        "price",
+        "days",
+        "list",
+        "months",
+        "delivery",
+        "europe",
+        "valid",
+        "until"
+      ],
+      "headings": [
+        "3. Compressor valves: lead time 8 days. Minimum order 2 units per part number.",
+        "1. Delivery to Bergen in 6 days and to Hamburg in 9 days for all part families.",
+        "2. Orders placed before 12:00 Norwegian time are dispatched the same day.",
+        "4. Warranty: 24 months on ballast pump parts, 12 months on everything else."
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "name": "spares_inventory",
+      "path": "C:\\Users\\ayush\\OneDrive\\Desktop\\OceanAI\\backend\\runs\\20261126-222721-2768cb-ship_spares\\input\\docs\\spares_inventory.csv",
+      "columns": [
+        {
+          "name": "part_no",
+          "dtype": "text",
+          "sample_values": [
+            "BL-7L32-0001",
+            "AC-7L32-0002",
+            "AC-NS-0003"
+          ]
+        },
+        {
+          "name": "description",
+          "dtype": "text",
+          "sample_values": [
+            "burner nozzle",
+            "unloader valve",
+            "delivery valve"
+          ]
+        },
+        {
+          "name": "equipment",
+          "dtype": "text",
+          "sample_values": [
+            "Boiler",
+            "Air compressor",
+            "Main engine"
+          ]
+        },
+        {
+          "name": "maker_ref",
+          "dtype": "text",
+          "sample_values": [
+            "MR246316",
+            "MR629903",
+            "MR331148"
+          ]
+        },
+        {
+          "name": "qty_on_board",
+          "dtype": "number",
+          "sample_values": [
+            4,
+            0,
+            9
+          ]
+        },
+        {
+          "name": "min_stock",
+          "dtype": "number",
+          "sample_values": [
+            1,
+            6,
+            3
+          ]
+        },
+        {
+          "name": "location",
+          "dtype": "text",
+          "sample_values": [
+            "ER store A",
+            "Workshop locker",
+            "Purifier room"
+          ]
+        },
+        {
+          "name": "unit_price_usd",
+          "dtype": "number",
+          "sample_values": [
+            670.94,
+            238.46,
+            1687.66
+          ]
+        },
+        {
+          "name": "supplier_id",
+          "dtype": "text",
+          "sample_values": [
+            "S02",
+            "S01",
+            "S05"
+          ]
+        }
+      ],
+      "row_count": 300,
+      "sample_rows": [
+        {
+          "part_no": "BL-7L32-0001",
+          "description": "burner nozzle",
+          "equipment": "Boiler",
+          "maker_ref": "MR246316",
+          "qty_on_board": 4,
+          "min_stock": 1,
+          "location": "ER store A",
+          "unit_price_usd": 670.94,
+          "supplier_id": "S02"
+        },
+        {
+          "part_no": "AC-7L32-0002",
+          "description": "unloader valve",
+          "equipment": "Air compressor",
+          "maker_ref": "MR629903",
+          "qty_on_board": 0,
+          "min_stock": 1,
+          "location": "Workshop locker",
+          "unit_price_usd": 238.46,
+          "supplier_id": "S01"
+        },
+        {
+          "part_no": "AC-NS-0003",
+          "description": "delivery valve",
+          "equipment": "Air compressor",
+          "maker_ref": "MR331148",
+          "qty_on_board": 9,
+          "min_stock": 6,
+          "location": "Purifier room",
+          "unit_price_usd": 1687.66,
+          "supplier_id": "S05"
+        },
+        {
+          "part_no": "ME-7L32-0004",
+          "description": "exhaust valve spindle",
+          "equipment": "Main engine",
+          "maker_ref": "MR325772",
+          "qty_on_board": 7,
+          "min_stock": 6,
+          "location": "Spare room deck 2",
+          "unit_price_usd": 826.5,
+          "supplier_id": "S02"
+        },
+        {
+          "part_no": "ME-TC-0005",
+          "description": "cylinder liner O-ring",
+          "equipment": "Main engine",
+          "maker_ref": "MR377370",
+          "qty_on_board": 1,
+          "min_stock": 1,
+          "location": "ER store A",
+          "unit_price_usd": 6108.82,
+          "supplier_id": "S08"
+        }
+      ]
+    },
+    {
+      "name": "suppliers",
+      "path": "C:\\Users\\ayush\\OneDrive\\Desktop\\OceanAI\\backend\\runs\\20261126-222721-2768cb-ship_spares\\input\\docs\\suppliers.csv",
+      "columns": [
+        {
+          "name": "supplier_id",
+          "dtype": "text",
+          "sample_values": [
+            "S01",
+            "S02",
+            "S03"
+          ]
+        },
+        {
+          "name": "name",
+          "dtype": "text",
+          "sample_values": [
+            "Ostrava Marine Parts",
+            "Bluewake Supply",
+            "Kestrel Engineering"
+          ]
+        },
+        {
+          "name": "country",
+          "dtype": "text",
+          "sample_values": [
+            "Czechia",
+            "Netherlands",
+            "Singapore"
+          ]
+        },
+        {
+          "name": "main_port",
+          "dtype": "text",
+          "sample_values": [
+            "Hamburg",
+            "Rotterdam",
+            "Singapore"
+          ]
+        },
+        {
+          "name": "contact_email",
+          "dtype": "text",
+          "sample_values": [
+            "sales@ostrava-marine.example.com",
+            "orders@bluewake.example.com",
+            "parts@kestrel-eng.example.com"
+          ]
+        }
+      ],
+      "row_count": 8,
+      "sample_rows": [
+        {
+          "supplier_id": "S01",
+          "name": "Ostrava Marine Parts",
+          "country": "Czechia",
+          "main_port": "Hamburg",
+          "contact_email": "sales@ostrava-marine.example.com"
+        },
+        {
+          "supplier_id": "S02",
+          "name": "Bluewake Supply",
+          "country": "Netherlands",
+          "main_port": "Rotterdam",
+          "contact_email": "orders@bluewake.example.com"
+        },
+        {
+          "supplier_id": "S03",
+          "name": "Kestrel Engineering",
+          "country": "Singapore",
+          "main_port": "Singapore",
+          "contact_email": "parts@kestrel-eng.example.com"
+        },
+        {
+          "supplier_id": "S04",
+          "name": "Harrowgate Marine",
+          "country": "United Kingdom",
+          "main_port": "Southampton",
+          "contact_email": "desk@harrowgate.example.com"
+        },
+        {
+          "supplier_id": "S05",
+          "name": "Nordkapp Technical",
+          "country": "Norway",
+          "main_port": "Bergen",
+          "contact_email": "post@nordkapp-tech.example.com"
+        }
+      ]
+    }
+  ],
+  "language": "en",
+  "total_tokens": 1911,
+  "n_chunks": 14,
+  "numeric_density": 0.0898,
+  "median_section_tokens": 139,
+  "warnings": []
+}

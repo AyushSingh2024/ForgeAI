@@ -1,0 +1,347 @@
+{
+  "verdicts": [
+    {
+      "ask_id": "a1",
+      "ask_text": "setup of the Aurelia AX-200: How do I set up my Aurelia AX-200 espresso machine?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What are the initial steps to set up the Aurelia AX-200 espresso machine?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": "Fill the water tank with fresh cold water up to the MAX line (1.8 litres). Place the machine on a flat surface at least 10 cm from the wall. Before first use, run two empty cycles by pressing the hot water button for 30 seconds.",
+          "supporting_chunk_id": "manual#p1#1",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Are there any specific requirements or conditions for installing the Aurelia AX-200?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a2",
+      "ask_text": "daily cleaning procedures: What are the daily cleaning steps for the Aurelia AX-200?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What are the specific steps involved in the daily cleaning procedures for the Aurelia AX-200?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": "Empty the drip tray and the grounds container every day. Rinse the portafilter after each use. Wipe the steam wand immediately after frothing milk and purge it for 2 seconds.",
+          "supporting_chunk_id": "manual#p1#2",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Are there any recommended cleaning agents or tools for the daily maintenance of the Aurelia AX-200?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.01613
+            },
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a3",
+      "ask_text": "descaling instructions: How do I descale my Aurelia AX-200?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What is the recommended frequency for descaling the Aurelia AX-200?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": "Descale every 2 months with soft water, or every month with hard water (above 14 °dH).",
+          "supporting_chunk_id": "manual#p1#2",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Are there specific descaling solutions that should be used for the Aurelia AX-200?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.00984
+            },
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a4",
+      "ask_text": "troubleshooting error codes: What does error code E01 mean on my Aurelia AX-200?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What are the common causes of error code E01 on the Aurelia AX-200?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": "E01: water tank empty or not seated. Refill the tank and push it down until it clicks.",
+          "supporting_chunk_id": "manual#p1#3",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Is there a specific troubleshooting procedure for resolving error code E01 on the Aurelia AX-200?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.00952
+            },
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": "E01: water tank empty or not seated. Refill the tank and push it down until it clicks.",
+          "supporting_chunk_id": "manual#p1#3",
+          "quote_verified": true,
+          "llm_said_supported": true
+        }
+      ],
+      "explanation": "2/2 probes had a verified supporting quote"
+    },
+    {
+      "ask_id": "a5",
+      "ask_text": "when to seek authorized service: When should I take my Aurelia AX-200 to an authorized service center?",
+      "source": "must_answer",
+      "verdict": "supported",
+      "needed_tool": null,
+      "probes": [
+        {
+          "question": "What are the signs that indicate my Aurelia AX-200 needs to be taken to an authorized service center?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.01598
+            },
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": "E05: temperature sensor fault. Switch off and contact an authorised service centre.",
+          "supporting_chunk_id": "manual#p1#4",
+          "quote_verified": true,
+          "llm_said_supported": true
+        },
+        {
+          "question": "Is there a specific warranty period or usage limit after which I should consider seeking authorized service for my Aurelia AX-200?",
+          "retrieved": [
+            {
+              "chunk_id": "manual#p1#4",
+              "score": 0.01639
+            },
+            {
+              "chunk_id": "manual#p1#3",
+              "score": 0.01598
+            },
+            {
+              "chunk_id": "manual#p1#1",
+              "score": 0.00968
+            },
+            {
+              "chunk_id": "manual#p1#2",
+              "score": 0.00937
+            },
+            {
+              "chunk_id": "manual#p1#0",
+              "score": 0.00923
+            }
+          ],
+          "supporting_quote": null,
+          "supporting_chunk_id": null,
+          "quote_verified": false,
+          "llm_said_supported": false
+        }
+      ],
+      "explanation": "1/2 probes had a verified supporting quote"
+    }
+  ],
+  "moved_to_refuse": [],
+  "warnings": [],
+  "coverage": 1.0
+}

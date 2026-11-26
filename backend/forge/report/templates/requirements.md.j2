@@ -1,0 +1,48 @@
+# Requirements: {{ req.agent_name }}
+
+Run `{{ req.run_id }}`. Answers marked *(assumed)* were filled in without a person (unattended mode or skipped questions).
+
+## Brief
+> {{ req.brief | replace("\n", " ") }}
+
+## Scope
+**In scope:** {{ req.scope.in_scope | join("; ") or "not specified" }}
+
+**Out of scope:** {{ req.scope.out_of_scope | join("; ") or "nothing listed" }}
+
+## Audience and tone
+- Audience: {{ req.audience.who }} ({{ req.audience.expertise }})
+- Tone: {{ req.tone.style }}, formality {{ req.tone.formality }}, language `{{ req.tone.language }}`
+- Output: {{ req.output_preferences.format }}, at most {{ req.output_preferences.max_words }} words, citations {{ "required" if req.output_preferences.citations_required else "optional" }}
+
+## Must answer
+| id | topic | example question | priority |
+|---|---|---|---|
+{% for m in req.must_answer %}
+| {{ m.id }} | {{ m.topic | cell }} | {{ m.example_question | cell }} | {{ m.priority }} |
+{% endfor %}
+
+## Must refuse
+| id | topic | reason | source |
+|---|---|---|---|
+{% for m in req.must_refuse %}
+| {{ m.id }} | {{ m.topic | cell }} | {{ m.reason | cell }} | {{ m.source }} |
+{% endfor %}
+
+## Interview ({{ req.interview | length }} of max 5 questions)
+{% if req.interview %}
+| # | question | answer | source |
+|---|---|---|---|
+{% for t in req.interview %}
+| {{ loop.index }} | {{ t.question | cell }} | {{ (t.answer or "(kept default)") | cell }} | {{ t.source }}{% if t.source == "assumed" %} *(assumed)*{% endif %} |
+{% endfor %}
+{% else %}
+No questions were needed: the brief was specific enough.
+{% endif %}
+
+## Assumptions
+{% for a in req.assumptions %}
+- {{ a }}
+{% else %}
+- None
+{% endfor %}
