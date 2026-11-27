@@ -14,6 +14,7 @@ from app.deps import get_run_store
 from app.storage.runs_store import RunStore
 from app.storage.uploads import save_uploads
 from forge.cli import new_run_id
+from forge.llm.budget import CHAT_BUDGET
 from forge.schemas.agent_def import AgentDefinition, load_agent, save_agent
 
 router = APIRouter(prefix="/api/agents", tags=["agents"])
@@ -42,7 +43,7 @@ def get_runtime(store: RunStore, agent_id: str):
         if key in _cache:
             _cache.move_to_end(key)
             return _cache[key]
-    rt = AgentRuntime.load(p)
+    rt = AgentRuntime.load(p, per_answer_budget=CHAT_BUDGET)
     with _lock:
         _cache[key] = rt
         while len(_cache) > MAX_CACHED:

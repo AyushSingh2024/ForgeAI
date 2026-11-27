@@ -48,7 +48,6 @@ async def chat(agent_id: str, body: ChatIn, request: Request, store: RunStore = 
         ans, trace = await run_in_threadpool(rt.answer, body.message, [t.model_dump() for t in body.history[-6:]])
     except BudgetExceeded as exc:
         raise HTTPException(503, f"LLM budget exhausted: {exc}") from exc
-    rt.llm.budget.calls = 0  # chat is not a factory run: reset the per-run budget counter
     return {**ans.model_dump(mode="json"), "latency_ms": trace.get("latency_ms"),
             "trace": {"hits": [{k: h[k] for k in ("chunk_id", "doc_id", "page", "score", "dense", "bm25")} | {"text": h["text"][:300]}
                                for h in trace.get("hits", [])],

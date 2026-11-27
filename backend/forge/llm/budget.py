@@ -16,6 +16,9 @@ from forge.errors import BudgetExceeded
 
 RESERVE = 0.2
 
+# A chat answer is not a factory run: each question gets this small, fixed allowance (about 0.01 USD on gpt-4o-mini).
+CHAT_BUDGET = BudgetCfg(max_llm_calls=12, max_tokens=60000, max_seconds=180)
+
 
 class Budget:
     def __init__(self, cfg: BudgetCfg, requests_per_minute: int = 0):
@@ -84,6 +87,17 @@ class Budget:
 
     def snapshot(self) -> dict:
         return {"tokens": self.tokens, "calls": self.calls, "t": self.elapsed()}
+
+    def reset(self, cfg: BudgetCfg | None = None) -> None:
+        """Start a fresh allowance. Used for every chat answer, so a long-running server does not add up
+        the calls, tokens and time of all earlier questions (that exhausted the budget after ~32 minutes)."""
+        with self._lock:
+            if cfg is not None:
+                self.cfg = cfg
+            self.calls = 0
+            self.tokens = 0
+            self.started_at = time.time()
+            self.reserve_released = True
 
     def summary(self) -> dict:
         return {"llm_calls": self.calls, "cached_calls": self.cached_calls, "tokens": self.tokens,

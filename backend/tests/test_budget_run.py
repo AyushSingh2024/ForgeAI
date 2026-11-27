@@ -34,3 +34,20 @@ def test_tight_budget_still_finishes_with_a_report(tmp_path, tiny_corpus, cfg, m
         assert "estimated_candidate_cost" in summary
     assert all((run_dir / ".stages" / f"{s}.done").exists() or status["stages"][s]["status"] in ("skipped", "failed")
                for s in STAGES)
+
+
+def test_chat_answers_do_not_share_one_budget(agent_dir, cfg, make_fake_hub):
+    """Regression: a long-running chat server kept one budget for every question. After the time limit (about
+    32 minutes of uptime) every answer failed with 'time budget reached'. Each chat answer gets its own allowance."""
+    import json
+
+    from forge.llm.budget import CHAT_BUDGET
+    from forge.runtime.runner import AgentRuntime
+
+    reply = json.dumps({"action": "final", "answer": "Up to 5 days carry over.", "citations": [], "refused": False})
+    hub = make_fake_hub(agent=lambda m, t: reply)
+    rt = AgentRuntime.load(agent_dir / "agent.yaml", cfg=cfg, llm=hub.agent, per_answer_budget=CHAT_BUDGET)
+    hub.budget.started_at -= 10_000  # the server has been up for hours
+    hub.budget.calls = 10_000        # and has answered many questions
+    ans, _ = rt.answer("How many days can carry over?")
+    assert ans.answer

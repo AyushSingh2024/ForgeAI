@@ -64,6 +64,8 @@ from forge.config import load_config  # noqa: E402
 from forge.llm.client import make_hub  # noqa: E402
 from forge.pipeline import STAGES, prepare_run, run as run_pipeline  # noqa: E402
 from forge.runtime.runner import AgentRuntime  # noqa: E402
+from forge.llm.budget import CHAT_BUDGET  # noqa: E402
+from forge.errors import BudgetExceeded  # noqa: E402
 
 DEMO_RUNS = {d.name: d / "run" for d in sorted((BACKEND / "demos").glob("*")) if (d / "run" / "REPORT.md").exists()}
 ALLOWED = ["pdf", "docx", "md", "txt", "html", "csv", "xlsx", "png", "jpg", "jpeg"]
@@ -128,7 +130,7 @@ def pct(v) -> str:
 
 @st.cache_resource(show_spinner="Loading the agent (first time takes ~30 s)...")
 def load_runtime(agent_yaml: str, mtime: float) -> AgentRuntime:  # mtime busts the cache after a rebuild
-    return AgentRuntime.load(Path(agent_yaml), cfg=load_config())
+    return AgentRuntime.load(Path(agent_yaml), cfg=load_config(), per_answer_budget=CHAT_BUDGET)
 
 
 def need_key() -> bool:
@@ -429,6 +431,9 @@ elif page == "Chat with an agent":
                         f"{i}. {c.doc_id}{f' p.{c.page}' if c.page else ''}: “{c.quote[:200]}”"
                         for i, c in enumerate(ans.citations, 1)))
                 text = "\n\n".join(parts)
+            except BudgetExceeded:
+                text, ans = ("This question used its small per-question allowance. Try a shorter or more "
+                             "specific question.", None)
             except Exception as exc:  # noqa: BLE001
                 text, ans = f"Error: {exc}", None
             st.markdown(text)

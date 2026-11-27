@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from forge.config import ForgeConfig, load_config
+from forge.llm.budget import BudgetCfg
 from forge.errors import BudgetExceeded, ProviderError
 from forge.llm.client import LLMClient, make_hub
 from forge.llm.repair import extract_json
@@ -37,6 +38,9 @@ def _context_block(hits: list[Hit]) -> str:
 
 
 class AgentRuntime:
+    # set for chat: every answer gets a fresh allowance instead of sharing one budget for the server's lifetime
+    per_answer_budget: BudgetCfg | None = None
+
     def __init__(self, agent: AgentDefinition, agent_dir: Path, llm: LLMClient, cfg: ForgeConfig,
                  retriever: HybridRetriever, tools: dict[str, Tool]):
         self.agent = agent
@@ -51,7 +55,8 @@ class AgentRuntime:
     @classmethod
     def load(cls, agent: AgentDefinition | str | Path, *, agent_dir: Path | None = None,
              cfg: ForgeConfig | None = None, llm: LLMClient | None = None,
-             rewrite_llm: LLMClient | None = None) -> "AgentRuntime":
+             rewrite_llm: LLMClient | None = None,
+             per_answer_budget: BudgetCfg | None = None) -> "AgentRuntime":
         if not isinstance(agent, AgentDefinition):
             agent_dir = Path(agent).resolve().parent
             agent = load_agent(agent)
@@ -64,10 +69,14 @@ class AgentRuntime:
         retriever = HybridRetriever.from_index(agent_dir / agent.corpus.index_dir, agent.retrieval,
                                                llm=rewrite_llm or llm)
         tools = build_tools(agent.tools, agent_dir)
-        return cls(agent, agent_dir, llm, cfg, retriever, tools)
+        rt = cls(agent, agent_dir, llm, cfg, retriever, tools)
+        rt.per_answer_budget = per_answer_budget
+        return rt
 
     # ------------------------------------------------------------------ answer
     def answer(self, question: str, history: list[dict[str, str]] | None = None) -> tuple[AgentAnswer, dict[str, Any]]:
+        if self.per_answer_budget is not None:
+            self.llm.budget.reset(self.per_answer_budget)
         t0 = time.perf_counter()
         trace: dict[str, Any] = {"question": question, "tool_calls": [], "raw_outputs": [], "tokens": 0,
                                  "deterministic_refusal": False, "error": None}
