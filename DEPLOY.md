@@ -1,7 +1,7 @@
 # Deploying ForgeAI for free
 
-**Frontend → Vercel (free). Backend → Hugging Face Spaces (free Gradio SDK, CPU Basic).** If Hugging Face refuses the
-free tier for your account, use the **Oracle Cloud Always Free VM** instead (section 4). The same backend runs on
+**Frontend → Vercel (free). Backend → Hugging Face Spaces (free Gradio SDK, CPU Basic).** Hugging Face now needs PRO for
+CPU Spaces, so the free permanent option is the **Oracle Cloud Always Free VM** (section 4). The same backend runs on
 both (Docker image on the VM).
 
 ```mermaid
@@ -74,24 +74,51 @@ In the Space **Settings → Variables**, set `CORS_ORIGINS` to
 `https://<project>.vercel.app,http://localhost:3000` and restart the Space. Open the Vercel URL: the status pill
 should turn green (the first request after a sleep can take a minute).
 
-## 4. Alternative backend: Oracle Cloud Always Free VM
+## 4. Backend on an Oracle Cloud Always Free VM (free, permanent; about 45 minutes)
 
-1. Create an **Always Free** Ampere (Arm) instance, Ubuntu 22.04 or 24.04. In its VCN security list, open TCP 80 and 443.
-2. On the VM:
+Hugging Face now needs PRO for CPU Spaces, so this is the recommended free backend.
+
+1. **Account:** sign up at cloud.oracle.com/free. Pick a home region near you (it cannot be changed later).
+   A card is needed for verification only.
+2. **VM:** Compute → Instances → Create instance, name `forgeai`.
+   - Image: **Canonical Ubuntu 24.04**.
+   - Shape: Change shape → Ampere → **VM.Standard.A1.Flex**, 2 OCPU, 12 GB ("Always Free eligible").
+   - Networking: new VCN with a public subnet, "Assign public IPv4" on.
+   - SSH keys: "Generate a key pair for me" → download the private key.
+   - "Out of capacity"? Try another availability domain or 1 OCPU / 6 GB, or retry later.
+3. **Ports:** Instance → Subnet → Security List → Add Ingress Rule: source `0.0.0.0/0`, TCP, ports `80,443`.
+4. **Connect:** `ssh -i <downloaded-key> ubuntu@<PUBLIC_IP>`
+5. **On the VM** (Oracle's Ubuntu image blocks every port except SSH in iptables, hence the first line):
    ```bash
-   sudo apt-get update && sudo apt-get install -y docker.io git
-   git clone https://github.com/AyushSingh2024/ForgeAI.git && cd ForgeAI
-   sudo docker build -t forgeai .
-   sudo docker run -d --restart unless-stopped -p 127.0.0.1:7860:7860 \
-     -e OPENAI_API_KEY=... -e API_KEY=... -e CORS_ORIGINS=https://<project>.vercel.app forgeai
+   sudo iptables -I INPUT 6 -p tcp -m multiport --dports 80,443 -m state --state NEW -j ACCEPT && sudo netfilter-persistent save
+   sudo apt-get update && sudo apt-get install -y docker.io git caddy tmux
+   tmux   # the build survives an SSH drop; reattach with: tmux attach
+   git clone https://github.com/AyushSingh2024/ForgeAI.git && cd ForgeAI && sudo docker build -t forgeai . 2>&1 | tee ~/build.log
    ```
-3. HTTPS is required (the Vercel site is HTTPS). The quickest free way is Caddy with an `sslip.io` name:
+   The build takes about 20 minutes (Python packages, Ollama and the judge model).
+6. **Start the container:**
    ```bash
-   sudo apt-get install -y caddy
-   sudo caddy reverse-proxy --from <your-ip-with-dashes>.sslip.io --to localhost:7860
+   cat > ~/forgeai.env <<'EOF'
+   OPENAI_API_KEY=sk-...a-new-key-with-a-spending-limit
+   API_KEY=a-long-random-password
+   CORS_ORIGINS=http://localhost:3000
+   EOF
+   sudo docker run -d --name forgeai --restart unless-stopped -p 127.0.0.1:7860:7860 --env-file ~/forgeai.env forgeai
+   sleep 60; curl localhost:7860/health
    ```
-   (for a permanent setup put the same two values in `/etc/caddy/Caddyfile`). Use
-   `https://<your-ip-with-dashes>.sslip.io` as `NEXT_PUBLIC_API_URL` on Vercel.
+7. **HTTPS** (the Vercel site is HTTPS, so the API must be too). Use your IP with dashes, e.g. `140-238-1-2.sslip.io`:
+   ```bash
+   echo '<IP-WITH-DASHES>.sslip.io {
+     reverse_proxy localhost:7860
+   }' | sudo tee /etc/caddy/Caddyfile && sudo systemctl restart caddy
+   ```
+   `https://<IP-WITH-DASHES>.sslip.io/health` should answer `{"status":"ok"}` (Caddy gets the certificate itself).
+8. **Frontend:** section 2 with `NEXT_PUBLIC_API_URL=https://<IP-WITH-DASHES>.sslip.io`.
+9. **Connect:** put the Vercel URL into `CORS_ORIGINS` in `~/forgeai.env`, then
+   `sudo docker rm -f forgeai` and the `docker run` line from step 6 again.
+
+**Updating after a new push to GitHub:** `cd ~/ForgeAI && git pull && sudo docker build -t forgeai . && sudo docker rm -f forgeai`
+and the `docker run` line again.
 
 ## 5. What to expect
 
