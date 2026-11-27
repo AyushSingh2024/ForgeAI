@@ -39,8 +39,8 @@
   "llm": {
     "agent_provider": "openai",
     "agent_model": "gpt-4o-mini",
-    "judge_provider": "openai",
-    "judge_model": "gpt-4o-mini",
+    "judge_provider": "ollama",
+    "judge_model": "llama3.2:3b",
     "ollama_base_url": "http://localhost:11434",
     "groq_api_key": "",
     "hf_api_token": "",

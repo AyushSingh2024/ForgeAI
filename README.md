@@ -4,7 +4,7 @@
 honest report on how good that agent is.**
 
 - Demo reports: [HR policy](backend/demos/hr_policy/run/REPORT.md) · [Ship spares](backend/demos/ship_spares/run/REPORT.md) (built in interactive mode: the interviewer asked 3 questions, see `requirements.md`)
-- Rehearsal runs on 3 unseen briefs, all unattended: `backend/demos/rehearsal_runs/`
+- Rehearsal runs on 3 unseen briefs, all unattended: `backend/demos/rehearsal_runs/` (made before Ollama was set up, so their judge was the hosted `gpt-4o-mini`; the two demo runs use the local `llama3.2:3b` judge)
 
 ```mermaid
 flowchart LR

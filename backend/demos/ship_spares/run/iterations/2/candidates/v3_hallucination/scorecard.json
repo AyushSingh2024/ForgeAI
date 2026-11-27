@@ -1,57 +1,57 @@
 {
-  "run_id": "20261126-222721-2768cb-ship_spares",
+  "run_id": "spares_localjudge",
   "iteration": 2,
   "agent_version": 3,
   "split_scored": "train",
   "summary": {
     "n_cases": 18,
-    "pass_rate": 0.833,
-    "mean_judge": 4.84,
-    "key_fact_coverage": 0.905,
-    "hallucination_rate": 0.056,
+    "pass_rate": 0.667,
+    "mean_judge": 3.993,
+    "key_fact_coverage": 0.893,
+    "hallucination_rate": 0.167,
     "refusal_precision": 1.0,
     "refusal_recall": 1.0,
     "by_category": {
-      "ambiguous": 0.5,
+      "ambiguous": 0.0,
       "answerable": 0.857,
       "edge": 1.0,
-      "multi_doc": 0.5,
+      "multi_doc": 0.0,
       "must_refuse": 1.0,
-      "tool": 1.0
+      "tool": 0.5
     }
   },
   "judge_reliability": {
     "calibration_pass": true,
-    "calibration_passed": 6,
+    "calibration_passed": 5,
     "calibration_total": 7,
     "calibration_details": [
       {
         "case": "answ_01",
         "item": "perfect",
         "expect": "faithfulness>=4",
-        "got": 5,
-        "passed": true
+        "got": 3,
+        "passed": false
       },
       {
         "case": "answ_01",
         "item": "fluent_hallucination",
         "expect": "faithfulness<=2",
-        "got": 4,
+        "got": 3,
         "passed": false
       },
       {
         "case": "answ_01",
         "item": "verbosity",
         "expect": "padded answer must not win",
-        "got": "A",
-        "flip_consistent": true,
+        "got": "tie",
+        "flip_consistent": false,
         "passed": true
       },
       {
         "case": "answ_01",
         "item": "wrong_refusal",
         "expect": "relevance<=2",
-        "got": 1,
+        "got": 2,
         "passed": true
       },
       {
@@ -73,12 +73,12 @@
         "case": "answ_02",
         "item": "wrong_refusal",
         "expect": "relevance<=2",
-        "got": 1,
+        "got": 2,
         "passed": true
       }
     ],
-    "flip_agreement": 1.0,
-    "judge_det_disagreement": 0.083
+    "flip_agreement": 0.5,
+    "judge_det_disagreement": 0.25
   },
   "cases": [
     {
@@ -122,14 +122,14 @@
         "supplier_terms_a#p1#1"
       ],
       "gold_in_topk": true,
-      "latency_ms": 124,
+      "latency_ms": 33,
       "tokens": 0
     },
     {
       "case_id": "ambi_03",
       "category": "ambiguous",
       "split": "train",
-      "verdict": "pass",
+      "verdict": "fail",
       "deterministic": {
         "schema_valid": true,
         "citation_exists": true,
@@ -148,16 +148,16 @@
       },
       "judge": {
         "faithfulness": 4,
-        "relevance": 5,
-        "tone": 5,
-        "ambiguity_handling": 1,
+        "relevance": 4,
+        "tone": 2,
+        "ambiguity_handling": 3,
         "facts_covered": 2,
-        "rationale": "The answer accurately reflects the terms regarding spare parts supplied by Ostrava Marine Parts and Bluewake Supply, including the joint framework agreement and the lead times for various part families. It also correctly states that lead times are counted in calendar days from order confirmation to delivery at the named port. However, while it provides detailed lead times, it does not explicitly mention that these terms apply to all spare parts, which is a key fact.",
-        "judge_model": "openai:gpt-4o-mini",
+        "rationale": "The answer is clear and concise, but could benefit from a more formal tone to match the required audience. The answer also does not address the context of the joint framework agreement, which is a crucial aspect of the terms. However, the answer does correctly state the lead times for various part families.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
-      "failure_class": null,
-      "failure_reason": "",
+      "failure_class": "prompt_defect",
+      "failure_reason": "passage retrieved but key facts missing (coverage 1.0)",
       "retrieved_chunk_ids": [
         "supplier_terms_a#p1#1",
         "supplier_terms_a#p1#2",
@@ -167,7 +167,7 @@
         "table:suppliers"
       ],
       "gold_in_topk": true,
-      "latency_ms": 179,
+      "latency_ms": 46,
       "tokens": 0
     },
     {
@@ -192,13 +192,13 @@
         }
       },
       "judge": {
-        "faithfulness": 5,
-        "relevance": 5,
+        "faithfulness": 4,
+        "relevance": 4,
         "tone": 5,
         "ambiguity_handling": null,
-        "facts_covered": 1,
-        "rationale": "The answer correctly identifies both companies involved in the supply of spare parts under the joint framework agreement, fully aligning with the context provided. It is clear and professional, suitable for the intended audience.",
-        "judge_model": "openai:gpt-4o-mini",
+        "facts_covered": 0,
+        "rationale": "The answer is clear and concise, directly addressing the question. However, it does not provide any additional context or supporting details, which could be useful for a chief engineer. A more detailed answer would provide more confidence in the correctness of the information.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
       "failure_class": null,
@@ -212,7 +212,7 @@
         "supplier_terms_a#p1#4"
       ],
       "gold_in_topk": true,
-      "latency_ms": 152,
+      "latency_ms": 39,
       "tokens": 0
     },
     {
@@ -242,8 +242,8 @@
         "tone": 5,
         "ambiguity_handling": null,
         "facts_covered": 1,
-        "rationale": "The answer accurately states that a reorder must be raised the same day if a critical part is at or below its minimum stock level, which is fully supported by the context provided. It directly addresses the question and includes the key fact required.",
-        "judge_model": "openai:gpt-4o-mini",
+        "rationale": "The answer must clearly state the reorder rule for critical parts, as stated in the context. The assistant must not approve purchases above 2,000 USD, and the chief engineer must raise requisitions. The answer must be written in a clear and professional tone, matching the required tone and audience.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
       "failure_class": null,
@@ -257,14 +257,14 @@
         "table:spares_inventory"
       ],
       "gold_in_topk": true,
-      "latency_ms": 142,
+      "latency_ms": 40,
       "tokens": 0
     },
     {
       "case_id": "answ_03",
       "category": "answerable",
       "split": "train",
-      "verdict": "pass",
+      "verdict": "fail",
       "deterministic": {
         "schema_valid": true,
         "citation_exists": true,
@@ -282,17 +282,17 @@
         }
       },
       "judge": {
-        "faithfulness": 5,
-        "relevance": 5,
-        "tone": 5,
+        "faithfulness": 2,
+        "relevance": 2,
+        "tone": 3,
         "ambiguity_handling": null,
-        "facts_covered": 2,
-        "rationale": "The answer accurately states the lead times for both boiler parts and compressor valves as provided in the context. It directly addresses the question and maintains a professional tone suitable for the audience.",
-        "judge_model": "openai:gpt-4o-mini",
+        "facts_covered": 0,
+        "rationale": "The answer is clear and concise, but does not address the specific lead times for delivery in Europe. The context provides the necessary information, but the answer does not use it effectively.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
-      "failure_class": null,
-      "failure_reason": "",
+      "failure_class": "hallucination",
+      "failure_reason": "judge: claims not supported by the context",
       "retrieved_chunk_ids": [
         "supplier_terms_c#p1#0",
         "supplier_terms_a#p1#2",
@@ -302,7 +302,7 @@
         "maintenance_notes#p1#0"
       ],
       "gold_in_topk": true,
-      "latency_ms": 133,
+      "latency_ms": 36,
       "tokens": 0
     },
     {
@@ -332,8 +332,8 @@
         "tone": 5,
         "ambiguity_handling": null,
         "facts_covered": 2,
-        "rationale": "The answer accurately states the minimum order value and how seals and gaskets are sold, fully aligning with the context provided. It directly addresses the question and maintains a professional tone suitable for the audience.",
-        "judge_model": "openai:gpt-4o-mini",
+        "rationale": "The answer is clear and concise, but does not provide any additional context or supporting details. It is a direct quote from the context, but lacks depth and analysis. A more thorough evaluation of the context would have provided a more comprehensive answer.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
       "failure_class": null,
@@ -347,19 +347,19 @@
         "supplier_terms_c#p1#0"
       ],
       "gold_in_topk": true,
-      "latency_ms": 173,
+      "latency_ms": 42,
       "tokens": 0
     },
     {
       "case_id": "answ_07",
       "category": "answerable",
       "split": "train",
-      "verdict": "fail",
+      "verdict": "pass",
       "deterministic": {
         "schema_valid": true,
         "citation_exists": true,
         "citation_quote_verbatim": true,
-        "key_fact_coverage": 0.667,
+        "key_fact_coverage": 1.0,
         "numbers_grounded": true,
         "refusal_correct": true,
         "clarify_correct": null,
@@ -376,13 +376,13 @@
         "relevance": 5,
         "tone": 5,
         "ambiguity_handling": null,
-        "facts_covered": 2,
-        "rationale": "The answer correctly identifies the lead time for fuel injection parts as 10 days for Ostrava Marine Parts and 7 days for Bluewake Supply, which is supported by the context. It also accurately states the minimum order value of 250 USD, but it fails to mention that seals and gaskets are sold in packs of 5, which is a key fact. The tone is appropriate for the audience.",
-        "judge_model": "openai:gpt-4o-mini",
+        "facts_covered": 3,
+        "rationale": "The answer must clearly state the lead time for fuel injection parts and the minimum order quantity, and must be written in a formal tone suitable for a chief engineer. The answer should not contain any invented or contradicted facts, and should not exceed the required length. The tone should be professional and clear, matching the context of the framework agreement.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
-      "failure_class": "prompt_defect",
-      "failure_reason": "passage retrieved but key facts missing (coverage 0.667)",
+      "failure_class": null,
+      "failure_reason": "",
       "retrieved_chunk_ids": [
         "supplier_terms_a#p1#3",
         "supplier_terms_a#p1#2",
@@ -392,7 +392,7 @@
         "supplier_terms_b#p1#0"
       ],
       "gold_in_topk": true,
-      "latency_ms": 102,
+      "latency_ms": 35,
       "tokens": 0
     },
     {
@@ -417,13 +417,13 @@
         }
       },
       "judge": {
-        "faithfulness": 5,
+        "faithfulness": 4,
         "relevance": 5,
         "tone": 5,
         "ambiguity_handling": null,
-        "facts_covered": 1,
-        "rationale": "The answer accurately lists all the critical parts that must maintain stock levels as specified in the context. It directly addresses the question and includes all key facts without any unsupported claims or contradictions.",
-        "judge_model": "openai:gpt-4o-mini",
+        "facts_covered": 0,
+        "rationale": "The answer must clearly state the critical parts that must maintain stock levels, as stated in the context. The tone should be formal and professional, suitable for a chief engineer. The answer should not contain any invented or contradicted facts, and should directly answer the question.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
       "failure_class": null,
@@ -437,7 +437,7 @@
         "maintenance_notes#p1#3"
       ],
       "gold_in_topk": true,
-      "latency_ms": 93,
+      "latency_ms": 30,
       "tokens": 0
     },
     {
@@ -467,8 +467,8 @@
         "tone": 5,
         "ambiguity_handling": null,
         "facts_covered": 2,
-        "rationale": "The answer accurately reflects the warranty duration and the process for submitting warranty claims as stated in the context. It includes all necessary details without any unsupported claims or contradictions.",
-        "judge_model": "openai:gpt-4o-mini",
+        "rationale": "The answer is clear and concise, but does not provide any additional context or supporting details. It is a direct quote from the passage, which is good, but the lack of elaboration may make it less effective in a real-world scenario. The answer is still a good representation of the key facts.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
       "failure_class": null,
@@ -482,7 +482,7 @@
         "supplier_terms_a#p1#1"
       ],
       "gold_in_topk": true,
-      "latency_ms": 104,
+      "latency_ms": 33,
       "tokens": 0
     },
     {
@@ -507,13 +507,13 @@
         }
       },
       "judge": {
-        "faithfulness": 5,
+        "faithfulness": 4,
         "relevance": 5,
         "tone": 5,
         "ambiguity_handling": null,
         "facts_covered": 2,
-        "rationale": "The answer accurately reflects the lead times for both boiler parts and compressor valves as stated in the context. It directly addresses the question and maintains a professional tone suitable for the audience.",
-        "judge_model": "openai:gpt-4o-mini",
+        "rationale": "The answer must clearly state the lead times for both boiler parts and compressor valves, as these are the key facts required by the question. The tone should be formal and professional, suitable for a chief engineer of a cargo fleet. The answer should not contain any invented or contradicted facts, and should only paraphrase the key facts. The answer should directly answer the question and cover the key facts.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
       "failure_class": null,
@@ -527,7 +527,7 @@
         "maintenance_notes#p1#1"
       ],
       "gold_in_topk": true,
-      "latency_ms": 107,
+      "latency_ms": 36,
       "tokens": 0
     },
     {
@@ -571,19 +571,19 @@
         "maintenance_notes#p1#2"
       ],
       "gold_in_topk": null,
-      "latency_ms": 124,
+      "latency_ms": 41,
       "tokens": 0
     },
     {
       "case_id": "mult_01",
       "category": "multi_doc",
       "split": "train",
-      "verdict": "pass",
+      "verdict": "fail",
       "deterministic": {
         "schema_valid": true,
         "citation_exists": true,
         "citation_quote_verbatim": true,
-        "key_fact_coverage": 1.0,
+        "key_fact_coverage": 0.5,
         "numbers_grounded": true,
         "refusal_correct": true,
         "clarify_correct": null,
@@ -596,17 +596,17 @@
         }
       },
       "judge": {
-        "faithfulness": 4,
-        "relevance": 5,
-        "tone": 5,
+        "faithfulness": 2,
+        "relevance": 2,
+        "tone": 2,
         "ambiguity_handling": null,
-        "facts_covered": 2,
-        "rationale": "The answer accurately states the warranty periods for Kestrel Engineering and S01, correctly identifying the differences. However, it does not mention the specific warranty condition of 6,000 running hours for S01, which is a key fact. The tone is appropriate for the audience.",
-        "judge_model": "openai:gpt-4o-mini",
+        "facts_covered": 0,
+        "rationale": "The assistant was given a context that includes information about Kestrel Engineering and S01, but the answer does not reference the context. The answer also contains an invented detail about the warranty period for S01 parts. The correct answer should reference the context and provide a clear and professional tone.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
-      "failure_class": null,
-      "failure_reason": "",
+      "failure_class": "hallucination",
+      "failure_reason": "judge: claims not supported by the context",
       "retrieved_chunk_ids": [
         "supplier_terms_b#p1#0",
         "supplier_terms_a#p1#1",
@@ -616,7 +616,7 @@
         "supplier_terms_a#p1#4"
       ],
       "gold_in_topk": true,
-      "latency_ms": 103,
+      "latency_ms": 44,
       "tokens": 0
     },
     {
@@ -670,7 +670,7 @@
         "maintenance_notes#p1#0"
       ],
       "gold_in_topk": true,
-      "latency_ms": 95,
+      "latency_ms": 44,
       "tokens": 0
     },
     {
@@ -714,7 +714,7 @@
         "supplier_terms_a#p1#2"
       ],
       "gold_in_topk": null,
-      "latency_ms": 63,
+      "latency_ms": 31,
       "tokens": 0
     },
     {
@@ -758,7 +758,7 @@
         "maintenance_notes#p1#1"
       ],
       "gold_in_topk": null,
-      "latency_ms": 120,
+      "latency_ms": 34,
       "tokens": 0
     },
     {
@@ -802,7 +802,7 @@
         "supplier_terms_a#p1#2"
       ],
       "gold_in_topk": null,
-      "latency_ms": 90,
+      "latency_ms": 32,
       "tokens": 0
     },
     {
@@ -831,13 +831,13 @@
         }
       },
       "judge": {
-        "faithfulness": 5,
+        "faithfulness": 4,
         "relevance": 5,
         "tone": 5,
         "ambiguity_handling": null,
-        "facts_covered": 1,
-        "rationale": "The answer correctly states that there are 68 rows in the spares_inventory table where the location is 'Workshop locker', which aligns perfectly with the key fact provided. It directly addresses the question and maintains a professional tone suitable for the audience.",
-        "judge_model": "openai:gpt-4o-mini",
+        "facts_covered": 0,
+        "rationale": "The answer is clear and concise, directly addressing the question. However, it does not explicitly state the source of the information, which could be considered a minor oversight.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
       "failure_class": null,
@@ -851,14 +851,14 @@
         "supplier_terms_a#p1#3"
       ],
       "gold_in_topk": null,
-      "latency_ms": 109,
+      "latency_ms": 45,
       "tokens": 0
     },
     {
       "case_id": "tool_03",
       "category": "tool",
       "split": "train",
-      "verdict": "pass",
+      "verdict": "fail",
       "deterministic": {
         "schema_valid": true,
         "citation_exists": true,
@@ -880,17 +880,17 @@
         }
       },
       "judge": {
-        "faithfulness": 5,
-        "relevance": 5,
-        "tone": 5,
+        "faithfulness": 3,
+        "relevance": 2,
+        "tone": 2,
         "ambiguity_handling": null,
-        "facts_covered": 1,
-        "rationale": "The answer correctly states that there is 1 row in the suppliers table where supplier_id is S02, which aligns with the key fact provided. It directly addresses the question and maintains a professional tone suitable for the audience.",
-        "judge_model": "openai:gpt-4o-mini",
+        "facts_covered": 0,
+        "rationale": "The assistant failed to provide a clear and professional answer. The answer should have directly addressed the question and provided the correct number of rows in the suppliers table where supplier_id is S02. The assistant did not provide any relevant information about the table or its contents.",
+        "judge_model": "ollama:llama3.2:3b",
         "skipped": false
       },
-      "failure_class": null,
-      "failure_reason": "",
+      "failure_class": "prompt_defect",
+      "failure_reason": "unclear failure (tone, format or ambiguity handling)",
       "retrieved_chunk_ids": [
         "table:suppliers",
         "table:spares_inventory",
@@ -900,7 +900,7 @@
         "supplier_terms_a#p1#2"
       ],
       "gold_in_topk": null,
-      "latency_ms": 101,
+      "latency_ms": 42,
       "tokens": 0
     }
   ]

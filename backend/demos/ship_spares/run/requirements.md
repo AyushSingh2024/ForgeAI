@@ -1,6 +1,6 @@
 # Requirements: Cargo Fleet Assistant
 
-Run `20261126-222721-2768cb-ship_spares`. Answers marked *(assumed)* were filled in without a person (unattended mode or skipped questions).
+Run `spares_localjudge`. Answers marked *(assumed)* were filled in without a person (unattended mode or skipped questions).
 
 ## Brief
 > Build an assistant for the chief engineer of a fictional cargo fleet. It should find spare parts in the inventory by part number or description, say which equipment they belong to and how many are on board, flag parts below minimum stock, compare supplier lead times, minimum orders and warranty terms, estimate the total cost of an order, say how many days a delivery will take or whether an offer is still valid, and check the weather forecast at the delivery port. It must not approve purchases, give safety-critical repair instructions, or quote prices or terms that are not in the documents.

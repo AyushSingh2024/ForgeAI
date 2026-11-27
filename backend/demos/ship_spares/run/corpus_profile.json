@@ -89,7 +89,7 @@
   "tables": [
     {
       "name": "spares_inventory",
-      "path": "C:\\Users\\ayush\\OneDrive\\Desktop\\OceanAI\\backend\\runs\\20261126-222721-2768cb-ship_spares\\input\\docs\\spares_inventory.csv",
+      "path": "C:\\Users\\ayush\\OneDrive\\Desktop\\OceanAI\\backend\\runs\\spares_localjudge\\input\\docs\\spares_inventory.csv",
       "columns": [
         {
           "name": "part_no",
@@ -234,7 +234,7 @@
     },
     {
       "name": "suppliers",
-      "path": "C:\\Users\\ayush\\OneDrive\\Desktop\\OceanAI\\backend\\runs\\20261126-222721-2768cb-ship_spares\\input\\docs\\suppliers.csv",
+      "path": "C:\\Users\\ayush\\OneDrive\\Desktop\\OceanAI\\backend\\runs\\spares_localjudge\\input\\docs\\suppliers.csv",
       "columns": [
         {
           "name": "supplier_id",

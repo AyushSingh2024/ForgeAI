@@ -1,12 +1,24 @@
 {
-  "stop_reason": "target pass rate 85% reached",
+  "stop_reason": "reached max iterations (2)",
   "history": [
     {
       "iteration": 0,
-      "pass_rate": 0.875,
+      "pass_rate": 0.75,
       "agent_version": 1
+    },
+    {
+      "iteration": 1,
+      "pass_rate": 0.75,
+      "agent_version": 1,
+      "kept_change": false
+    },
+    {
+      "iteration": 2,
+      "pass_rate": 0.75,
+      "agent_version": 1,
+      "kept_change": false
     }
   ],
   "best_version": 1,
-  "best_train_pass_rate": 0.875
+  "best_train_pass_rate": 0.75
 }

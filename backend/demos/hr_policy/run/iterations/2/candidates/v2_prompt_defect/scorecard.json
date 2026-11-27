@@ -1,0 +1,798 @@
+{
+  "run_id": "interview_hr_policy",
+  "iteration": 2,
+  "agent_version": 2,
+  "split_scored": "train",
+  "summary": {
+    "n_cases": 16,
+    "pass_rate": 0.688,
+    "mean_judge": 4.343,
+    "key_fact_coverage": 0.788,
+    "hallucination_rate": 0.125,
+    "refusal_precision": 1.0,
+    "refusal_recall": 1.0,
+    "by_category": {
+      "ambiguous": 0.5,
+      "answerable": 0.5,
+      "edge": 1.0,
+      "multi_doc": 0.5,
+      "must_refuse": 1.0
+    }
+  },
+  "judge_reliability": {
+    "calibration_pass": false,
+    "calibration_passed": 4,
+    "calibration_total": 7,
+    "calibration_details": [
+      {
+        "case": "answ_01",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 3,
+        "passed": false
+      },
+      {
+        "case": "answ_01",
+        "item": "fluent_hallucination",
+        "expect": "faithfulness<=2",
+        "got": 3,
+        "passed": false
+      },
+      {
+        "case": "answ_01",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "A",
+        "flip_consistent": true,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 2,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 2,
+        "passed": false
+      },
+      {
+        "case": "answ_02",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "tie",
+        "flip_consistent": false,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      }
+    ],
+    "flip_agreement": 0.5,
+    "judge_det_disagreement": 0.222
+  },
+  "cases": [
+    {
+      "case_id": "ambi_01",
+      "category": "ambiguous",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": true,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": 4,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": 5,
+        "facts_covered": 2,
+        "rationale": "The answer is graded on its ability to accurately reflect the context and key facts, without introducing new information or assumptions. The grading criteria focus on the answer's clarity, faithfulness to the context, and tone, rather than its length or complexity. This approach ensures that new employees receive clear and accurate information, even if the answer is brief.",
+        "judge_model": "ollama:llama3.2:3b",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "travel_expenses#p1#5",
+        "travel_expenses#p1#6",
+        "travel_expenses#p1#4",
+        "leave_policy#p1#5",
+        "travel_expenses#p1#0",
+        "travel_expenses#p1#1"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 4716,
+      "tokens": 1563
+    },
+    {
+      "case_id": "ambi_02",
+      "category": "ambiguous",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.5,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": false,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "prompt_defect",
+      "failure_reason": "passage retrieved but key facts missing (coverage 0.5)",
+      "retrieved_chunk_ids": [
+        "leave_policy#p1#5",
+        "leave_policy#p1#2",
+        "leave_policy#p1#0",
+        "leave_policy#p1#1",
+        "leave_policy#p1#4",
+        "leave_policy#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 6128,
+      "tokens": 1804
+    },
+    {
+      "case_id": "answ_01",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": 5,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer must clearly state the reimbursement limit for internet costs for remote employees, and the tone should be friendly and plain-English, suitable for new employees. The answer should not contain any invented or contradicted facts, and should directly answer the question and cover the key facts.",
+        "judge_model": "ollama:llama3.2:3b",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "remote_work#p1#4",
+        "remote_work#p1#3",
+        "remote_work#p1#0",
+        "remote_work#p1#2",
+        "remote_work#p1#1",
+        "travel_expenses#p1#6"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2407,
+      "tokens": 1426
+    },
+    {
+      "case_id": "answ_03",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": 2,
+        "relevance": 4,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 0,
+        "rationale": "The answer must directly address the question and provide a clear, concise explanation. It should also be written in a friendly and plain-English tone, suitable for new employees. The rationale should be brief and to the point.",
+        "judge_model": "ollama:llama3.2:3b",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "leave_policy#p1#4",
+        "leave_policy#p1#3",
+        "leave_policy#p1#1",
+        "leave_policy#p1#5",
+        "leave_policy#p1#2",
+        "leave_policy#p1#0"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2343,
+      "tokens": 1590
+    },
+    {
+      "case_id": "answ_04",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.667,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": 4,
+        "relevance": 4,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 0,
+        "rationale": "The answer should clearly state the benefits of health insurance and wellness programs, using the provided context to support its claims. The tone should be friendly and plain-English, making it accessible to new employees. The answer should directly address the question and cover the key facts.",
+        "judge_model": "ollama:llama3.2:3b",
+        "skipped": false
+      },
+      "failure_class": "prompt_defect",
+      "failure_reason": "passage retrieved but key facts missing (coverage 0.667)",
+      "retrieved_chunk_ids": [
+        "benefits_overview#p1#1",
+        "benefits_overview#p1#2",
+        "benefits_overview#p1#0",
+        "benefits_overview#p1#3",
+        "leave_policy#p1#2",
+        "leave_policy#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 4777,
+      "tokens": 1564
+    },
+    {
+      "case_id": "answ_05",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.5,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": 2,
+        "relevance": 3,
+        "tone": 4,
+        "ambiguity_handling": null,
+        "facts_covered": 0,
+        "rationale": "The answer should contain the key facts about harassment, discrimination, and bullying, as well as the channels for reporting concerns. The tone should be friendly and plain-English, suitable for new employees. The answer should not contain any invented or contradicted facts.",
+        "judge_model": "ollama:llama3.2:3b",
+        "skipped": false
+      },
+      "failure_class": "hallucination",
+      "failure_reason": "judge: claims not supported by the context",
+      "retrieved_chunk_ids": [
+        "code_of_conduct#p1#1",
+        "code_of_conduct#p1#2",
+        "leave_policy#p1#5",
+        "remote_work#p1#0",
+        "remote_work#p1#1",
+        "benefits_overview#p1#5"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2976,
+      "tokens": 1393
+    },
+    {
+      "case_id": "answ_06",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": 4,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer must clearly state the number of days employees can work remotely after completing probation, as stated in the context. The tone should be friendly and plain-English, suitable for new employees. The answer should not contain any invented or contradicted facts.",
+        "judge_model": "ollama:llama3.2:3b",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "remote_work#p1#1",
+        "remote_work#p1#2",
+        "leave_policy#p1#2",
+        "remote_work#p1#3",
+        "leave_policy#p1#1",
+        "remote_work#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2085,
+      "tokens": 1597
+    },
+    {
+      "case_id": "answ_08",
+      "category": "answerable",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 0.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": 4,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer must clearly state the policy for taking sick leave if absent for more than three days, and provide a clear explanation of the required medical certificate. The tone should be friendly and plain-English, suitable for new employees. The answer should directly address the question and cover the key facts.",
+        "judge_model": "ollama:llama3.2:3b",
+        "skipped": false
+      },
+      "failure_class": "prompt_defect",
+      "failure_reason": "passage retrieved but key facts missing (coverage 0.0)",
+      "retrieved_chunk_ids": [
+        "leave_policy#p1#2",
+        "leave_policy#p1#5",
+        "leave_policy#p1#0",
+        "leave_policy#p1#3",
+        "leave_policy#p1#1",
+        "leave_policy#p1#4"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2767,
+      "tokens": 1642
+    },
+    {
+      "case_id": "edge_01",
+      "category": "edge",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": 4,
+        "relevance": 5,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer must clearly state the number of days employees can work remotely after completing probation, as stated in the context. The tone should be friendly and plain-English, suitable for new employees. The answer should not contain any invented or contradicted facts.",
+        "judge_model": "ollama:llama3.2:3b",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "remote_work#p1#1",
+        "remote_work#p1#2",
+        "leave_policy#p1#2",
+        "leave_policy#p1#1",
+        "remote_work#p1#3",
+        "travel_expenses#p1#6"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 2613,
+      "tokens": 1582
+    },
+    {
+      "case_id": "edge_02",
+      "category": "edge",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "benefits_overview#p1#5",
+        "remote_work#p1#4",
+        "code_of_conduct#p1#5",
+        "leave_policy#p1#5",
+        "travel_expenses#p1#6",
+        "remote_work#p1#3"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 1890,
+      "tokens": 1565
+    },
+    {
+      "case_id": "mult_01",
+      "category": "multi_doc",
+      "split": "train",
+      "verdict": "fail",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": false,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": true,
+        "details": {
+          "invalid_citations": [
+            {
+              "ref": {
+                "chunk_id": "C2",
+                "quote": "Employees may accept gifts with a value of up to 50 EUR from business partners."
+              },
+              "chunk_id": "code_of_conduct#p1#3",
+              "reason": "quote not in passage"
+            }
+          ],
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": "hallucination",
+      "failure_reason": "cited a quote that is not in the passage",
+      "retrieved_chunk_ids": [
+        "remote_work#p1#2",
+        "code_of_conduct#p1#3",
+        "remote_work#p1#1",
+        "code_of_conduct#p1#2",
+        "remote_work#p1#0",
+        "remote_work#p1#3"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 4561,
+      "tokens": 1538
+    },
+    {
+      "case_id": "mult_03",
+      "category": "multi_doc",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": 1.0,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": false
+        }
+      },
+      "judge": {
+        "faithfulness": 4,
+        "relevance": 4,
+        "tone": 5,
+        "ambiguity_handling": null,
+        "facts_covered": 1,
+        "rationale": "The answer provides a clear and concise explanation of the rules regarding gifts from business partners and travel expenses. It also addresses the importance of timely reporting and adherence to limits. However, the answer could benefit from a more detailed explanation of the context and its relevance to the question.",
+        "judge_model": "ollama:llama3.2:3b",
+        "skipped": false
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "code_of_conduct#p1#3",
+        "code_of_conduct#p1#2",
+        "travel_expenses#p1#1",
+        "travel_expenses#p1#5",
+        "travel_expenses#p1#0",
+        "travel_expenses#p1#6"
+      ],
+      "gold_in_topk": true,
+      "latency_ms": 5889,
+      "tokens": 1535
+    },
+    {
+      "case_id": "must_01",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "travel_expenses#p1#1",
+        "leave_policy#p1#3",
+        "leave_policy#p1#2",
+        "leave_policy#p1#4",
+        "leave_policy#p1#1",
+        "travel_expenses#p1#3"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 2044,
+      "tokens": 1616
+    },
+    {
+      "case_id": "must_02",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "benefits_overview#p1#5",
+        "benefits_overview#p1#4",
+        "travel_expenses#p1#1",
+        "travel_expenses#p1#2",
+        "remote_work#p1#3",
+        "code_of_conduct#p1#2"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 1793,
+      "tokens": 1486
+    },
+    {
+      "case_id": "must_03",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "code_of_conduct#p1#5",
+        "travel_expenses#p1#5",
+        "code_of_conduct#p1#4",
+        "leave_policy#p1#2",
+        "remote_work#p1#4",
+        "leave_policy#p1#5"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 1759,
+      "tokens": 1565
+    },
+    {
+      "case_id": "must_05",
+      "category": "must_refuse",
+      "split": "train",
+      "verdict": "pass",
+      "deterministic": {
+        "schema_valid": true,
+        "citation_exists": true,
+        "citation_quote_verbatim": true,
+        "key_fact_coverage": null,
+        "numbers_grounded": true,
+        "refusal_correct": true,
+        "clarify_correct": null,
+        "tool_correct": true,
+        "length_ok": true,
+        "hard_fail": false,
+        "details": {
+          "refused": true
+        }
+      },
+      "judge": {
+        "faithfulness": null,
+        "relevance": null,
+        "tone": null,
+        "ambiguity_handling": null,
+        "facts_covered": null,
+        "rationale": "skipped",
+        "judge_model": "",
+        "skipped": true
+      },
+      "failure_class": null,
+      "failure_reason": "",
+      "retrieved_chunk_ids": [
+        "travel_expenses#p1#2",
+        "travel_expenses#p1#1",
+        "travel_expenses#p1#3",
+        "travel_expenses#p1#4",
+        "travel_expenses#p1#0",
+        "leave_policy#p1#5"
+      ],
+      "gold_in_topk": null,
+      "latency_ms": 1688,
+      "tokens": 1430
+    }
+  ]
+}

@@ -15,8 +15,8 @@ from forge.llm.client import LLMClient
 
 
 class PairVerdict(BaseModel):
-    rationale: str = ""
-    winner: Literal["1", "2", "tie"] = "tie"
+    rationale: str
+    winner: Literal["1", "2", "tie"]
 
 
 @dataclass

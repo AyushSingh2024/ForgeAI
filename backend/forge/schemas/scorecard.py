@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class DeterministicResult(BaseModel):
@@ -22,12 +22,15 @@ class DeterministicResult(BaseModel):
 
 
 class JudgeScores(BaseModel):
-    """LLM-facing schema: rationale FIRST, then scores (reason before verdict)."""
-    rationale: str = ""
+    """LLM-facing schema: rationale FIRST, then scores (reason before verdict). Scores have no defaults: a
+    small model that returns {} must be treated as a failed call, not silently graded 3/3/3."""
+    model_config = ConfigDict(json_schema_extra=lambda s: s.__setitem__(
+        "required", ["rationale", "facts_covered", "faithfulness", "relevance", "tone"]))
+    rationale: str
     facts_covered: int | None = Field(default=None, ge=0)
-    faithfulness: int = Field(default=3, ge=1, le=5)
-    relevance: int = Field(default=3, ge=1, le=5)
-    tone: int = Field(default=3, ge=1, le=5)
+    faithfulness: int = Field(ge=1, le=5)
+    relevance: int = Field(ge=1, le=5)
+    tone: int = Field(ge=1, le=5)
     ambiguity_handling: int | None = Field(default=None, ge=1, le=5)
 
 

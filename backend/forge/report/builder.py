@@ -63,6 +63,9 @@ def collect(ctx: RunContext) -> dict[str, Any]:
     calls = read_jsonl(p("llm_calls.jsonl"))
     notes = p("notes.txt").read_text(encoding="utf-8").splitlines() if p("notes.txt").exists() else []
     status = read_json(p("status.json"), {})
+    if status.get("status") == "running":  # the report is the last stage, written before the final status
+        stopped = any(n.startswith("budget exceeded") for n in notes)
+        status = {**status, "status": "budget_stopped" if stopped else "completed"}
     config = read_json(p("config.json"), {})
     by_id = {c.id: c for c in cases}
 

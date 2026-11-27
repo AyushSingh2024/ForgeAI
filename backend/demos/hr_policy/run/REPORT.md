@@ -1,19 +1,19 @@
 # ForgeAI report: Brightfield Assistant
 
-Run `interview_hr_policy` · status **running** · agent model `openai:gpt-4o-mini` · judge `openai:gpt-4o-mini`
+Run `interview_hr_policy` · status **completed** · agent model actually used `openai:gpt-4o-mini` · judge actually used `ollama:llama3.2:3b` (configured judge: `ollama:llama3.2:3b`)
 
 ## 1. Summary
-An automatically built and tested assistant was developed, achieving a baseline training pass rate of 88% and maintaining the same score after optimization. The assistant performed on a holdout set, achieving a pass rate of 75% across 4 cases. Overall, the assistant demonstrated consistent performance in training but showed some limitations in real-world scenarios.
+An automatically built and tested assistant was developed, achieving a baseline training pass rate of 75%. After optimization, the assistant maintained a training pass rate of 75% and scored 75% on the holdout cases, which consisted of 4 instances. The performance on the holdout cases is too few to generalize from.
 
 | metric | baseline (train) | best (train) | holdout (unseen) |
 |---|---|---|---|
-| pass rate | 88% | 88% | 75% |
-| key-fact coverage | 92% | 92% | 100% |
-| hallucination rate | 0% | 0% | 0% |
+| pass rate | 75% | 75% | 75% |
+| key-fact coverage | 79% | 79% | 100% |
+| hallucination rate | 6% | 6% | 0% |
 | refusal recall | 100% | 100% | 0% |
 | cases | 16 | 16 | 4 |
 
-Optimizer: target pass rate 85% reached.
+Optimizer: reached max iterations (2).
 
 ## 2. Requirements
 - Audience: new employees (novice); tone: friendly and plain-English
@@ -55,30 +55,35 @@ xychart-beta
     title "Pass rate by iteration (%)"
     x-axis ["baseline", "holdout"]
     y-axis "pass rate %" 0 --> 100
-    bar [87.5, 75.0]
+    bar [75.0, 75.0]
 ```
 
 | category | baseline (train) | best (train) | holdout |
 |---|---|---|---|
 | ambiguous | 50% | 50% | - |
-| answerable | 83% | 83% | 100% |
+| answerable | 50% | 50% | 100% |
 | edge | 100% | 100% | - |
 | multi_doc | 100% | 100% | 100% |
 | must_refuse | 100% | 100% | 0% |
 
 ## 7. Change log
-_No changes were made._
+| iter | failure class | change | cases targeted | pass rate before -> after | kept |
+|---|---|---|---|---|---|
+| 1 | prompt_defect | `system_prompt.slots.grounding`: Only state facts that appear in the provided context or t... -> Only state facts that appear in the provided context or t... | ambi_02, answ_04, answ_08 | 75% -> 75% | reverted (no improvement) |
+| 1 | hallucination | `system_prompt.slots.citation_rule`: Cite every factual claim with a short verbatim quote from... -> Every claim must have its own citation with a quote copie...; `system_prompt.slots.grounding`: Only state facts that appear in the provided context or t... -> Use ONLY sentences you can point to in the context passag... | answ_05 | 75% -> 75% | reverted (no improvement) |
+| 2 | prompt_defect | `system_prompt.slots.format`: Answer in short paragraphs. -> Answer in short paragraphs. Mention every number, limit, ... | ambi_02, answ_04, answ_08 | 75% -> 69% | reverted (score went down) |
+| 2 | hallucination | `retrieval.min_score`: 0.25 -> 0.3 | answ_05 | 75% -> 75% | reverted (no improvement) |
 
 ## 8. Judge reliability
-- Calibration: 7/7 checks passed -> trusted
-- Position-swap agreement (same winner both orders): 100%
-- Judge vs deterministic disagreement: 10%
-  - perfect (answ_01): expected faithfulness>=4, got 5 -> pass
-  - fluent_hallucination (answ_01): expected faithfulness<=2, got 1 -> pass
+- Calibration: 4/7 checks passed -> NOT trusted: verdicts used the deterministic checks only
+- Position-swap agreement (same winner both orders): 50%
+- Judge vs deterministic disagreement: 20%
+  - perfect (answ_01): expected faithfulness>=4, got 3 -> FAIL
+  - fluent_hallucination (answ_01): expected faithfulness<=2, got 3 -> FAIL
   - verbosity (answ_01): expected padded answer must not win, got A -> pass
-  - wrong_refusal (answ_01): expected relevance<=2, got 1 -> pass
-  - perfect (answ_02): expected faithfulness>=4, got 5 -> pass
-  - verbosity (answ_02): expected padded answer must not win, got A -> pass
+  - wrong_refusal (answ_01): expected relevance<=2, got 2 -> pass
+  - perfect (answ_02): expected faithfulness>=4, got 2 -> FAIL
+  - verbosity (answ_02): expected padded answer must not win, got tie -> pass
   - wrong_refusal (answ_02): expected relevance<=2, got 1 -> pass
 
 ## 9. Known failures
@@ -87,10 +92,12 @@ _No changes were made._
 | holdout | must_04 | must_refuse | Can you provide me with the per-diem totals for my upcoming trip? | false_compliance | answered a question it must refuse |
 | train | ambi_02 | ambiguous | What are the rules regarding leave and absence notifications? | prompt_defect | passage retrieved but key facts missing (coverage 0.5) |
 | train | answ_04 | answerable | What benefits do employees receive for their health insurance and wellness programs? | prompt_defect | passage retrieved but key facts missing (coverage 0.667) |
+| train | answ_05 | answerable | What should I do if I experience harassment or discrimination at work? | hallucination | judge: claims not supported by the context |
+| train | answ_08 | answerable | What is the policy for taking sick leave if I am absent for more than three days? | prompt_defect | passage retrieved but key facts missing (coverage 0.0) |
 
 ## 10. Limitations and next steps
-The assistant has 3 known failures and faced challenges with unsupported asks, indicating areas for improvement. Additionally, the evaluation set was small, consisting of only 4 holdout cases, which may limit the generalizability of the results.
+The assistant has 5 known failures and a judge calibration that did not pass. Additionally, the evaluation set is small, with only 4 holdout cases.
 
 ## 11. Cost and runtime
-- LLM calls: 100 (59 from cache, 0 failed); tokens: 49615; wall clock: 114.3 s
-- Calls by role: {'builder': 58, 'agent': 20, 'judge': 22}
+- LLM calls: 216 (125 from cache, 0 failed); tokens: 120493; wall clock: 265.4 s
+- Calls by role: {'builder': 61, 'agent': 84, 'judge': 71}

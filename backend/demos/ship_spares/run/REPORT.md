@@ -1,15 +1,15 @@
 # ForgeAI report: Cargo Fleet Assistant
 
-Run `20261126-222721-2768cb-ship_spares` · status **running** · agent model `openai:gpt-4o-mini` · judge `openai:gpt-4o-mini`
+Run `spares_localjudge` · status **completed** · agent model actually used `openai:gpt-4o-mini` · judge actually used `ollama:llama3.2:3b` (configured judge: `ollama:llama3.2:3b`)
 
 ## 1. Summary
-An automatically built and tested assistant was developed, achieving a baseline training pass rate of 78% and improving to a best training pass rate of 83% after optimization. The assistant performed exceptionally well on the held-out cases, achieving a 100% pass rate. Overall, the assistant demonstrated effective learning and adaptation capabilities during the testing phases.
+An automatically built and tested assistant was developed, achieving a baseline training pass rate of 72% and improving to a best training pass rate of 78% after optimization. The assistant scored 100% on the holdout cases, which consisted of 3 instances. However, the small number of holdout cases is too few to generalize from.
 
 | metric | baseline (train) | best (train) | holdout (unseen) |
 |---|---|---|---|
-| pass rate | 78% | 83% | 100% |
-| key-fact coverage | 90% | 90% | 100% |
-| hallucination rate | 6% | 6% | 0% |
+| pass rate | 72% | 78% | 100% |
+| key-fact coverage | 93% | 93% | 100% |
+| hallucination rate | 11% | 6% | 0% |
 | refusal recall | 100% | 100% | 100% |
 | cases | 18 | 18 | 3 |
 
@@ -65,48 +65,48 @@ xychart-beta
     title "Pass rate by iteration (%)"
     x-axis ["baseline", "iter 1", "holdout"]
     y-axis "pass rate %" 0 --> 100
-    bar [77.8, 83.3, 100.0]
+    bar [72.2, 77.8, 100.0]
 ```
 
 | category | baseline (train) | best (train) | holdout |
 |---|---|---|---|
-| ambiguous | 50% | 50% | - |
-| answerable | 86% | 86% | 100% |
+| ambiguous | 0% | 0% | - |
+| answerable | 100% | 100% | 100% |
 | edge | 100% | 100% | - |
 | multi_doc | 0% | 50% | - |
 | must_refuse | 100% | 100% | 100% |
-| tool | 100% | 100% | - |
+| tool | 50% | 50% | - |
 
 ## 7. Change log
 | iter | failure class | change | cases targeted | pass rate before -> after | kept |
 |---|---|---|---|---|---|
-| 1 | prompt_defect | `system_prompt.slots.grounding`: Only state facts that appear in the provided context or t... -> Only state facts that appear in the provided context or t... | ambi_01, answ_07, mult_01 | 78% -> 78% | reverted (no improvement) |
-| 1 | hallucination | `system_prompt.slots.citation_rule`: Cite every factual claim with a short verbatim quote from... -> Every claim must have its own citation with a quote copie...; `system_prompt.slots.grounding`: Only state facts that appear in the provided context or t... -> Use ONLY sentences you can point to in the context passag... | mult_03 | 78% -> 83% | kept |
-| 2 | prompt_defect | `system_prompt.slots.format`: Answer in short paragraphs. -> Answer in short paragraphs. Mention every number, limit, ... | ambi_01, answ_07 | 83% -> 83% | reverted (no improvement) |
-| 2 | hallucination | `retrieval.min_score`: 0.25 -> 0.3 | mult_03 | 83% -> 83% | reverted (no improvement) |
+| 1 | prompt_defect | `system_prompt.slots.grounding`: Only state facts that appear in the provided context or t... -> Always include all relevant facts from the provided conte... | ambi_01, ambi_03, tool_03 | 72% -> 78% | kept |
+| 2 | prompt_defect | `system_prompt.slots.format`: Answer in short paragraphs. -> Answer in short paragraphs. Mention every number, limit, ... | ambi_01, ambi_03, tool_03 | 78% -> 72% | reverted (score went down) |
+| 2 | hallucination | `system_prompt.slots.citation_rule`: Cite every factual claim with a short verbatim quote from... -> Every claim must have its own citation with a quote copie...; `system_prompt.slots.grounding`: Always include all relevant facts from the provided conte... -> Use ONLY sentences you can point to in the context passag... | mult_03 | 78% -> 67% | reverted (score went down) |
 
 ## 8. Judge reliability
-- Calibration: 6/7 checks passed -> trusted
-- Position-swap agreement (same winner both orders): 100%
-- Judge vs deterministic disagreement: 8%
-  - perfect (answ_01): expected faithfulness>=4, got 5 -> pass
-  - fluent_hallucination (answ_01): expected faithfulness<=2, got 4 -> FAIL
-  - verbosity (answ_01): expected padded answer must not win, got A -> pass
-  - wrong_refusal (answ_01): expected relevance<=2, got 1 -> pass
+- Calibration: 5/7 checks passed -> trusted
+- Position-swap agreement (same winner both orders): 50%
+- Judge vs deterministic disagreement: 17%
+  - perfect (answ_01): expected faithfulness>=4, got 3 -> FAIL
+  - fluent_hallucination (answ_01): expected faithfulness<=2, got 3 -> FAIL
+  - verbosity (answ_01): expected padded answer must not win, got tie -> pass
+  - wrong_refusal (answ_01): expected relevance<=2, got 2 -> pass
   - perfect (answ_02): expected faithfulness>=4, got 5 -> pass
   - verbosity (answ_02): expected padded answer must not win, got A -> pass
-  - wrong_refusal (answ_02): expected relevance<=2, got 1 -> pass
+  - wrong_refusal (answ_02): expected relevance<=2, got 2 -> pass
 
 ## 9. Known failures
 | split | case | category | question | failure class | reason |
 |---|---|---|---|---|---|
 | train | ambi_01 | ambiguous | What are the lead times for spare parts delivery? | prompt_defect | passage retrieved but key facts missing (coverage 0.5) |
-| train | answ_07 | answerable | What is the lead time for fuel injection parts and how is the minimum order quantity defined? | prompt_defect | passage retrieved but key facts missing (coverage 0.667) |
+| train | ambi_03 | ambiguous | What are the terms regarding spare parts supplied by Ostrava Marine Parts and Bluewake Supply? | prompt_defect | passage retrieved but key facts missing (coverage 1.0) |
 | train | mult_03 | multi_doc | What are the lead times for fuel injection parts from both S01 and S04, and how do they compare? | hallucination | cited a quote that is not in the passage |
+| train | tool_03 | tool | How many rows are there in the suppliers table where supplier_id is S02? | prompt_defect | unclear failure (tone, format or ambiguity handling) |
 
 ## 10. Limitations and next steps
-The assistant has three known failures and faced unsupported asks in three instances. Additionally, the evaluation set was small, consisting of only 21 cases, which may limit the generalizability of the results.
+The assistant has 4 known failures and encountered 3 unsupported asks during testing. Additionally, the evaluation set is small, with only 21 cases, which may limit the reliability of the results.
 
 ## 11. Cost and runtime
-- LLM calls: 258 (239 from cache, 0 failed); tokens: 35580; wall clock: 91.0 s
-- Calls by role: {'builder': 71, 'agent': 103, 'judge': 84}
+- LLM calls: 214 (136 from cache, 0 failed); tokens: 160367; wall clock: 201.8 s
+- Calls by role: {'builder': 72, 'agent': 83, 'judge': 59}

@@ -161,6 +161,6 @@ suggested_questions:
 - Can you estimate the total cost for ordering 5 units of part number 67890?
 - How many days will it take for the delivery to arrive at the main port?
 provenance:
-  built_from_run: 20261126-222721-2768cb-ship_spares
-  requirements_hash: b89a01666a93
-  created_at: '2026-11-26T16:57:38+00:00'
+  built_from_run: spares_localjudge
+  requirements_hash: 7ffdfe4f198b
+  created_at: '2026-11-27T00:28:40+00:00'
