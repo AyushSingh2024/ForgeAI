@@ -60,7 +60,8 @@ forge chat demos\hr_policy\run\agent\agent.yaml
 **5. Optional web UI:** `uvicorn app.main:app` in `backend/`, then `npm install` and `npm run dev` in `frontend/`.
 Open http://localhost:3000.
 
-**6. Deploy for free:** frontend on Vercel, backend (with the local Ollama judge) on a free Hugging Face Space
+**6. Deploy for free:** the quickest is Streamlit Community Cloud with `streamlit_app.py` (no card).
+Full app: frontend on Vercel, backend (with the local Ollama judge) on a free Hugging Face Space
 (`deploy/huggingface-gradio/`) or an Oracle Cloud Always Free VM (root `Dockerfile`). Step by step: [DEPLOY.md](DEPLOY.md).
 
 **Tests:** `pytest -m "not slow"` in `backend/` (55 offline tests that use a fake model).

@@ -1,6 +1,6 @@
 # Deploying ForgeAI for free
 
-**Frontend → Vercel (free). Backend → Oracle Cloud Always Free VM (section 4), or a Hugging Face Space if you have PRO (section 1).** Hugging Face now needs PRO for
+**Easiest: Streamlit Community Cloud (next section, free, no card).** For the full Next.js app: frontend → Vercel, backend → Oracle Cloud Always Free VM (section 4) or a Hugging Face Space with PRO (section 1).** Hugging Face now needs PRO for
 CPU Spaces, so the free permanent option is the **Oracle Cloud Always Free VM** (section 4). The same backend runs on
 both (Docker image on the VM).
 
@@ -14,6 +14,27 @@ flowchart LR
     A -->|agent model| P[OpenAI gpt-4o-mini]
     A -->|keyless| M[open-meteo]
 ```
+
+## Easiest free option: Streamlit Community Cloud (no card)
+
+One app, no separate backend: `streamlit_app.py` (repo root) calls the engine directly. Pages: browse runs
+(the committed demo runs + builds made there), chat with any agent, build a new agent (unattended).
+Free hosting cannot run Ollama, so the judge there is a hosted model; the committed demo runs used the local
+Ollama judge and every report says which judge ran.
+
+1. share.streamlit.io → sign in with GitHub → **Create app** → "Deploy a public app from GitHub".
+2. Repository `AyushSingh2024/ForgeAI`, branch `main`, main file path `streamlit_app.py`.
+3. **Advanced settings**: Python version **3.11**; Secrets:
+   ```toml
+   OPENAI_API_KEY = "sk-...a new key with a spending limit"
+   APP_PASSWORD = "a password you give your reviewer"
+   ```
+   Optional: `MAX_BUILDS_PER_DAY = "5"`, `EMBEDDER = "hash"` (lite mode if the app runs out of memory).
+4. **Deploy**. The first start installs the packages (several minutes).
+
+Notes: the app sleeps after a period without visitors and wakes when someone opens the link; builds made there
+are lost when the app restarts (use "Download this run"); a build runs in the browser tab, so keep it open;
+one build at a time and a daily cap protect your API credit.
 
 ## Why these platforms
 

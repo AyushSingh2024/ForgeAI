@@ -30,3 +30,6 @@ frontend/tsconfig.tsbuildinfo
 Thumbs.db
 .vscode/
 .idea/
+
+# Streamlit secrets (set them in the Streamlit Cloud dashboard instead)
+.streamlit/secrets.toml
