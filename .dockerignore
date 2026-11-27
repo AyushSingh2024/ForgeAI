@@ -1,0 +1,11 @@
+.git
+frontend
+**/node_modules
+**/.venv
+**/__pycache__
+**/.pytest_cache
+backend/.cache
+backend/runs
+backend/.env
+**/.extracted
+**/*.egg-info

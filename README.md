@@ -60,6 +60,9 @@ forge chat demos\hr_policy\run\agent\agent.yaml
 **5. Optional web UI:** `uvicorn app.main:app` in `backend/`, then `npm install` and `npm run dev` in `frontend/`.
 Open http://localhost:3000.
 
+**6. Deploy for free:** frontend on Vercel, backend (with the local Ollama judge) on Hugging Face Spaces or an
+Oracle Cloud Always Free VM, using the root `Dockerfile`. Step by step: [DEPLOY.md](DEPLOY.md).
+
 **Tests:** `pytest -m "not slow"` in `backend/` (55 offline tests that use a fake model).
 
 ## Requirements map
@@ -84,4 +87,4 @@ Open http://localhost:3000.
 5. **Provider switch:** Ollama locally (official runs), a hosted open-weight model on Render. Every LLM call goes through one client with JSON-schema output, repair retries and deterministic fallbacks.
 
 ## Repo map
-`backend/` (engine `forge/` + API `app/`) · `frontend/` · `PLAN.md` (design) · `PHASES.md` (build phases) · `DEPLOY.md` (Render + Vercel)
+`backend/` (engine `forge/` + API `app/`) · `frontend/` · `PLAN.md` (design) · `PHASES.md` (build phases) · `DEPLOY.md` (Vercel + Hugging Face Spaces / Oracle VM) · `Dockerfile`
