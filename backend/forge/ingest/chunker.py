@@ -94,8 +94,18 @@ def chunk_document(doc: Document, chunk_size: int = 600, overlap: int = 90) -> l
                 s0 = start
                 for sm in _SENT.finditer(text, start, end):
                     if sm.end() - s0 >= max_chars:
+                        while sm.end() - s0 > max_chars * 1.5:
+                            cut = text.rfind(" ", s0 + max_chars // 2, s0 + max_chars)
+                            cut = cut + 1 if cut != -1 else s0 + max_chars
+                            blocks.append((s0, cut, path))
+                            s0 = cut
                         blocks.append((s0, sm.end(), path))
                         s0 = sm.end()
+                while end - s0 > max_chars * 1.5:  # no sentence ends at all: cut at whitespace
+                    cut = text.rfind(" ", s0 + max_chars // 2, s0 + max_chars)
+                    cut = cut + 1 if cut != -1 else s0 + max_chars
+                    blocks.append((s0, cut, path))
+                    s0 = cut
                 if end > s0 and text[s0:end].strip():
                     blocks.append((s0, end, path))
             else:

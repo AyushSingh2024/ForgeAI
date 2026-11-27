@@ -12,7 +12,7 @@ def verify(probe_q: str, hits: list[Hit], llm: LLMClient) -> Probe:
     probe = Probe(question=probe_q, retrieved=[RetrievedRef(chunk_id=h.chunk_id, score=round(h.score, 5)) for h in hits])
     if not hits:
         return probe
-    passages = [{"id": h.chunk_id, "text": h.chunk.text[:1200]} for h in hits[:5]]
+    passages = [{"id": h.chunk_id, "text": h.chunk.text[:3200]} for h in hits[:5]]
     res = llm.complete("guard_verify", {"question": probe_q, "passages": passages}, schema=VerifyResult, max_tokens=500)
     if not res.ok:
         return probe

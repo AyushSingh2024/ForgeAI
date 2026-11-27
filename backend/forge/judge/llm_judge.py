@@ -13,7 +13,7 @@ from forge.schemas.scorecard import JudgeResult, JudgeScores
 def judge_case(question: str, answer_text: str, context: list[str], key_facts: list[str], tone: str,
                ambiguous: bool, llm: LLMClient) -> JudgeResult:
     res = llm.complete("judge_rubric", {"question": question, "answer": answer_text.strip()[:3000],
-                                        "context": [c[:900] for c in context[:4]], "key_facts": key_facts,
+                                        "context": [c[:1600] for c in context[:5]], "key_facts": key_facts,
                                         "tone": tone, "ambiguous": ambiguous},
                        schema=JudgeScores, temperature=0.0, max_tokens=500)
     if not res.ok:

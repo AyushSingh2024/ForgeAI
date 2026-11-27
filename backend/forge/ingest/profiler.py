@@ -66,13 +66,13 @@ def run_ingest(ctx: RunContext) -> CorpusProfile:
 
     keywords = _keywords(chunks, documents)
     profiles = []
-    for d in documents:
+    for n_doc, d in enumerate(documents):
         full = "\n".join(p.text for p in d.pages)
         headings = [h.strip("# ").strip() for h in _HEAD_LINE.findall(full)][:25]
         summary = ""
         res = ctx.hub.builder.complete("doc_summary", {"title": d.title or d.doc_id, "text": full[:6000]},
-                                       schema=Summary, max_tokens=200)
-        if res.ok:
+                                       schema=Summary, max_tokens=200) if n_doc < 25 else None
+        if res is not None and res.ok:
             summary = res.data.summary.strip()
         if not summary:
             summary = re.sub(r"\s+", " ", full.strip())[:200]
@@ -93,6 +93,8 @@ def run_ingest(ctx: RunContext) -> CorpusProfile:
     write_jsonl(ctx.path("corpus", "documents.jsonl"), documents)
     write_jsonl(ctx.path("corpus", "chunks.jsonl"), chunks)
     write_json(ctx.path("corpus_profile.json"), profile)
+    for w in warnings[:15]:
+        ctx.note(f"ingest: {w[:200]}")
     ctx.emit("ingest", "info", f"{len(documents)} documents, {len(tables)} tables, {len(chunks)} chunks"
                                + (f", {len(warnings)} warnings" if warnings else ""))
     return profile

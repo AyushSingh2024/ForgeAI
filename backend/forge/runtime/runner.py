@@ -74,7 +74,7 @@ class AgentRuntime:
         hits = self.retriever.search(question)
         trace["hits"] = [{"chunk_id": h.chunk_id, "doc_id": h.chunk.doc_id, "page": h.chunk.page,
                           "score": round(h.score, 5), "dense": round(h.dense_score, 4), "bm25": round(h.bm25_score, 3),
-                          "text": h.chunk.text[:600]} for h in hits]
+                          "text": h.chunk.text[:6000]} for h in hits]
         best = HybridRetriever.best_score(hits)
         trace["best_score"] = round(best, 4)
 

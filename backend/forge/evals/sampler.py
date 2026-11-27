@@ -54,6 +54,8 @@ def sample_pairs(chunks: list[Chunk], n: int, embedder: Embedder, seed: int, sam
     pool = usable(chunks)
     if len(pool) < 2:
         return []
+    if len(pool) > 600:  # pair search is quadratic: sample very large corpora first
+        pool = random.Random(seed).sample(pool, 600)
     vecs = _vectors(pool, embedder)
     sims = vecs @ vecs.T
     cands = []

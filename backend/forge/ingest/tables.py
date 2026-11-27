@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import csv
+import io
 import re
 from pathlib import Path
 
@@ -18,12 +20,39 @@ def normalise_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def _read_csv(path: Path) -> pd.DataFrame:
+    """Tolerant CSV reading: UTF-8/UTF-16/cp1252, comma/semicolon/tab/pipe, title rows above the header,
+    and ragged rows (rows with extra fields are skipped rather than failing the whole file)."""
+    raw = path.read_bytes()
+    if raw[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        text = raw.decode("utf-16")
+    else:
+        if b"\x00" in raw:
+            raise ValueError("file looks binary, not CSV")
+        try:
+            text = raw.decode("utf-8-sig")
+        except UnicodeDecodeError:
+            text = raw.decode("cp1252", errors="replace")
+    lines = [ln for ln in text.splitlines() if ln.strip(" ,;\t|")]
+    if not lines:
+        raise ValueError("no rows")
+    sample = lines[:30]
+
+    def cells(line: str, d: str) -> list[str]:
+        return next(csv.reader([line], delimiter=d))
+
+    delim = max(",;\t|", key=lambda d: sorted(len(cells(ln, d)) for ln in sample)[len(sample) // 2])
+    widths = [sum(1 for c in cells(ln, delim) if c.strip()) for ln in sample]
+    typical = sorted(widths)[len(widths) // 2]
+    start = 0
+    while start < len(sample) - 1 and typical > 1 and widths[start] <= 1:  # title rows above the real header
+        start += 1
+    return pd.read_csv(io.StringIO("\n".join(lines[start:])), sep=delim, on_bad_lines="skip", skipinitialspace=True)
+
+
 def read_table(path: Path, sheet: str | int | None = None) -> pd.DataFrame:
     if path.suffix.lower() == ".csv":
-        try:
-            df = pd.read_csv(path)
-        except UnicodeDecodeError:
-            df = pd.read_csv(path, encoding="cp1252")
+        df = _read_csv(path)
     else:
         df = pd.read_excel(path, sheet_name=sheet or 0)
     return normalise_columns(df)
@@ -41,7 +70,10 @@ def _info(name: str, path: Path, df: pd.DataFrame) -> TableInfo:
 
 def register_table(path: Path) -> list[TableInfo]:
     if path.suffix.lower() == ".csv":
-        return [_info(slugify(path.stem), path, read_table(path))]
+        df = read_table(path)
+        if df.empty:
+            raise ValueError("table has a header but no data rows")
+        return [_info(slugify(path.stem), path, df)]
     out = []
     xls = pd.ExcelFile(path)
     for sheet in xls.sheet_names:
