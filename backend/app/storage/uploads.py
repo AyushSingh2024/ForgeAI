@@ -9,7 +9,8 @@ from pathlib import Path, PurePosixPath
 
 from fastapi import HTTPException, UploadFile
 
-ALLOWED = {".pdf", ".docx", ".md", ".markdown", ".txt", ".csv", ".xlsx", ".html", ".htm"}
+ALLOWED = {".pdf", ".docx", ".md", ".markdown", ".txt", ".csv", ".xlsx", ".html", ".htm", ".png", ".jpg",
+           ".jpeg", ".tif", ".tiff", ".bmp", ".webp"}
 MAGIC = {".pdf": b"%PDF", ".docx": b"PK", ".xlsx": b"PK"}
 
 

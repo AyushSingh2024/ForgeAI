@@ -6,7 +6,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
-DocType = Literal["pdf", "docx", "md", "txt", "html", "csv", "xlsx"]
+DocType = Literal["pdf", "docx", "md", "txt", "html", "csv", "xlsx", "image"]
 
 
 class Page(BaseModel):

@@ -17,7 +17,7 @@ def docs_fingerprint(docs_dir: Path) -> str:
 
     h = hashlib.sha256()
     for p in sorted(docs_dir.rglob("*")):
-        if p.is_file():
+        if p.is_file() and not any(part.startswith(".") for part in p.relative_to(docs_dir).parts):
             st = p.stat()
             h.update(f"{p.relative_to(docs_dir)}:{st.st_size}".encode())
     return h.hexdigest()[:16]

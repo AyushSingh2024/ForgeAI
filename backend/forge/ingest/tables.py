@@ -85,6 +85,91 @@ def register_table(path: Path) -> list[TableInfo]:
     return out
 
 
+_PIPE_ROW = re.compile(r"^\s*\|.*\|\s*$")
+_SEP_ROW = re.compile(r"^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$")
+
+
+def _clean_frame(df: pd.DataFrame) -> pd.DataFrame | None:
+    """Keep a table only if it looks like a real table: >= 2 columns, >= 1 data row, a mostly filled header."""
+    if df is None or df.empty:
+        return None
+    df = df.copy()
+    df.columns = [str(c).replace("\n", " ").strip() for c in df.columns]
+    df = df.dropna(axis=1, how="all")
+    df = df.loc[:, [bool(str(c).strip()) or df[c].notna().any() for c in df.columns]]
+    df = df.dropna(axis=0, how="all")
+    if df.shape[1] < 2 or df.shape[0] < 1:
+        return None
+    named = sum(1 for c in df.columns if str(c).strip() and not str(c).lower().startswith(("col", "unnamed")))
+    if named < max(2, df.shape[1] // 2):
+        return None
+    for c in df.columns:
+        if not pd.api.types.is_numeric_dtype(df[c]):
+            df[c] = df[c].map(lambda v: v.replace("\n", " ").strip() if isinstance(v, str) else v)
+            num = pd.to_numeric(df[c].map(lambda v: re.sub(r"[,\s]", "", v) if isinstance(v, str) else v),
+                                errors="coerce")
+            if num.notna().sum() == df[c].notna().sum() and num.notna().any():
+                df[c] = num
+    return df
+
+
+def pipe_tables(text: str) -> list[pd.DataFrame]:
+    """Markdown / pipe-delimited tables inside text (| a | b |), including PDF text that kept the pipes."""
+    out, block = [], []
+    for line in text.splitlines() + [""]:
+        if _PIPE_ROW.match(line):
+            block.append(line)
+            continue
+        if len(block) >= 3:
+            rows = [[c.strip() for c in ln.strip().strip("|").split("|")] for ln in block if not _SEP_ROW.match(ln)]
+            header, body = rows[0], [r for r in rows[1:] if len(r) == len(rows[0])]
+            if body:
+                df = _clean_frame(pd.DataFrame(body, columns=header))
+                if df is not None:
+                    out.append(df)
+        block = []
+    return out
+
+
+def extract_embedded_tables(path: Path, ext: str, doc_id: str, pages, out_dir: Path) -> list[Path]:
+    """Find tables inside a PDF / DOCX / text document and save each as CSV so csv_lookup can query it."""
+    found: list[tuple[str, pd.DataFrame]] = []
+    if ext == ".pdf":
+        import fitz
+
+        with fitz.open(str(path)) as pdf:
+            for pno, page in enumerate(pdf, start=1):
+                try:
+                    tabs = page.find_tables()  # ruled tables (drawn lines)
+                except Exception:  # noqa: BLE001
+                    continue
+                for k, tab in enumerate(tabs.tables, start=1):
+                    df = _clean_frame(tab.to_pandas())
+                    if df is not None:
+                        found.append((f"p{pno}_t{k}", df))
+    elif ext == ".docx":
+        import docx
+
+        for k, t in enumerate(docx.Document(str(path)).tables, start=1):
+            rows = [[c.text.strip() for c in r.cells] for r in t.rows]
+            if len(rows) >= 2:
+                df = _clean_frame(pd.DataFrame(rows[1:], columns=rows[0]))
+                if df is not None:
+                    found.append((f"t{k}", df))
+    if not found:  # pipe tables in the extracted text (markdown, txt, and PDFs that kept the pipes)
+        for page in pages:
+            for k, df in enumerate(pipe_tables(page.text), start=1):
+                found.append((f"p{page.number}_t{k}", df))
+    paths = []
+    if found:
+        out_dir.mkdir(parents=True, exist_ok=True)
+    for label, df in found[:20]:
+        csv_path = out_dir / f"{doc_id}_{label}.csv"
+        df.to_csv(csv_path, index=False)
+        paths.append(csv_path)
+    return paths
+
+
 def table_card(table: TableInfo) -> str:
     cols = ", ".join(f"{c.name} ({c.dtype}, e.g. {', '.join(map(str, c.sample_values[:2]))})" for c in table.columns)
     example = table.sample_rows[0] if table.sample_rows else {}

@@ -7,13 +7,16 @@ import re
 from html.parser import HTMLParser
 from pathlib import Path
 
-from forge.ingest.tables import register_table
+from forge.ingest import ocr
+from forge.ingest.tables import extract_embedded_tables, register_table
 from forge.schemas.corpus import Document, Page, TableInfo
 from forge.util import slugify
 
-TEXT_EXT = {".pdf", ".docx", ".md", ".markdown", ".txt", ".html", ".htm"}
+IMAGE_EXT = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".webp"}
+TEXT_EXT = {".pdf", ".docx", ".md", ".markdown", ".txt", ".html", ".htm"} | IMAGE_EXT
 TABLE_EXT = {".csv", ".xlsx", ".xls"}
 SUPPORTED = TEXT_EXT | TABLE_EXT
+EXTRACTED_DIR = ".extracted"  # tables found inside documents are written here as CSV (hidden: not re-ingested)
 
 
 def _sha(path: Path) -> str:
@@ -40,9 +43,26 @@ def load_pdf(path: Path) -> tuple[list[Page], str | None, list[str]]:
         for i, page in enumerate(pdf, start=1):
             text = page.get_text("text") or ""
             if len(text.strip()) < 20:
-                warnings.append(f"{path.name} page {i} has almost no text (scanned image?)")
+                ocr_text = ""
+                if ocr.budget_left():
+                    ocr_text = ocr.ocr_pdf_page(page)
+                if len(ocr_text.strip()) >= 10:
+                    text = ocr_text
+                    warnings.append(f"{path.name} page {i} is a scanned image: text was read with OCR (check quotes)")
+                else:
+                    why = "OCR unavailable" if not ocr.available() else (
+                        "OCR page limit reached" if not ocr.budget_left() else "OCR found no text")
+                    warnings.append(f"{path.name} page {i} has almost no text (scanned image?; {why})")
             pages.append(Page(number=i, text=text))
     return pages, title, warnings
+
+
+def load_image(path: Path) -> tuple[list[Page], str | None, list[str]]:
+    """Photos or scans of documents (PNG/JPG/TIFF...): read with OCR."""
+    if not ocr.available():
+        raise ValueError("image file but OCR is unavailable (pip install rapidocr_onnxruntime)")
+    text = ocr.ocr_image_file(path)
+    return [Page(number=1, text=text)], path.stem, [f"{path.name} is an image: text was read with OCR (check quotes)"]
 
 
 def load_docx(path: Path) -> tuple[list[Page], str | None, list[str]]:
@@ -127,10 +147,10 @@ def _paginate(text: str, page_chars: int = 3500) -> list[Page]:
 
 
 LOADERS = {".pdf": load_pdf, ".docx": load_docx, ".md": load_text, ".markdown": load_text, ".txt": load_text,
-           ".html": load_html, ".htm": load_html}
+           ".html": load_html, ".htm": load_html, **{e: load_image for e in IMAGE_EXT}}
 
 _TYPE = {".pdf": "pdf", ".docx": "docx", ".md": "md", ".markdown": "md", ".txt": "txt", ".html": "html",
-         ".htm": "html"}
+         ".htm": "html", **{e: "image" for e in IMAGE_EXT}}
 
 
 def _is_placeholder(path: Path) -> bool:
@@ -144,8 +164,13 @@ def load_folder(docs_dir: Path) -> tuple[list[Document], list[TableInfo], list[s
     tables: list[TableInfo] = []
     warnings: list[str] = []
     used_ids: set[str] = set()
+    extracted_dir = docs_dir / EXTRACTED_DIR
+    if extracted_dir.exists():  # regenerate: the documents may have changed since the last ingest
+        for old in extracted_dir.glob("*.csv"):
+            old.unlink(missing_ok=True)
     for path in sorted(p for p in docs_dir.rglob("*") if p.is_file()):
-        if path.name.startswith(".") or _is_placeholder(path):
+        rel_parts = path.relative_to(docs_dir).parts
+        if any(part.startswith(".") for part in rel_parts) or _is_placeholder(path):
             continue
         ext = path.suffix.lower()
         if ext not in SUPPORTED:
@@ -173,4 +198,11 @@ def load_folder(docs_dir: Path) -> tuple[list[Document], list[TableInfo], list[s
         used_ids.add(doc_id)
         documents.append(Document(doc_id=doc_id, path=str(path), type=_TYPE[ext], title=title or path.stem,
                                   sha256=_sha(path), pages=pages))
+        # tables inside the document become queryable tables too (the text stays in the chunks as well)
+        try:
+            for csv_path in extract_embedded_tables(path, ext, doc_id, pages, extracted_dir):
+                tables.extend(register_table(csv_path))
+                warnings.append(f"{path.name}: found a table ({csv_path.stem}) and made it queryable")
+        except Exception as exc:  # noqa: BLE001 - table extraction is a bonus, never a failure
+            warnings.append(f"{path.name}: table extraction failed ({exc.__class__.__name__}: {exc})")
     return documents, tables, warnings

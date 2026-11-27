@@ -3,7 +3,7 @@
 import { useRef, useState, type DragEvent } from "react";
 import { bytes } from "@/lib/format";
 
-export const ACCEPT = [".pdf", ".docx", ".md", ".txt", ".csv", ".xlsx", ".html", ".zip"];
+export const ACCEPT = [".pdf", ".docx", ".md", ".txt", ".csv", ".xlsx", ".html", ".zip", ".png", ".jpg", ".jpeg"];
 const MAX_MB = 25;
 
 export default function DocUploader({ files, onChange }: { files: File[]; onChange: (f: File[]) => void }) {
