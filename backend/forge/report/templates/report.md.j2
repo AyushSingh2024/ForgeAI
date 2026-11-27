@@ -1,6 +1,8 @@
 # ForgeAI report: {{ d.req.agent_name }}
 
-Run `{{ run_id }}` · status **{{ d.status.get("status", "unknown") }}** · agent model actually used `{{ d.actual_models.agent | join(", ") or "-" }}` · judge actually used `{{ d.actual_models.judge | join(", ") or "-" }}` (configured judge: `{{ d.llm.get("judge_provider") }}:{{ d.llm.get("judge_model") }}`{% if d.actual_models.judge and not (d.actual_models.judge[0].startswith("ollama")) %}; **not a local model in this run**{% endif %})
+{% set am = d.get("actual_models", {}) %}
+{% set judge_used = am.get("judge", []) %}
+Run `{{ run_id }}` · status **{{ d.status.get("status", "unknown") }}** · agent model actually used `{{ am.get("agent", []) | join(", ") or "-" }}` · judge actually used `{{ judge_used | join(", ") or "-" }}` (configured judge: `{{ d.llm.get("judge_provider") }}:{{ d.llm.get("judge_model") }}`{% if judge_used and not judge_used[0].startswith("ollama") %}; **not a local model in this run**{% endif %})
 
 ## 1. Summary
 {{ n.summary }}
