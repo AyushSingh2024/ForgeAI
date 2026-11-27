@@ -15,6 +15,7 @@ from forge.schemas.requirements import MustRefuse, Requirements
 from forge.util import read_jsonl, read_model, slugify, write_json
 
 
+MAX_ASKS = 12
 _GENERIC = {"information", "provide", "answer", "questions", "tell", "about", "what", "how", "users", "available",
             "does", "handled"}
 _LIVE = re.compile(r"\b(live|real[- ]time|today'?s?|current|right now)\b", re.I)
@@ -46,7 +47,10 @@ def run_guard(ctx: RunContext) -> GroundabilityReport:
     vocabulary = content_words(" ".join(c.text for c in chunks) + " " + table_words.replace("_", " "))
 
     verdicts = []
-    for ask, source in extract_asks(ctx.brief, req, llm):
+    asks = extract_asks(ctx.brief, req, llm)
+    if len(asks) > MAX_ASKS:  # cost control: each ask costs about two probe checks
+        ctx.note(f"guard: checked the first {MAX_ASKS} of {len(asks)} asks (must-answer topics first)")
+    for ask, source in asks[:MAX_ASKS]:
         probes = []
         for q in make_probes(ask, llm):
             probes.append(verify(q, retriever.search(q, k=5), llm))

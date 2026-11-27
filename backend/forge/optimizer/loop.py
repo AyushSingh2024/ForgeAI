@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import Any
 
 from forge.context import RunContext
+from forge.errors import BudgetExceeded
 from forge.evals.harness import run_cases
 from forge.judge.pairwise import compare
 from forge.judge.scorer import calibration_for_run, score_iteration
@@ -67,12 +68,28 @@ class Evaluator:
         rt = AgentRuntime.load(agent, agent_dir=ctx.path("agent"), cfg=ctx.cfg, llm=ctx.hub.agent,
                                rewrite_llm=ctx.hub.builder)
         cases = self.split(split)
+        self.reliability()  # calibration is a one-off cost; keep it out of the per-evaluation estimate
+        before = ctx.hub.budget.snapshot()
         transcripts = run_cases(rt, cases, out_dir / "transcripts.jsonl")
         sc = score_iteration(run_id=ctx.run_id, iteration=iteration, agent_version=agent.version, cases=cases,
                              transcripts=transcripts, hub=ctx.hub, cfg=ctx.cfg,
                              max_words=agent.output_contract.max_words, tone=self.tone,
                              reliability=self.reliability(), split=split, out_path=out_dir / "scorecard.json")
+        after = ctx.hub.budget.snapshot()
+        write_json(out_dir / "cost.json", {"tokens": after["tokens"] - before["tokens"],
+                                           "calls": after["calls"] - before["calls"],
+                                           "seconds": round(after["t"] - before["t"], 1), "cases": len(cases)})
         return sc, transcripts
+
+    def estimated_cost(self, n_cases: int) -> dict:
+        """Cost of evaluating n cases, scaled from the measured baseline evaluation (worst case if unknown)."""
+        base = read_json(self.ctx.path("iterations", "0", "cost.json")) or {}
+        per = max(1, base.get("cases", 0))
+        tokens = base.get("tokens") or 6000 * per  # uncached baseline cost per case, or a pessimistic default
+        calls = base.get("calls") or 4 * per
+        seconds = base.get("seconds") or 20 * per
+        f = n_cases / per
+        return {"tokens": tokens * f, "calls": calls * f, "seconds": seconds * f}
 
 
 def run_evaluate_0(ctx: RunContext) -> Scorecard:
@@ -110,7 +127,31 @@ def run_optimize(ctx: RunContext) -> AgentDefinition:
     history: list[dict[str, Any]] = [{"iteration": 0, "pass_rate": best_sc.summary.pass_rate, "agent_version": best.version}]
     stop_reason = f"reached max iterations ({ocfg.max_iterations})"
     by_id = {c.id: c for c in ev.cases}
+    budget = ctx.hub.budget
+    # A candidate costs about one train evaluation (+15% for pairwise tie-breaks and repairs).
+    cand_cost = {k: v * 1.15 for k, v in ev.estimated_cost(len(ev.split("train"))).items()}
 
+    def affordable() -> bool:
+        return budget.can_afford(cand_cost["tokens"], cand_cost["calls"], cand_cost["seconds"])
+
+    try:
+        best, best_sc, best_t, stop_reason = _optimize_iterations(
+            ctx, ev, ocfg, best, best_sc, best_t, tried, history, by_id, affordable, stop_reason)
+    except BudgetExceeded as exc:  # an estimate was off: keep the best version found so far and move on
+        stop_reason = f"budget reached during a candidate ({exc}); kept the best version so far"
+        ctx.note(f"optimize: {stop_reason}")
+
+    save_agent(best, ctx.path("agent", "agent.yaml"))
+    write_json(ctx.path("optimize_summary.json"), {"stop_reason": stop_reason, "history": history,
+                                                    "best_version": best.version,
+                                                    "best_train_pass_rate": best_sc.summary.pass_rate,
+                                                    "estimated_candidate_cost": cand_cost})
+    ctx.emit("optimize", "info", f"best version v{best.version}, train pass rate {best_sc.summary.pass_rate:.0%} "
+                                 f"({stop_reason})")
+    return best
+
+
+def _optimize_iterations(ctx, ev, ocfg, best, best_sc, best_t, tried, history, by_id, affordable, stop_reason):
     for it in range(1, ocfg.max_iterations + 1):
         if best_sc.summary.pass_rate >= ocfg.target_pass_rate:
             stop_reason = f"target pass rate {ocfg.target_pass_rate:.0%} reached"
@@ -119,8 +160,9 @@ def run_optimize(ctx: RunContext) -> AgentDefinition:
         if not groups:
             stop_reason = "no fixable failures left"
             break
-        if ctx.hub.budget.remaining_fraction() < 0.15:
-            stop_reason = "budget nearly used up"
+        if not affordable():
+            stop_reason = "stopped early: not enough budget left for another candidate evaluation"
+            ctx.note(f"optimize: {stop_reason}")
             break
         kept = False
         attempted = False
@@ -155,21 +197,18 @@ def run_optimize(ctx: RunContext) -> AgentDefinition:
                 write_json(it_dir / "scorecard.json", sc)
                 kept = True
                 break
-            if ctx.hub.budget.remaining_fraction() < 0.15:
+            if not affordable():
                 break
         history.append({"iteration": it, "pass_rate": best_sc.summary.pass_rate, "agent_version": best.version,
                         "kept_change": kept})
         if not attempted:
             stop_reason = "no untried fixes left for the remaining failures"
             break
-
-    save_agent(best, ctx.path("agent", "agent.yaml"))
-    write_json(ctx.path("optimize_summary.json"), {"stop_reason": stop_reason, "history": history,
-                                                    "best_version": best.version,
-                                                    "best_train_pass_rate": best_sc.summary.pass_rate})
-    ctx.emit("optimize", "info", f"best version v{best.version}, train pass rate {best_sc.summary.pass_rate:.0%} "
-                                 f"({stop_reason})")
-    return best
+        if not affordable():
+            stop_reason = "stopped early: not enough budget left for another candidate evaluation"
+            ctx.note(f"optimize: {stop_reason}")
+            break
+    return best, best_sc, best_t, stop_reason
 
 
 def run_final_holdout(ctx: RunContext) -> Scorecard:

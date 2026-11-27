@@ -54,6 +54,27 @@ def prepare_run(run_dir: Path, brief: str, docs_dir: Path | None = None, answers
     return run_dir
 
 
+FINAL_STAGES = {"final_holdout", "report"}
+
+
+def _restore_budget(run_dir: Path, hub: LLMHub) -> None:
+    """A resumed run is a new process: count what earlier attempts of this run already spent, so a rerun cannot
+    silently double the budget."""
+    log = run_dir / "llm_calls.jsonl"
+    if not log.exists():
+        return
+    tokens = calls = 0
+    for line in log.read_text(encoding="utf-8").splitlines():
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not rec.get("cached"):
+            calls += 1
+            tokens += int(rec.get("tokens_in", 0)) + int(rec.get("tokens_out", 0))
+    hub.budget.restore(tokens, calls)
+
+
 def _write_status(run_dir: Path, **fields: Any) -> None:
     path = run_dir / "status.json"
     cur = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
@@ -70,6 +91,7 @@ def run(run_dir: Path, cfg: ForgeConfig, mode: str = "unattended", on_event: Eve
     run_dir = Path(run_dir)
     hub = hub or make_hub(cfg)
     hub.set_log(run_dir / "llm_calls.jsonl")
+    _restore_budget(run_dir, hub)
     stage_status: dict[str, dict[str, Any]] = (json.loads((run_dir / "status.json").read_text(encoding="utf-8"))
                                                .get("stages", {}) if (run_dir / "status.json").exists() else {})
 
@@ -107,8 +129,13 @@ def run(run_dir: Path, cfg: ForgeConfig, mode: str = "unattended", on_event: Eve
                 continue
             if (run_dir / "CANCEL").exists():
                 raise Cancelled("cancelled by the user")
-            if stopped_early and stage != "report":
+            if stage in FINAL_STAGES:
+                hub.budget.release_reserve()  # the held-back share guarantees the run can finish
+            if stopped_early and stage not in FINAL_STAGES:
                 emit(stage, "skipped", stopped_early)
+                continue
+            if stage == "final_holdout" and not (marks / "evaluate_0.done").exists():
+                emit(stage, "skipped", "no baseline evaluation to compare against")
                 continue
             _write_status(run_dir, current_stage=stage)
             emit(stage, "running")

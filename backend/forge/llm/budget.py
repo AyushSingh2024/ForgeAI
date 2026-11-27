@@ -1,4 +1,9 @@
-"""Budget enforcement and rate limiting, so unattended runs always end with a report."""
+"""Budget enforcement and rate limiting, so unattended runs always end with a report.
+
+A share of the budget (RESERVE) is held back for the last stages (holdout test + report). Normal stages can only
+spend up to `limit - reserve`; the pipeline calls `release_reserve()` before the final stages, so a run that used
+up its working budget still finishes in one go instead of stopping half-way.
+"""
 
 from __future__ import annotations
 
@@ -9,6 +14,8 @@ from collections import deque
 from forge.config import BudgetCfg
 from forge.errors import BudgetExceeded
 
+RESERVE = 0.2
+
 
 class Budget:
     def __init__(self, cfg: BudgetCfg, requests_per_minute: int = 0):
@@ -18,19 +25,35 @@ class Budget:
         self.tokens = 0
         self.cached_calls = 0
         self.rpm = requests_per_minute
+        self.reserve_released = False
         self._window: deque[float] = deque()
         self._lock = threading.Lock()
 
     def elapsed(self) -> float:
         return time.time() - self.started_at
 
+    # limits that apply right now (with or without the reserve)
+    def _limits(self) -> tuple[float, float, float]:
+        f = 1.0 if self.reserve_released else 1.0 - RESERVE
+        return self.cfg.max_llm_calls * f, self.cfg.max_tokens * f, self.cfg.max_seconds * f
+
+    def release_reserve(self) -> None:
+        self.reserve_released = True
+
     def check(self) -> None:
-        if self.calls >= self.cfg.max_llm_calls:
-            raise BudgetExceeded(f"LLM call budget reached ({self.calls}/{self.cfg.max_llm_calls})")
-        if self.tokens >= self.cfg.max_tokens:
-            raise BudgetExceeded(f"token budget reached ({self.tokens}/{self.cfg.max_tokens})")
-        if self.elapsed() >= self.cfg.max_seconds:
-            raise BudgetExceeded(f"time budget reached ({int(self.elapsed())}s/{self.cfg.max_seconds}s)")
+        max_calls, max_tokens, max_seconds = self._limits()
+        if self.calls >= max_calls:
+            raise BudgetExceeded(f"LLM call budget reached ({self.calls}/{int(max_calls)})")
+        if self.tokens >= max_tokens:
+            raise BudgetExceeded(f"token budget reached ({self.tokens}/{int(max_tokens)})")
+        if self.elapsed() >= max_seconds:
+            raise BudgetExceeded(f"time budget reached ({int(self.elapsed())}s/{int(max_seconds)}s)")
+
+    def can_afford(self, tokens: float, calls: float, seconds: float = 0.0) -> bool:
+        """Would a step of this estimated size fit in the working budget (reserve excluded)?"""
+        max_calls, max_tokens, max_seconds = self._limits()
+        return (self.tokens + tokens <= max_tokens and self.calls + calls <= max_calls
+                and self.elapsed() + seconds <= max_seconds)
 
     def charge_call(self) -> None:
         """Called before every real (non-cached) provider call."""
@@ -54,15 +77,21 @@ class Budget:
         self._window.append(time.time())
 
     def remaining_fraction(self) -> float:
-        parts = [
-            1 - self.calls / max(1, self.cfg.max_llm_calls),
-            1 - self.tokens / max(1, self.cfg.max_tokens),
-            1 - self.elapsed() / max(1, self.cfg.max_seconds),
-        ]
+        max_calls, max_tokens, max_seconds = self._limits()
+        parts = [1 - self.calls / max(1, max_calls), 1 - self.tokens / max(1, max_tokens),
+                 1 - self.elapsed() / max(1, max_seconds)]
         return max(0.0, min(parts))
+
+    def snapshot(self) -> dict:
+        return {"tokens": self.tokens, "calls": self.calls, "t": self.elapsed()}
 
     def summary(self) -> dict:
         return {"llm_calls": self.calls, "cached_calls": self.cached_calls, "tokens": self.tokens,
-                "elapsed_s": round(self.elapsed(), 1), "limits": {
+                "elapsed_s": round(self.elapsed(), 1), "reserve_released": self.reserve_released, "limits": {
                     "max_llm_calls": self.cfg.max_llm_calls, "max_tokens": self.cfg.max_tokens,
                     "max_seconds": self.cfg.max_seconds}}
+
+    # a resumed run starts a new process: restore what the earlier attempt already spent
+    def restore(self, tokens: int, calls: int) -> None:
+        self.tokens += max(0, tokens)
+        self.calls += max(0, calls)
