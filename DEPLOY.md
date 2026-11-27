@@ -1,6 +1,6 @@
 # Deploying ForgeAI for free
 
-**Frontend → Vercel (free). Backend → Hugging Face Spaces (free Gradio SDK, CPU Basic).** Hugging Face now needs PRO for
+**Frontend → Vercel (free). Backend → Oracle Cloud Always Free VM (section 4), or a Hugging Face Space if you have PRO (section 1).** Hugging Face now needs PRO for
 CPU Spaces, so the free permanent option is the **Oracle Cloud Always Free VM** (section 4). The same backend runs on
 both (Docker image on the VM).
 
@@ -32,7 +32,7 @@ Anyone who finds the URL could start builds on your OpenAI key. So:
 2. Pick a long random `API_KEY` (any password generator). The backend rejects calls without it; the frontend sends it.
 3. The image already caps every run at 450 calls / 500k tokens / 1 hour and runs one build at a time.
 
-## 1. Backend on Hugging Face Spaces, free Gradio SDK (about 15 minutes, mostly waiting)
+## 1. Backend on Hugging Face Spaces, Gradio SDK (needs PRO for CPU Basic; about 15 minutes)
 
 The Docker SDK is now a paid option on Hugging Face, so the free route uses the **Gradio SDK** as a plain Python
 runtime. `deploy/huggingface-gradio/server.py` downloads the backend from this GitHub repo, serves the same
