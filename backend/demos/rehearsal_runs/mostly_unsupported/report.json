@@ -138,16 +138,16 @@
     }
   ],
   "cost": {
-    "llm_calls": 68,
-    "cached": 6,
+    "llm_calls": 69,
+    "cached": 7,
     "failed": 0,
     "tokens": 41251,
     "by_role": {
-      "builder": 40,
+      "builder": 41,
       "agent": 13,
       "judge": 15
     },
-    "elapsed_s": 109.7
+    "elapsed_s": 165.2
   },
   "notes": [
     "evals: only 12 valid cases (target 20); the corpus or the model limited generation"
@@ -163,5 +163,11 @@
     ],
     "best_version": 1,
     "best_train_pass_rate": 0.9
+  },
+  "judge_used": {
+    "judge": "openai:gpt-4o-mini",
+    "configured": "openai:gpt-4o-mini",
+    "local": false,
+    "same_model": true
   }
 }

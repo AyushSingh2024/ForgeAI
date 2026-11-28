@@ -185,16 +185,16 @@
     }
   ],
   "cost": {
-    "llm_calls": 158,
+    "llm_calls": 159,
     "cached": 39,
     "failed": 0,
-    "tokens": 127398,
+    "tokens": 127809,
     "by_role": {
-      "builder": 43,
+      "builder": 44,
       "agent": 72,
       "judge": 43
     },
-    "elapsed_s": 260.2
+    "elapsed_s": 262.3
   },
   "notes": [],
   "optimize": {
@@ -220,5 +220,11 @@
     ],
     "best_version": 2,
     "best_train_pass_rate": 0.706
+  },
+  "judge_used": {
+    "judge": "openai:gpt-4o-mini",
+    "configured": "openai:gpt-4o-mini",
+    "local": false,
+    "same_model": true
   }
 }

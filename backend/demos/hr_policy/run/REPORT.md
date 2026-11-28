@@ -75,6 +75,11 @@ xychart-beta
 | 2 | hallucination | `retrieval.min_score`: 0.25 -> 0.3 | answ_05 | 75% -> 75% | reverted (no improvement) |
 
 ## 8. Judge reliability
+### Which judge ran
+- The judge was `ollama:llama3.2:3b`, a small open model running locally through Ollama. This meets the assignment's rule that the judge is a local small open model.
+- The agent was `openai:gpt-4o-mini`: a different model family from the judge, which limits self-preference bias.
+
+### Calibration and agreement
 - Calibration: 4/7 checks passed -> NOT trusted: verdicts used the deterministic checks only
 - Position-swap agreement (same winner both orders): 50%
 - Judge vs deterministic disagreement: 20%
@@ -85,6 +90,13 @@ xychart-beta
   - perfect (answ_02): expected faithfulness>=4, got 2 -> FAIL
   - verbosity (answ_02): expected padded answer must not win, got tie -> pass
   - wrong_refusal (answ_02): expected relevance<=2, got 1 -> pass
+
+What this means:
+- On `answ_01` the judge scored a correct, fully supported answer below 4 for faithfulness (too harsh on a correct answer) (got 3).
+- On `answ_01` the judge did not catch an answer with one number changed (faithfulness above 2) (got 3).
+- On `answ_02` the judge scored a correct, fully supported answer below 4 for faithfulness (too harsh on a correct answer) (got 2).
+- Because calibration failed, the LLM judge's scores were ignored for this run: every verdict was decided by the code checks alone. Key-fact coverage then comes from word and number matching only, with no credit for paraphrase, so correct answers worded differently from the key facts can fail, while faithfulness is only checked by code (verbatim quotes, grounded numbers). Read these pass rates as code-check results, not as judge-graded scores.
+- Re-check after this run with the revised probes (`judge_calibration_recheck.json`, judge prompt version 2, same judge `ollama:llama3.2:3b`): 6/7 checks passed (trusted). The scores above were NOT re-graded: they are exactly what this run produced.
 
 ## 9. Known failures
 | split | case | category | question | failure class | reason |

@@ -1,6 +1,6 @@
 # ForgeAI report: Data Systems Assistant
 
-Run `rehearsal_course_handbook` · status **running** · agent model `openai:gpt-4o-mini` · judge `openai:gpt-4o-mini`
+Run `rehearsal_course_handbook` · status **completed** · agent model actually used `openai:gpt-4o-mini` · judge actually used `openai:gpt-4o-mini` (configured judge: `openai:gpt-4o-mini`; **not a local model in this run**)
 
 ## 1. Summary
 An automatically built and tested assistant was developed, achieving a baseline training pass rate of 81% and maintaining the same score after optimization. The assistant performed exceptionally well on the held-out cases, achieving a pass rate of 100%. Overall, the system demonstrated consistent performance across the evaluation metrics.
@@ -77,6 +77,11 @@ xychart-beta
 | 2 | false_compliance | `retrieval.min_score`: 0.25 -> 0.3 | edge_02 | 81% -> 81% | reverted (no improvement) |
 
 ## 8. Judge reliability
+### Which judge ran
+- The judge was the hosted `openai:gpt-4o-mini`, not a local model, because this run was configured with a hosted judge. The hosted Streamlit app always runs this way: its free host (Streamlit Community Cloud) cannot run Ollama. This run does NOT meet the rule that the judge is a local small open model; build locally with Ollama for that.
+- The judge is the same model as the agent (`openai:gpt-4o-mini`), so the different-family defence against self-preference does not apply; answers are still anonymised and the code checks are unaffected.
+
+### Calibration and agreement
 - Calibration: 8/8 checks passed -> trusted
 - Position-swap agreement (same winner both orders): 100%
 - Judge vs deterministic disagreement: 0%
@@ -100,5 +105,5 @@ xychart-beta
 The assistant has three known failures and faced one unsupported ask during testing. Additionally, the evaluation set was small, consisting of only 20 cases, which may limit the generalizability of the results.
 
 ## 11. Cost and runtime
-- LLM calls: 240 (71 from cache, 0 failed); tokens: 198491; wall clock: 340.9 s
-- Calls by role: {'builder': 51, 'agent': 106, 'judge': 83}
+- LLM calls: 241 (71 from cache, 0 failed); tokens: 198889; wall clock: 343.3 s
+- Calls by role: {'builder': 52, 'agent': 106, 'judge': 83}

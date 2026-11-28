@@ -1,6 +1,6 @@
 # ForgeAI report: Aurelia Support Assistant
 
-Run `rehearsal_product_manual` · status **running** · agent model `openai:gpt-4o-mini` · judge `openai:gpt-4o-mini`
+Run `rehearsal_product_manual` · status **completed** · agent model actually used `openai:gpt-4o-mini` · judge actually used `openai:gpt-4o-mini` (configured judge: `openai:gpt-4o-mini`; **not a local model in this run**)
 
 ## 1. Summary
 An automatically built and tested assistant was developed, achieving a baseline training pass rate of 65% and improving to a best training pass rate of 71% after optimization. The assistant performed well on the held-out cases, achieving a pass rate of 75%. Overall, the system demonstrated effective learning and adaptation capabilities during the testing phases.
@@ -71,6 +71,11 @@ xychart-beta
 | 2 | prompt_defect | `system_prompt.slots.grounding`: Use ONLY sentences you can point to in the context passag... -> Use ONLY sentences you can point to in the context passag... | ambi_01, ambi_02 | 71% -> 65% | reverted (score went down) |
 
 ## 8. Judge reliability
+### Which judge ran
+- The judge was the hosted `openai:gpt-4o-mini`, not a local model, because this run was configured with a hosted judge. The hosted Streamlit app always runs this way: its free host (Streamlit Community Cloud) cannot run Ollama. This run does NOT meet the rule that the judge is a local small open model; build locally with Ollama for that.
+- The judge is the same model as the agent (`openai:gpt-4o-mini`), so the different-family defence against self-preference does not apply; answers are still anonymised and the code checks are unaffected.
+
+### Calibration and agreement
 - Calibration: 7/7 checks passed -> trusted
 - Position-swap agreement (same winner both orders): 100%
 - Judge vs deterministic disagreement: 0%
@@ -96,5 +101,5 @@ xychart-beta
 The assistant has six known failures, indicating areas where it did not perform as expected. Additionally, the evaluation set was small, consisting of only four holdout cases, which may limit the generalizability of the results.
 
 ## 11. Cost and runtime
-- LLM calls: 158 (39 from cache, 0 failed); tokens: 127398; wall clock: 260.2 s
-- Calls by role: {'builder': 43, 'agent': 72, 'judge': 43}
+- LLM calls: 159 (39 from cache, 0 failed); tokens: 127809; wall clock: 262.3 s
+- Calls by role: {'builder': 44, 'agent': 72, 'judge': 43}

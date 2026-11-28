@@ -204,5 +204,11 @@
     ],
     "best_version": 2,
     "best_train_pass_rate": 0.778
+  },
+  "judge_used": {
+    "judge": "ollama:llama3.2:3b",
+    "configured": "ollama:llama3.2:3b",
+    "local": true,
+    "same_model": false
   }
 }
