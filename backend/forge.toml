@@ -15,6 +15,7 @@ min_score = 0.25
 target_cases = 24
 min_cases = 20
 holdout_fraction = 0.25
+min_holdout = 5
 dedupe_similarity = 0.9
 max_rounds = 3
 

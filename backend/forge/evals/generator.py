@@ -280,7 +280,7 @@ def run_generate_evals(ctx: RunContext) -> list[EvalCase]:
         if len(accepted) == before:
             break  # the model or the corpus cannot produce more valid cases
 
-    cases = assign_splits(accepted, ecfg.holdout_fraction, ctx.cfg.judge.seed)
+    cases = assign_splits(accepted, ecfg.holdout_fraction, ctx.cfg.judge.seed, ecfg.min_holdout, ecfg.min_cases)
     write_jsonl(ctx.path("evals", "cases.jsonl"), cases)
     write_jsonl(ctx.path("evals", "rejected.jsonl"), rejected)
     stats = {"accepted": len(cases), "rejected": len(rejected),

@@ -84,3 +84,31 @@ def test_tool_gold_is_computed_by_code(tiny_corpus):
     spec = CsvArgs(table="classes", filters=[{"column": "instructor", "op": "eq", "value": "Ana"}],
                    aggregate={"op": "count"})
     assert query_table(df, spec)["value"] == 3
+
+
+def _cases(counts: dict[str, int]) -> list[EvalCase]:
+    return [EvalCase(id=f"{cat[:4]}_{i:02d}", category=cat, question=f"q {cat} {i}",
+                     expected_behavior="refuse" if cat == "must_refuse" else "answer")
+            for cat, n in counts.items() for i in range(n)]
+
+
+def test_holdout_has_at_least_five_cases_once_there_are_twenty():
+    from forge.evals.splitter import holdout_size
+
+    # the HR demo's category mix: the old per-category floor gave only 4 holdout cases
+    counts = {"ambiguous": 2, "answerable": 8, "edge": 2, "multi_doc": 3, "must_refuse": 5}
+    out = assign_splits(_cases(counts), 0.25, 7)
+    n_hold = sum(c.split == "holdout" for c in out)
+    assert n_hold >= 5 and n_hold >= 0.25 * len(out)
+    for cat in counts:  # every category keeps at least one training case
+        assert any(c.split == "train" for c in out if c.category == cat)
+    assert holdout_size(20) == 5 and holdout_size(21) == 6 and holdout_size(24) == 6 and holdout_size(40) == 10
+    assert holdout_size(12) == 3  # below 20 cases only the 25% rule applies
+
+
+def test_split_is_deterministic():
+    counts = {"answerable": 9, "must_refuse": 6, "edge": 3, "tool": 4}
+    a = assign_splits(_cases(counts), 0.25, 7)
+    b = assign_splits(_cases(counts), 0.25, 7)
+    assert [c.split for c in a] == [c.split for c in b]
+    assert sum(c.split == "holdout" for c in a) == 6
