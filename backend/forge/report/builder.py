@@ -90,6 +90,94 @@ def collect(ctx: RunContext) -> dict[str, Any]:
             "status": status, "opt": opt, "llm": config.get("llm", {})}
 
 
+def _family(model_id: str) -> str:
+    from forge.llm.client import _family as fam
+
+    return fam(model_id.split(":", 1)[-1])
+
+
+def judge_info(d: dict[str, Any]) -> dict[str, Any]:
+    """Which judge actually graded this run, and what that means for the assignment's local-judge rule.
+
+    Taken from llm_calls.jsonl (what really ran), compared with config.json (what was asked for)."""
+    used = d.get("actual_models", {}).get("judge", [])
+    agents = d.get("actual_models", {}).get("agent", [])
+    llm = d.get("llm", {})
+    configured = f"{llm.get('judge_provider', '?')}:{llm.get('judge_model', '?')}"
+    judge = used[0] if used else None
+    local = bool(judge) and judge.split(":", 1)[0] == "ollama"
+    same_model = bool(judge) and judge in agents
+    same_fam = bool(judge) and any(_family(judge) == _family(a) for a in agents)
+    lines: list[str] = []
+    if not judge:
+        lines.append("No judge call was logged in this run, so it is not known which judge would have graded it.")
+    elif local:
+        lines.append(f"The judge was `{judge}`, a small open model running locally through Ollama. This meets the "
+                     "assignment's rule that the judge is a local small open model.")
+    elif configured.startswith("ollama:"):
+        lines.append(f"The configured judge was the local `{configured}`, but it was not reachable, so this run fell "
+                     f"back to the hosted `{judge}`. This run does NOT meet the local-judge rule; start Ollama and "
+                     "run `forge doctor` before building.")
+    else:
+        lines.append(f"The judge was the hosted `{judge}`, not a local model, because this run was configured with a "
+                     "hosted judge. The hosted Streamlit app always runs this way: its free host (Streamlit Community "
+                     "Cloud) cannot run Ollama. This run does NOT meet the rule that the judge is a local small open "
+                     "model; build locally with Ollama for that.")
+    if judge and agents:
+        if same_model:
+            lines.append(f"The judge is the same model as the agent (`{agents[0]}`), so the different-family defence "
+                         "against self-preference does not apply; answers are still anonymised and the code checks "
+                         "are unaffected.")
+        elif same_fam:
+            lines.append("The judge is from the same model family as the agent, so self-preference bias is only "
+                         "partly limited (answers are anonymised).")
+        else:
+            lines.append(f"The agent was `{', '.join(agents)}`: a different model family from the judge, which limits "
+                         "self-preference bias.")
+    return {"judge": judge, "configured": configured, "local": local, "same_model": same_model, "lines": lines}
+
+
+_CALIBRATION_MEANING = {
+    "perfect": "scored a correct, fully supported answer below 4 for faithfulness (too harsh on a correct answer)",
+    "fluent_hallucination": "did not catch an answer with one number changed (faithfulness above 2)",
+    "verbosity": "preferred the padded answer over the short correct one",
+    "wrong_refusal": "did not penalise a refusal of an answerable question (relevance above 2)",
+}
+
+
+def calibration_explanation(rel: Any, recheck: dict[str, Any] | None = None) -> list[str]:
+    """Plain-language reading of the calibration details: what failed, and what that did to the verdicts.
+
+    `recheck` is an optional judge_calibration_recheck.json: the calibration re-run later with newer probes or a newer
+    judge prompt (demos/scripts/recheck_calibration.py). It is reported next to the original, never instead of it."""
+    if rel is None or rel.calibration_pass is None:
+        return []
+    failed = [c for c in rel.calibration_details if not c.get("passed")]
+    out = []
+    for c in failed:
+        if c.get("got") is None:
+            out.append(f"On `{c['case']}` ({c['item']}) the judge returned no valid scores, which counts as a failure.")
+        else:
+            out.append(f"On `{c['case']}` the judge {_CALIBRATION_MEANING.get(c['item'], 'gave an unexpected score')} "
+                       f"(got {c['got']}).")
+    if rel.calibration_pass is False:
+        out.append("Because calibration failed, the LLM judge's scores were ignored for this run: every verdict was "
+                   "decided by the code checks alone. Key-fact coverage then comes from word and number matching "
+                   "only, with no credit for paraphrase, so correct answers worded differently from the key facts "
+                   "can fail, while faithfulness is only checked by code (verbatim quotes, grounded numbers). Read these pass "
+                   "rates as code-check results, not as judge-graded scores.")
+    elif failed:
+        out.append("Calibration still passed (at least 75% of the checks), so the judge's scores were used.")
+    r = (recheck or {}).get("recheck")
+    if r and r.get("calibration_total"):
+        out.append(f"Re-check after this run with the revised probes (`judge_calibration_recheck.json`, judge prompt version "
+                   f"{recheck.get('judge_rubric_version')}, same judge `{recheck.get('judge')}`): "
+                   f"{r['calibration_passed']}/{r['calibration_total']} checks passed "
+                   f"({'trusted' if r.get('calibration_pass') else 'not trusted'}). The scores above were NOT "
+                   "re-graded: they are exactly what this run produced.")
+    return out
+
+
 def _numbers_ok(text: str, allowed: list[float]) -> bool:
     return all(number_in(n, allowed) or n in (1, 2, 3) for n in parse_numbers(text))
 
@@ -126,9 +214,21 @@ def narrative(ctx: RunContext, d: dict[str, Any]) -> Narrative:
     return n
 
 
-def build_report(ctx: RunContext) -> Path:
+def _saved_narrative(ctx: RunContext) -> Narrative | None:
+    saved = read_json(ctx.path("report.json"), {}).get("narrative")
+    return Narrative.model_validate(saved) if saved and saved.get("summary") else None
+
+
+def build_report(ctx: RunContext, reuse_narrative: bool = False) -> Path:
+    """Write REPORT.md. reuse_narrative=True keeps the narrative saved in report.json (no model call), so an older
+    run's report can be re-rendered with a newer template without changing its wording or costing anything."""
     d = collect(ctx)
-    n = narrative(ctx, d)
+    n = (_saved_narrative(ctx) if reuse_narrative else None) or narrative(ctx, d)
+    # a re-render keeps the run's original id (demo runs were copied into folders named "run")
+    run_id = (read_json(ctx.path("report.json"), {}).get("run_id") if reuse_narrative else None) or ctx.run_id
+    d["judge_info"] = judge_info(d)
+    d["calibration_explanation"] = calibration_explanation(d["best"].judge_reliability if d["best"] else None,
+                                                           read_json(ctx.path("judge_calibration_recheck.json"), None))
     points = [(label, sc.summary.pass_rate) for label, sc in d["iters"]]
     if d["holdout"]:
         points.append(("holdout", d["holdout"].summary.pass_rate))
@@ -136,18 +236,19 @@ def build_report(ctx: RunContext) -> Path:
     env.filters["pct"] = _pct
     env.filters["cell"] = lambda s: str(s or "").replace("|", "/").replace("\n", " ")
     md = env.get_template("report.md.j2").render(
-        d=d, n=n, run_id=ctx.run_id, chart=pass_rate_chart(points),
+        d=d, n=n, run_id=run_id, chart=pass_rate_chart(points),
         categories=category_table(d["sc0"], d["best"], d["holdout"]) if d["sc0"] and d["best"] else "",
         changes=changelog.to_markdown_table(d["entries"]))
     out = ctx.path("REPORT.md")
     out.write_text(md, encoding="utf-8")
     write_json(ctx.path("report.json"), {
-        "run_id": ctx.run_id, "agent_name": d["req"].agent_name, "narrative": n.model_dump(),
+        "run_id": run_id, "agent_name": d["req"].agent_name, "narrative": n.model_dump(),
         "points": [{"label": label, "pass_rate": v} for label, v in points],
         "baseline": d["sc0"].summary.model_dump() if d["sc0"] else None,
         "best": d["best"].summary.model_dump() if d["best"] else None,
         "holdout": d["holdout"].summary.model_dump() if d["holdout"] else None,
         "judge_reliability": d["best"].judge_reliability.model_dump() if d["best"] else None,
-        "known_failures": d["failures"], "cost": d["cost"], "notes": d["notes"], "optimize": d["opt"]})
+        "known_failures": d["failures"], "cost": d["cost"], "notes": d["notes"], "optimize": d["opt"],
+        "judge_used": {k: v for k, v in d["judge_info"].items() if k != "lines"}})
     ctx.emit("report", "info", "REPORT.md written")
     return out

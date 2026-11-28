@@ -67,6 +67,13 @@ Rejection reasons: {{ d.stats.get("rejection_reasons", {}) or "none" }}
 {{ changes }}
 
 ## 8. Judge reliability
+{% set ji = d.get("judge_info", {}) %}
+### Which judge ran
+{% for line in ji.get("lines", []) %}
+- {{ line }}
+{% endfor %}
+
+### Calibration and agreement
 {% set rel = d.best.judge_reliability if d.best else none %}
 {% if rel %}
 - Calibration: {{ rel.calibration_passed }}/{{ rel.calibration_total }} checks passed -> {{ "trusted" if rel.calibration_pass else ("NOT trusted: verdicts used the deterministic checks only" if rel.calibration_pass is sameas false else "not measured") }}
@@ -75,6 +82,13 @@ Rejection reasons: {{ d.stats.get("rejection_reasons", {}) or "none" }}
 {% for c in rel.calibration_details %}
   - {{ c.item }} ({{ c.case }}): expected {{ c.expect }}, got {{ c.got }} -> {{ "pass" if c.passed else "FAIL" }}
 {% endfor %}
+{% if d.get("calibration_explanation") %}
+
+What this means:
+{% for line in d.calibration_explanation %}
+- {{ line }}
+{% endfor %}
+{% endif %}
 {% endif %}
 
 ## 9. Known failures

@@ -1,0 +1,146 @@
+{
+  "compared": 16,
+  "only_in_old": [],
+  "only_in_new": [],
+  "pass_rate_before": 0.75,
+  "pass_rate_after": 0.562,
+  "fixed": [],
+  "regressed": [
+    "answ_01",
+    "mult_03",
+    "must_01"
+  ],
+  "cases": [
+    {
+      "case": "ambi_01",
+      "category": "ambiguous",
+      "before": "pass",
+      "after": "pass",
+      "change": "unchanged",
+      "reason_after": ""
+    },
+    {
+      "case": "ambi_02",
+      "category": "ambiguous",
+      "before": "fail",
+      "after": "fail",
+      "change": "unchanged",
+      "reason_after": "passage retrieved but key facts missing (coverage 0.5)"
+    },
+    {
+      "case": "answ_01",
+      "category": "answerable",
+      "before": "pass",
+      "after": "fail",
+      "change": "regressed",
+      "reason_after": "cited a quote that is not in the passage"
+    },
+    {
+      "case": "answ_03",
+      "category": "answerable",
+      "before": "pass",
+      "after": "pass",
+      "change": "unchanged",
+      "reason_after": ""
+    },
+    {
+      "case": "answ_04",
+      "category": "answerable",
+      "before": "fail",
+      "after": "fail",
+      "change": "unchanged",
+      "reason_after": "passage retrieved but key facts missing (coverage 0.667)"
+    },
+    {
+      "case": "answ_05",
+      "category": "answerable",
+      "before": "fail",
+      "after": "fail",
+      "change": "unchanged",
+      "reason_after": "passage retrieved but key facts missing (coverage 0.5)"
+    },
+    {
+      "case": "answ_06",
+      "category": "answerable",
+      "before": "pass",
+      "after": "pass",
+      "change": "unchanged",
+      "reason_after": ""
+    },
+    {
+      "case": "answ_08",
+      "category": "answerable",
+      "before": "fail",
+      "after": "fail",
+      "change": "unchanged",
+      "reason_after": "cited a quote that is not in the passage"
+    },
+    {
+      "case": "edge_01",
+      "category": "edge",
+      "before": "pass",
+      "after": "pass",
+      "change": "unchanged",
+      "reason_after": ""
+    },
+    {
+      "case": "edge_02",
+      "category": "edge",
+      "before": "pass",
+      "after": "pass",
+      "change": "unchanged",
+      "reason_after": ""
+    },
+    {
+      "case": "mult_01",
+      "category": "multi_doc",
+      "before": "pass",
+      "after": "pass",
+      "change": "unchanged",
+      "reason_after": ""
+    },
+    {
+      "case": "mult_03",
+      "category": "multi_doc",
+      "before": "pass",
+      "after": "fail",
+      "change": "regressed",
+      "reason_after": "passage retrieved but key facts missing (coverage 0.5)"
+    },
+    {
+      "case": "must_01",
+      "category": "must_refuse",
+      "before": "pass",
+      "after": "fail",
+      "change": "regressed",
+      "reason_after": "answered a question it must refuse"
+    },
+    {
+      "case": "must_02",
+      "category": "must_refuse",
+      "before": "pass",
+      "after": "pass",
+      "change": "unchanged",
+      "reason_after": ""
+    },
+    {
+      "case": "must_03",
+      "category": "must_refuse",
+      "before": "pass",
+      "after": "pass",
+      "change": "unchanged",
+      "reason_after": ""
+    },
+    {
+      "case": "must_05",
+      "category": "must_refuse",
+      "before": "pass",
+      "after": "pass",
+      "change": "unchanged",
+      "reason_after": ""
+    }
+  ],
+  "model_errors": {},
+  "agent_model": "ollama:llama3.2:3b",
+  "judge_model": "ollama:llama3.2:3b"
+}

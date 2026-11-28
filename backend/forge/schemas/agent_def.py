@@ -39,7 +39,7 @@ class SystemPrompt(BaseModel):
 
 class ModelCfg(BaseModel):
     provider: str = "ollama"
-    name: str = "qwen2.5:7b-instruct"
+    name: str = "qwen2.5:3b"
     temperature: float = 0.0
     seed: int = 7
     max_tokens: int = 900

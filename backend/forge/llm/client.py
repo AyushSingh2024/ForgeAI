@@ -25,6 +25,7 @@ from forge.llm.providers import BaseProvider, RawResponse, make_provider
 from forge.llm.repair import coerce, extract_json, schema_hint
 
 Role = Literal["agent", "judge", "builder"]
+LOCAL_PROVIDERS = {"ollama", "fake"}  # providers that cost nothing, allowed to run in cache-only mode
 
 
 @dataclass
@@ -49,8 +50,9 @@ class ChatResult:
 
 class LLMClient:
     def __init__(self, provider: BaseProvider, budget: Budget, cache: LLMCache | NullCache, role: Role,
-                 seed: int = 7):
+                 seed: int = 7, cache_only: bool = False):
         self.provider = provider
+        self.cache_only = cache_only
         self.budget = budget
         self.cache = cache
         self.role = role
@@ -141,6 +143,9 @@ class LLMClient:
             d = json.loads(hit)
             self.budget.cached_calls += 1
             return RawResponse(text=d["text"], tool_calls=d.get("tool_calls", [])), True
+        if self.cache_only and self.provider.name not in LOCAL_PROVIDERS:
+            raise ProviderError(f"cache-only mode: no cached reply for this {self.provider.name} call, "
+                                "and hosted calls are switched off (FORGE_CACHE_ONLY=1)")
         self.budget.charge_call()
         raw = self.provider.generate(messages, json_schema=json_schema, tools=tools, temperature=temperature,
                                      seed=self.seed, max_tokens=max_tokens)
@@ -217,9 +222,10 @@ def make_hub(cfg: ForgeConfig, budget: Budget | None = None, providers: dict[str
             judge_p.fallback_reason = msg  # type: ignore[attr-defined]
     builder_p = providers.get("builder") or agent_p
     seed = cfg.judge.seed
-    return LLMHub(agent=LLMClient(agent_p, budget, cache, "agent", seed),
-                  judge=LLMClient(judge_p, budget, cache, "judge", seed),
-                  builder=LLMClient(builder_p, budget, cache, "builder", seed), budget=budget)
+    co = llm.cache_only
+    return LLMHub(agent=LLMClient(agent_p, budget, cache, "agent", seed, co),
+                  judge=LLMClient(judge_p, budget, cache, "judge", seed, co),
+                  builder=LLMClient(builder_p, budget, cache, "builder", seed, co), budget=budget)
 
 
 def same_family(cfg: ForgeConfig) -> bool:

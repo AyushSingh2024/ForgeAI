@@ -1,0 +1,11 @@
+pass rate 56% on 16 cases; by category {'ambiguous': 0.5, 'answerable': 0.333, 'edge': 1.0, 'multi_doc': 0.5, 
+'must_refuse': 0.75}
+written demos\hr_policy\regression_demo
+on the 16 cases in both scorecards: pass rate 75% -> 56%; 0 fixed, 3 regressed
+┌─────────┬─────────────┬────────┬───────┬────────────────────────────────────────────────────────┐
+│ case    │ category    │ before │ after │ reason now                                             │
+├─────────┼─────────────┼────────┼───────┼────────────────────────────────────────────────────────┤
+│ answ_01 │ answerable  │ pass   │ fail  │ cited a quote that is not in the passage               │
+│ mult_03 │ multi_doc   │ pass   │ fail  │ passage retrieved but key facts missing (coverage 0.5) │
+│ must_01 │ must_refuse │ pass   │ fail  │ answered a question it must refuse                     │
+└─────────┴─────────────┴────────┴───────┴────────────────────────────────────────────────────────┘

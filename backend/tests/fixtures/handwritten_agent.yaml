@@ -4,7 +4,7 @@ schema_version: 1
 name: Gym Helper
 version: 1
 description: Answers member questions about the fictional Harbour Point Gym.
-model: {provider: ollama, name: qwen2.5:7b-instruct, temperature: 0.0, seed: 7, max_tokens: 600}
+model: {provider: ollama, name: qwen2.5:3b, temperature: 0.0, seed: 7, max_tokens: 600}
 system_prompt:
   slots:
     role: You are the member help desk assistant of Harbour Point Gym.

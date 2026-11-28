@@ -36,6 +36,7 @@ class EvalsCfg:
     target_cases: int = 24
     min_cases: int = 20
     holdout_fraction: float = 0.25
+    min_holdout: int = 5              # holdout floor once there are min_cases or more
     dedupe_similarity: float = 0.9
     max_rounds: int = 3
 
@@ -71,9 +72,9 @@ class RuntimeCfg:
 @dataclass(frozen=True)
 class LLMCfg:
     agent_provider: str = "ollama"
-    agent_model: str = "qwen2.5:7b-instruct"
+    agent_model: str = "qwen2.5:3b"
     judge_provider: str = "ollama"
-    judge_model: str = "gemma2:9b"
+    judge_model: str = "llama3.2:3b"
     ollama_base_url: str = "http://localhost:11434"
     groq_api_key: str = ""
     hf_api_token: str = ""
@@ -81,6 +82,7 @@ class LLMCfg:
     embedder: str = "BAAI/bge-small-en-v1.5"
     cache_path: str = str(BACKEND_DIR / ".cache" / "llm.sqlite")
     use_cache: bool = True
+    cache_only: bool = False          # FORGE_CACHE_ONLY=1: hosted models answer from the cache only (no paid calls)
     requests_per_minute: int = 0
     timeout_s: float = 180.0
 
@@ -168,6 +170,8 @@ def load_config(toml_path: Path | None = None, overrides: dict[str, dict[str, An
             raw.setdefault(section, {})[name] = typ(val)
     if env.get("FORGE_NO_CACHE") == "1":
         raw.setdefault("llm", {})["use_cache"] = False
+    if env.get("FORGE_CACHE_ONLY") == "1":
+        raw.setdefault("llm", {})["cache_only"] = True
 
     for section, values in (overrides or {}).items():
         raw.setdefault(section, {}).update(values)

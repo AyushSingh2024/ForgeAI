@@ -3,10 +3,12 @@
     forge build --brief brief.txt --docs ./docs [--unattended] [--answers answers.yaml]
     forge chat runs/<id>/agent/agent.yaml
     forge ask runs/<id>/agent/agent.yaml "question" [--json]
-    forge eval runs/<id>/agent/agent.yaml --cases runs/<id>/evals/cases.jsonl     (regression mode)
+    forge eval runs/<id>/agent/agent.yaml --cases runs/<id>/evals/cases.jsonl \
+        --against runs/<id>/iterations/0/scorecard.json [--out folder] [--fail-on-regression]   (regression mode)
     forge report runs/<id>
     forge doctor
-Exit codes: 0 finished (even if quality is low), 2 bad input, 3 provider unreachable.
+Exit codes: 0 finished (even if quality is low), 1 regression found (forge eval --fail-on-regression),
+2 bad input, 3 provider unreachable.
 """
 
 from __future__ import annotations
@@ -104,44 +106,76 @@ def ask(agent_yaml: Path = typer.Argument(..., exists=True), question: str = typ
 
 @app.command(name="eval")
 def eval_cmd(agent_yaml: Path = typer.Argument(..., exists=True), cases: Path = typer.Option(..., exists=True),
-             against: Path | None = typer.Option(None, help="An earlier scorecard.json to diff verdicts against")) -> None:
+             against: Path | None = typer.Option(None, exists=True,
+                                                 help="An earlier scorecard.json to diff verdicts against"),
+             out: Path | None = typer.Option(None, help="Write the new scorecard and the diff here (a folder)"),
+             split: str = typer.Option("all", help="Score only this split of the cases: all, train or holdout"),
+             fail_on_regression: bool = typer.Option(False, help="Exit with code 1 if any case went pass -> fail")) -> None:
     """Regression mode: score an agent on a frozen eval set, optionally diffing against an old scorecard."""
     from forge.evals.harness import run_cases
+    from forge.evals.regression import diff_scorecards
     from forge.judge.scorer import score_iteration
     from forge.runtime.runner import AgentRuntime
     from forge.schemas.agent_def import load_agent
     from forge.schemas.eval_case import EvalCase
     from forge.schemas.scorecard import JudgeReliability, Scorecard
-    from forge.util import read_json, read_jsonl
+    from forge.util import read_json, read_jsonl, write_json
 
     cfg = load_config()
     hub = make_hub(cfg)
     agent = load_agent(agent_yaml)
     rt = AgentRuntime.load(agent_yaml, cfg=cfg, llm=hub.agent)
     cs = read_jsonl(cases, EvalCase)
+    if split != "all":
+        cs = [c for c in cs if c.split == split]
+    old = Scorecard.model_validate(read_json(against)) if against else None
+    # same judge-trust setting as the old scorecard, so a verdict change comes from the agent, not from the judge
+    reliability = old.judge_reliability if old else JudgeReliability()
     transcripts = run_cases(rt, cs)
+    errors = {t["case_id"]: t["error"] for t in transcripts if t.get("error")}
+    if errors:  # a model error is not an agent regression: say so loudly instead of hiding it in the verdicts
+        console.print(f"[red]{len(errors)} of {len(cs)} case(s) got no answer because a model call failed[/red] "
+                      f"(first error: {next(iter(errors.values()))[:160]})")
     sc = score_iteration(run_id="regression", iteration=0, agent_version=agent.version, cases=cs,
                          transcripts=transcripts, hub=hub, cfg=cfg, max_words=agent.output_contract.max_words,
-                         tone="as specified", reliability=JudgeReliability(), split="all")
+                         tone="as specified", reliability=reliability, split="all")
     console.print(f"pass rate {sc.summary.pass_rate:.0%} on {sc.summary.n_cases} cases; by category {sc.summary.by_category}")
-    if against:
-        old = {c.case_id: c.verdict for c in Scorecard.model_validate(read_json(against)).cases}
-        t = Table("case", "before", "after")
-        for c in sc.cases:
-            if c.case_id in old and old[c.case_id] != c.verdict:
-                t.add_row(c.case_id, old[c.case_id], c.verdict)
+    diff = diff_scorecards(old, sc) if old else None
+    if diff is not None:
+        diff["model_errors"] = errors
+        diff["agent_model"] = hub.agent.model_id
+        diff["judge_model"] = hub.judge.model_id
+    if out:
+        write_json(out / "scorecard.json", sc)
+        if diff:
+            write_json(out / "regression_diff.json", diff)
+        console.print(f"written {out}")
+    if diff:
+        console.print(f"on the {diff['compared']} cases in both scorecards: pass rate "
+                      f"{diff['pass_rate_before']:.0%} -> {diff['pass_rate_after']:.0%}; "
+                      f"{len(diff['fixed'])} fixed, {len(diff['regressed'])} regressed")
+        t = Table("case", "category", "before", "after", "reason now")
+        for r in diff["cases"]:
+            if r["change"] != "unchanged":
+                t.add_row(r["case"], r["category"], r["before"], r["after"], r["reason_after"][:60])
         console.print(t if t.row_count else "no verdict changes")
+        if errors:
+            console.print("[yellow]verdicts of cases with a model error are not meaningful; fix the provider and "
+                          "rerun[/yellow]")
+        if fail_on_regression and diff["regressed"]:
+            raise typer.Exit(1)
 
 
 @app.command()
-def report(run_dir: Path = typer.Argument(..., exists=True, file_okay=False)) -> None:
+def report(run_dir: Path = typer.Argument(..., exists=True, file_okay=False),
+           reuse_narrative: bool = typer.Option(False, help="Keep the narrative saved in report.json (no model call)")) -> None:
     """Rebuild REPORT.md from a run's artifacts."""
     from forge.context import RunContext
     from forge.report.builder import build_report
 
     cfg = load_config()
     ctx = RunContext(run_dir=run_dir, cfg=cfg, hub=make_hub(cfg))
-    console.print(f"written {build_report(ctx)}")
+    console.print(f"written {build_report(ctx, reuse_narrative=reuse_narrative)}")
 
 
 @app.command()
