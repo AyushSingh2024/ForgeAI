@@ -1,0 +1,70 @@
+{
+  "run": "demos/hr_policy/run",
+  "judge": "ollama:llama3.2:3b",
+  "checked_at": "2026-11-28T12:36:45+00:00",
+  "judge_rubric_version": 2,
+  "original": {
+    "calibration_pass": false,
+    "calibration_passed": 4,
+    "calibration_total": 7
+  },
+  "recheck": {
+    "calibration_pass": true,
+    "calibration_passed": 6,
+    "calibration_total": 7,
+    "calibration_details": [
+      {
+        "case": "answ_01",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "fluent_hallucination",
+        "expect": "faithfulness<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "tie",
+        "flip_consistent": false,
+        "passed": true
+      },
+      {
+        "case": "answ_01",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": 1,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "perfect",
+        "expect": "faithfulness>=4",
+        "got": 5,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "verbosity",
+        "expect": "padded answer must not win",
+        "got": "tie",
+        "flip_consistent": false,
+        "passed": true
+      },
+      {
+        "case": "answ_02",
+        "item": "wrong_refusal",
+        "expect": "relevance<=2",
+        "got": null,
+        "passed": false
+      }
+    ],
+    "flip_agreement": 0.0
+  }
+}
