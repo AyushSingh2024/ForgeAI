@@ -66,3 +66,34 @@ def test_unknown_tool_in_yaml(agent_dir, cfg, make_fake_hub):
     bad = agent.model_copy(update={"tools": [ToolBinding.model_construct(name="teleport", reason="", config={})]})
     with pytest.raises(ValueError):
         AgentRuntime.load(bad, agent_dir=agent_dir, cfg=cfg, llm=make_fake_hub().agent)
+
+
+def test_tool_call_written_as_text_is_executed(agent_dir, cfg, make_fake_hub):
+    """gpt-4o-mini sometimes writes `calculator({...})` instead of the JSON protocol; it must still run."""
+    replies = iter([
+        'calculator({"expression": "149 * 0.7"})',
+        json.dumps({"action": "final", "answer": "It costs 104.3 EUR.", "citations": [], "refused": False}),
+    ])
+    hub = make_fake_hub(agent=lambda m, t: next(replies))
+    rt = AgentRuntime.load(agent_dir / "agent.yaml", cfg=cfg, llm=hub.agent)
+    ans, _ = rt.answer("How much is the annual plan with a 30% discount?")
+    assert ans.tool_calls and ans.tool_calls[0].tool == "calculator" and "104.3" in ans.answer
+
+
+def test_model_that_keeps_calling_tools_still_gets_a_final_answer(agent_dir, cfg, make_fake_hub):
+    def responder(messages, tools):
+        if "Do not call any more tools" in messages[-1]["content"]:
+            return json.dumps({"action": "final", "answer": "The total is 540 EUR.", "citations": []})
+        return json.dumps({"action": "call_tool", "tool": "calculator", "args": {"expression": "45 * 12"}})
+    hub = make_fake_hub(agent=responder)
+    rt = AgentRuntime.load(agent_dir / "agent.yaml", cfg=cfg, llm=hub.agent)
+    ans, _ = rt.answer("What does a year of Plus cost?")
+    assert ans.answer == "The total is 540 EUR." and len(ans.tool_calls) == cfg.runtime.max_tool_hops
+
+
+def test_answer_is_never_empty(agent_dir, cfg, make_fake_hub):
+    hub = make_fake_hub(agent=lambda m, t: json.dumps({"action": "call_tool", "tool": "calculator",
+                                                       "args": {"expression": "1+1"}}))
+    rt = AgentRuntime.load(agent_dir / "agent.yaml", cfg=cfg, llm=hub.agent)
+    ans, trace = rt.answer("What does a year of Plus cost?")
+    assert ans.answer.startswith("Sorry, I could not") and trace.get("empty_answer")

@@ -8,6 +8,7 @@ the model replies {"action": "call_tool", ...} or {"action": "final", ...}.
 from __future__ import annotations
 
 import json
+import re
 import time
 from pathlib import Path
 from typing import Any
@@ -25,6 +26,9 @@ from forge.runtime.prompting import render_system_prompt
 from forge.runtime.tools import Tool, build_tools
 from forge.schemas.agent_def import AgentDefinition, load_agent
 from forge.schemas.answer import AgentAnswer, ToolCallRecord
+
+
+_TEXT_CALL = re.compile(r"^`*([A-Za-z_][A-Za-z0-9_]*)\s*\((.*)\)`*$", re.DOTALL)
 
 
 def _context_block(hits: list[Hit]) -> str:
@@ -73,6 +77,29 @@ class AgentRuntime:
         rt.per_answer_budget = per_answer_budget
         return rt
 
+    def _tool_call(self, data: Any, text: str) -> tuple[str, dict[str, Any]] | None:
+        """Recognise a tool request in the model's reply, in the protocol shape or the shapes models drift into:
+        {"action": "call_tool", "tool": ..., "args": ...}, {"tool": ..., "arguments": ...} without an answer,
+        {"action": "<tool name>", "args": ...}, or a bare `tool_name({...})` written as text."""
+        if not self.tools:
+            return None
+        m = _TEXT_CALL.match((text or "").strip())
+        if m and m.group(1) in self.tools:  # check first: the JSON inside it would look like a bare dict
+            args = extract_json(m.group(2))
+            return m.group(1), args if isinstance(args, dict) else {}
+        if isinstance(data, dict):
+            args = data.get("args") or data.get("arguments") or data.get("parameters") or {}
+            if not isinstance(args, dict):
+                args = {}
+            if data.get("action") == "call_tool":
+                return str(data.get("tool") or data.get("name") or ""), args
+            if str(data.get("action", "")) in self.tools:
+                return str(data["action"]), args
+            if "answer" not in data and str(data.get("tool") or data.get("name") or "") in self.tools:
+                return str(data.get("tool") or data.get("name")), args
+            return None
+        return None
+
     # ------------------------------------------------------------------ answer
     def answer(self, question: str, history: list[dict[str, str]] | None = None) -> tuple[AgentAnswer, dict[str, Any]]:
         if self.per_answer_budget is not None:
@@ -110,9 +137,11 @@ class AgentRuntime:
                 trace["tokens"] += res.tokens
                 trace["raw_outputs"].append(res.text[:3000])
                 data = extract_json(res.text)
-                if isinstance(data, dict) and data.get("action") == "call_tool" and self.tools and step < hops:
-                    name = str(data.get("tool", ""))
-                    args = data.get("args") or data.get("arguments") or {}
+                call = self._tool_call(data, res.text)
+                if call is not None:
+                    if step >= hops:
+                        break  # out of tool hops: ask for the final answer below instead of returning a tool call
+                    name, args = call
                     tool = self.tools.get(name)
                     if tool is None:
                         result_text = json.dumps({"ok": False, "error": f"unknown tool {name}. Available: {list(self.tools)}"})
@@ -128,11 +157,14 @@ class AgentRuntime:
                 final = data if isinstance(data, dict) else res.text
                 break
             if final is None:  # ran out of hops: force a final answer
-                messages.append({"role": "user", "content": "Give the final answer JSON now (action=final)."})
+                messages.append({"role": "user", "content": "Do not call any more tools. Give the final answer JSON "
+                                                            "now (action=final), using the tool results above."})
                 res = self.llm.chat(messages, temperature=0.0, max_tokens=self.agent.model.max_tokens, json_mode=True)
                 trace["tokens"] += res.tokens
                 trace["raw_outputs"].append(res.text[:3000])
-                final = extract_json(res.text) or res.text
+                data = extract_json(res.text)
+                final = data if isinstance(data, dict) and self._tool_call(data, res.text) is None else (
+                    res.text if data is None else {})
         except BudgetExceeded:
             raise
         except ProviderError as exc:
