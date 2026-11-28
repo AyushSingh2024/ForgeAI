@@ -39,6 +39,11 @@ def enforce(raw: str | dict | None, hits_chunks: list[Chunk], tool_calls: list[T
         text = (raw if isinstance(raw, str) else "") or ""
         return AgentAnswer(answer=text.strip()[:2000], tool_calls=tool_calls, confidence=0.0), extras
     data = {k: v for k, v in data.items() if k != "action"}
+    if not data.get("answer"):  # models sometimes rename the field
+        for alt in ("final_answer", "response", "text", "content"):
+            if isinstance(data.get(alt), str) and data[alt].strip():
+                data["answer"] = data[alt]
+                break
     try:
         model_ans = ModelAnswer.model_validate({**data, "citations": []})
     except ValidationError:
@@ -78,6 +83,11 @@ def enforce(raw: str | dict | None, hits_chunks: list[Chunk], tool_calls: list[T
         extras["trimmed"] = True
     if model_ans.refused and not answer_text:
         answer_text = refusal_message
+    if not answer_text and not model_ans.refused and not model_ans.clarifying_question:
+        # never show the user an empty reply (for example after the model kept asking for tools)
+        answer_text = "Sorry, I could not put together an answer to that. Please try rephrasing the question."
+        extras["empty_answer"] = True
+        model_ans.confidence = 0.0
 
     confidence = model_ans.confidence
     if contract.require_citations and not model_ans.refused and not citations and \

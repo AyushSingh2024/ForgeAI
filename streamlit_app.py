@@ -424,8 +424,11 @@ elif page == "Chat with an agent":
                 parts = [ans.answer]
                 if ans.clarifying_question and ans.clarifying_question not in ans.answer:
                     parts.append(f"_{ans.clarifying_question}_")
-                for t in ans.tool_calls:
-                    parts.append(f"`{t.tool}({json.dumps(t.arguments)[:120]})`")
+                if ans.tool_calls:
+                    parts.append("**Tools used**\n" + "\n".join(
+                        f"- `{t.tool}` {json.dumps(t.arguments)[:300]} → "
+                        + (f"error: {t.error}" if t.error else json.dumps(t.result, default=str)[:300])
+                        for t in ans.tool_calls))
                 if ans.citations:
                     parts.append("**Sources**\n" + "\n".join(
                         f"{i}. {c.doc_id}{f' p.{c.page}' if c.page else ''}: “{c.quote[:200]}”"
