@@ -27,7 +27,7 @@ from forge.schemas.corpus import Chunk, CorpusProfile
 from forge.schemas.eval_case import (CATEGORIES, CaseDraft, CaseDraftList, EvalCase, GenerationMeta, KeyFact,
                                      PhrasedQuestion, SourceRef)
 from forge.schemas.requirements import Requirements
-from forge.util import find_span, read_jsonl, read_model, write_json, write_jsonl
+from forge.util import pmap, find_span, read_jsonl, read_model, write_json, write_jsonl
 
 
 def plan_counts(target: int, n_chunks: int, has_tables: bool, n_docs: int) -> dict[str, int]:
@@ -82,13 +82,20 @@ class EvalFactory:
                                 temperature=0.3, max_tokens=1200)
         return res.data.cases if res.ok else []
 
+    def _pdrafts(self, prompt_id: str, variables_list: list[dict[str, Any]]) -> list[list[CaseDraft]]:
+        """Several independent draft calls in parallel; results in input order (ids are assigned afterwards)."""
+        return pmap(lambda v: self._drafts(prompt_id, v), variables_list, self.ctx.cfg.llm.concurrency)
+
     # ------------------------------------------------------------ categories
     def answerable(self, n: int, exclude: set[str], avoid: list[str] | None = None) -> list[EvalCase]:
         """`avoid`: questions already accepted. Passing them makes the prompt different (so the LLM cache does not
         return the same case again) and asks the model for a different fact from the same passage."""
         out = []
-        for ch in sample_single(self.chunks, n, self.seed + len(exclude), exclude):
-            for d in self._drafts("eval_answerable", {"chunk": ch.text[:3000], "n": 1, "avoid": avoid or []})[:1]:
+        chunks = sample_single(self.chunks, n, self.seed + len(exclude), exclude)
+        drafts = self._pdrafts("eval_answerable", [{"chunk": ch.text[:3000], "n": 1, "avoid": avoid or []}
+                                                   for ch in chunks])
+        for ch, ds in zip(chunks, drafts):
+            for d in ds[:1]:
                 out.append(EvalCase(id=self._id("answerable"), category="answerable", question=d.question,
                                     key_facts=d.key_facts, sources=self._sources(d.quotes or [], [ch]),
                                     generation=self._meta("eval_answerable")))
@@ -96,8 +103,10 @@ class EvalFactory:
 
     def multi_doc(self, n: int) -> list[EvalCase]:
         out = []
-        for a, b in sample_pairs(self.chunks, n, self.ctx.embedder(), self.seed):
-            for d in self._drafts("eval_multidoc", {"chunk_a": a.text[:2000], "chunk_b": b.text[:2000]})[:1]:
+        pairs = sample_pairs(self.chunks, n, self.ctx.embedder(), self.seed)
+        drafts = self._pdrafts("eval_multidoc", [{"chunk_a": a.text[:2000], "chunk_b": b.text[:2000]} for a, b in pairs])
+        for (a, b), ds in zip(pairs, drafts):
+            for d in ds[:1]:
                 out.append(EvalCase(id=self._id("multi_doc"), category="multi_doc", question=d.question,
                                     key_facts=d.key_facts, sources=self._sources(d.quotes or [], [a, b]),
                                     generation=self._meta("eval_multidoc")))
@@ -107,8 +116,9 @@ class EvalFactory:
         out = []
         pairs = sample_pairs(self.chunks, n, self.ctx.embedder(), self.seed + 1, same_doc=True) or \
             sample_pairs(self.chunks, n, self.ctx.embedder(), self.seed + 1)
-        for a, b in pairs:
-            for d in self._drafts("eval_ambiguous", {"chunk_a": a.text[:2000], "chunk_b": b.text[:2000]})[:1]:
+        drafts = self._pdrafts("eval_ambiguous", [{"chunk_a": a.text[:2000], "chunk_b": b.text[:2000]} for a, b in pairs])
+        for (a, b), ds in zip(pairs, drafts):
+            for d in ds[:1]:
                 out.append(EvalCase(id=self._id("ambiguous"), category="ambiguous", question=d.question,
                                     expected_behavior="clarify", key_facts=d.key_facts,
                                     sources=self._sources(d.quotes or [], [a, b]), notes=d.notes,

@@ -21,7 +21,7 @@ from forge.schemas.answer import AgentAnswer
 from forge.schemas.corpus import Chunk
 from forge.schemas.eval_case import EvalCase
 from forge.schemas.scorecard import CaseResult, JudgeReliability, JudgeResult, Scorecard, Summary
-from forge.util import quote_in_text, read_json, write_json
+from forge.util import pmap, quote_in_text, read_json, write_json
 
 
 def gold_in_topk(case: EvalCase, transcript: dict[str, Any]) -> bool | None:
@@ -75,7 +75,8 @@ def score_iteration(*, run_id: str, iteration: int, agent_version: int, cases: l
     results: list[CaseResult] = []
     disagreements = 0
     judged = 0
-    for t in transcripts:
+
+    def checks_and_judge(t: dict[str, Any]):
         case = by_id[t["case_id"]]
         det = run_all(t, case, max_words)
         ans = AgentAnswer.model_validate(t["answer"]) if t.get("answer") else None
@@ -85,6 +86,10 @@ def score_iteration(*, run_id: str, iteration: int, agent_version: int, cases: l
             ctx = [h.get("text", "") for h in t.get("trace", {}).get("hits", [])]
             jr = judge_case(case.question, ans.answer + ("\n" + ans.clarifying_question if ans.clarifying_question else ""),
                             ctx, [f.fact for f in case.key_facts], tone, case.expected_behavior == "clarify", hub.judge)
+        return case, det, jr
+
+    # the judge calls are independent per case: run them in parallel, then aggregate in order as before
+    for t, (case, det, jr) in zip(transcripts, pmap(checks_and_judge, transcripts, cfg.llm.concurrency)):
         cov = det.key_fact_coverage
         if cov is not None and jr.facts_covered is not None and case.key_facts and trusted_judge:
             # word/number matching misses paraphrases ("more than three days" vs "from the 4th day");

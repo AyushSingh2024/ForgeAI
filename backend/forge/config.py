@@ -84,6 +84,7 @@ class LLMCfg:
     use_cache: bool = True
     cache_only: bool = False          # FORGE_CACHE_ONLY=1: hosted models answer from the cache only (no paid calls)
     requests_per_minute: int = 0
+    concurrency: int = 4              # parallel model calls inside a stage (LLM_CONCURRENCY); 1 = sequential
     timeout_s: float = 180.0
 
 
@@ -123,6 +124,7 @@ _ENV_MAP: dict[str, tuple[str, str, type]] = {
     "OPENAI_API_KEY": ("llm", "openai_api_key", str),
     "EMBEDDER": ("llm", "embedder", str),
     "LLM_RPM": ("llm", "requests_per_minute", int),
+    "LLM_CONCURRENCY": ("llm", "concurrency", int),
     "LLM_CACHE_PATH": ("llm", "cache_path", str),
     "BUDGET_MAX_LLM_CALLS": ("budget", "max_llm_calls", int),
     "BUDGET_MAX_SECONDS": ("budget", "max_seconds", int),

@@ -151,3 +151,18 @@ def number_in(value: float, numbers: Iterable[float], rel_tol: float = 0.005) ->
         if value == n or (value != 0 and abs(value - n) / abs(value) <= rel_tol):
             return True
     return False
+
+
+def pmap(fn, items, workers: int = 1) -> list:
+    """Ordered parallel map for independent model calls (threads: the work is waiting on HTTP / Ollama).
+
+    Results come back in input order, so artifacts and case ids are identical to a sequential run, and every call
+    still goes through the same cache and budget (both are thread-safe). The first exception is re-raised, so a
+    BudgetExceeded stops the stage exactly as before."""
+    items = list(items)
+    if workers <= 1 or len(items) <= 1:
+        return [fn(x) for x in items]
+    from concurrent.futures import ThreadPoolExecutor
+
+    with ThreadPoolExecutor(max_workers=min(workers, len(items))) as pool:
+        return list(pool.map(fn, items))

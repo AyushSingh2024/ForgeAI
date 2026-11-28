@@ -12,7 +12,7 @@ from forge.intake.interviewer import save_requirements
 from forge.schemas.corpus import Chunk, CorpusProfile
 from forge.schemas.groundability import GroundabilityReport
 from forge.schemas.requirements import MustRefuse, Requirements
-from forge.util import read_jsonl, read_model, slugify, write_json
+from forge.util import pmap, read_jsonl, read_model, slugify, write_json
 
 
 MAX_ASKS = 12
@@ -50,10 +50,13 @@ def run_guard(ctx: RunContext) -> GroundabilityReport:
     asks = extract_asks(ctx.brief, req, llm)
     if len(asks) > MAX_ASKS:  # cost control: each ask costs about two probe checks
         ctx.note(f"guard: checked the first {MAX_ASKS} of {len(asks)} asks (must-answer topics first)")
-    for ask, source in asks[:MAX_ASKS]:
-        probes = []
-        for q in make_probes(ask, llm):
-            probes.append(verify(q, retriever.search(q, k=5), llm))
+    def check(item):
+        ask, _source = item
+        return [verify(q, retriever.search(q, k=5), llm) for q in make_probes(ask, llm)]
+
+    # every ask is checked independently: run them in parallel, keep the order
+    all_probes = pmap(check, asks[:MAX_ASKS], ctx.cfg.llm.concurrency)
+    for (ask, source), probes in zip(asks[:MAX_ASKS], all_probes):
         verdict = aggregate(ask.id, ask.text, source, probes, tool_signals(ask.text, profile))
         if verdict.verdict == "unsupported" and mentioned_in_corpus(ask.text, vocabulary):
             verdict.verdict = "partial"
