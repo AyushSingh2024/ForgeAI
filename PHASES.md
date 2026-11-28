@@ -1,8 +1,9 @@
 # ForgeAI build phases
 
 The code was written in this order, so that something runs end to end as early as possible. Each phase has its
-own tests in `backend/tests/`. Status: phases 0 to 11 are written; the tests have not been run yet (they need a
-Python environment with the packages installed), and the two demo runs still have to be produced and committed.
+own tests in `backend/tests/`. Status: phases 0 to 11 are done and the offline tests pass (`pytest -m "not slow"` in `backend/`). Both demo
+runs are committed under `backend/demos/*/run/`. From phase 12, the budget with a reserve, regression mode
+(`forge eval --against`), the hosted UI and the web interview are in.
 
 | Phase | Name | Main folders | Done when |
 |---|---|---|---|

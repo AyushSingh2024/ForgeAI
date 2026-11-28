@@ -37,6 +37,13 @@
 | CLI | **Typer** + `rich` | Clean subcommands, nice interview prompts | argparse |
 | Config | YAML (agent definitions) + `.env`-free `forge.toml` | Declarative, human-readable, diffable | JSON |
 | Tests | `pytest`, `pytest-recording`/cached LLM fixtures | Fast offline unit tests | none |
+
+> **What shipped (differs from this plan):** the laptop had no GPU, so 7-9B models were too slow. The models actually
+> used are: agent `gpt-4o-mini` (OpenAI) or the fully local `qwen2.5:3b`; judge `llama3.2:3b` on local Ollama; on the
+> hosted Streamlit app both are `gpt-4o-mini`, because its free host cannot run Ollama. The code defaults
+> (`forge/config.py`), `backend/.env.example`, the READMEs and the user guide all use these names. The Render/Groq and
+> Vercel deployment below was replaced by Streamlit Community Cloud (see `DEPLOY.md`).
+
 **Local first, hosted when deployed:** the brief requires a local small open model for the judge, so the official demo runs and the review's unattended run use Ollama on the laptop (no keys, cost or rate limits). Because Mehul wants the project deployed on Render (backend) and Vercel (frontend), every LLM call goes through `LLMClient`, and a provider switch (`LLM_PROVIDER=ollama|groq|hf`) points the same code at a hosted open-weight model on Render. The report states which provider each run used. See `DEPLOY.md` and `PHASES.md` (the build phases that every file's header comment refers to).
 
 **LLM call wrapper (`forge/llm.py`)**, used by every stage:
